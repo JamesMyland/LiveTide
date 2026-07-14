@@ -36,12 +36,14 @@ input[type=range]{width:120px;padding:0;border:0}
   padding:7px 12px;font-size:13px;font-weight:700;cursor:pointer}
 .flipbtn.on{background:var(--sea1);color:#fff;border-color:transparent}
 
-/* Display controls: full on desktop; collapsed behind a toggle on mobile so
-   they don't overlap the tide curve. */
-.appear-toggle{display:none;border:1px solid #bcd6ea;background:#fff;color:#1f4c72;
-  border-radius:999px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer}
-@media (max-width:640px){
-  .appear-toggle{display:block}
-  #appear .arow{display:none;margin-top:10px}
-  #appear.open .arow{display:flex}
-}
+/* Display controls are collapsed by default on every view behind a faint
+   toggle, so they never overlap the tide curve. Tap to open. */
+.appear-toggle{display:block;border:1px solid rgba(120,150,170,.4);
+  background:rgba(255,255,255,.35);color:#1f4c72;border-radius:999px;
+  padding:6px 13px;font-size:12px;font-weight:700;cursor:pointer;
+  opacity:.35;transition:opacity .2s ease}
+.appear-toggle:hover,.appear-toggle:focus{opacity:1}
+#appear.open .appear-toggle{opacity:1}
+#appear:not(.open){background:none;box-shadow:none;backdrop-filter:none;padding:0}
+#appear .arow{display:none;margin-top:10px}
+#appear.open .arow{display:flex}
