@@ -25,7 +25,7 @@ async function onMapClick(lat, lng) {
   try {
     const r = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`);
     const j = await r.json();
-    const nm = [j.city || j.locality, j.principalSubdivision, j.countryName].filter(Boolean).join(", ");
+    const nm = [j.city || j.locality, j.principalSubdivision].filter(Boolean).join(", ");   // drop country
     if (nm) S.picked.name = nm;
     $("mapHint").textContent = (nm ? nm + "  " : "") + `(${lat.toFixed(3)}, ${lng.toFixed(3)})`;
   } catch (e) { $("mapHint").textContent = `Pin at ${lat.toFixed(3)}, ${lng.toFixed(3)}`; }

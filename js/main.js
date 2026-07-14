@@ -6,6 +6,8 @@ import { initLive } from "./live.js";
 import { initChart } from "./chart.js";
 import { initAppearance, loadAppearance } from "./appearance.js";
 import { initMapPicker } from "./map.js";
+import { initDive, loadDiveKey } from "./dive.js";
+import { initCollapse } from "./collapse.js";
 import { renderProviders } from "./providerPicker.js";
 import { renderChips, restoreLast } from "./locations.js";
 import { S } from "./state.js";
@@ -18,9 +20,12 @@ initLive();
 initChart();
 initAppearance();
 initMapPicker();
+initDive();
+initCollapse();
 
 // restore persisted state
 loadKey();
+loadDiveKey();
 loadAppearance();
 renderProviders();
 renderChips();
