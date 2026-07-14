@@ -53,17 +53,22 @@ LiveTide is a static site with no build step, but the JavaScript is split into *
    https://jamesmyland.github.io/LiveTide/
    ```
 
-The root `index.html` automatically redirects to `tide.html`, so the app loads from the repository URL.
+`index.html` is the app itself, so it loads directly at the repository URL.
 
 ## Tech
 
-Vanilla HTML, CSS and JavaScript — no framework, no bundler. `tide.html` holds the markup and styles; all behaviour lives in ES modules under `js/`. The tide chart uses the Canvas API; the map uses Leaflet.
+Vanilla HTML, CSS and JavaScript — no framework, no bundler. `index.html` holds the markup; styles are split across `css/`; all behaviour lives in ES modules under `js/`. The tide chart uses the Canvas API; the map uses Leaflet.
 
 ### Project structure
 
 ```
-tide.html              markup + styles; loads js/main.js as a module
-index.html             redirect to tide.html (for GitHub Pages)
+index.html             app markup; loads css/ and js/main.js
+css/
+  base.css             variables, reset, cards, form controls
+  scene.css            sky/sun/sand/sea, swell, flow, orientation, rotation
+  picker.css           search, chips, map picker, provider selector
+  status.css           live status readout + appearance panel
+  chart.css            tide chart + weather strip
 js/
   main.js              bootstrap: wires modules, restores state
   config.js            constants, provider metadata

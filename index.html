@@ -3,12 +3,117 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LiveTide</title>
-<meta http-equiv="refresh" content="0; url=tide.html">
-<link rel="canonical" href="tide.html">
+<title>Live Tide</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/scene.css">
+<link rel="stylesheet" href="css/picker.css">
+<link rel="stylesheet" href="css/status.css">
+<link rel="stylesheet" href="css/chart.css">
 </head>
 <body>
-<p>Loading <a href="tide.html">LiveTide</a>…</p>
-<script>location.replace("tide.html");</script>
+<div id="app">
+  <div id="scene">
+    <div id="sky"></div>
+    <div id="sun"></div>
+    <div id="sand"></div>
+    <div id="sea"><div class="flow"></div><div class="swell"></div><div class="swell b"></div></div>
+  </div>
+
+  <div id="ui">
+    <div class="card" id="picker">
+      <h1>Live Tide <span id="demoBadge" class="demo-badge" style="display:none">demo data</span></h1>
+      <p class="sub">Choose a data provider, then search any coastal place or drop a map pin. The background is the live sea level — blue sea rising over yellow sand.</p>
+
+      <label>Tide data provider</label>
+      <div class="providers" id="providers"></div>
+
+      <div id="keyBlock" style="display:none">
+        <label>Stormglass API key</label>
+        <div class="keyrow">
+          <input id="key" type="password" placeholder="Paste your Stormglass API key" autocomplete="off">
+          <button id="saveKey">Save</button>
+        </div>
+        <button class="link" id="forgetKey" style="margin-top:6px;display:none">forget saved key</button>
+      </div>
+
+      <label>Location</label>
+      <div class="results">
+        <input id="search" type="text" placeholder="Type a place, e.g. Brighton, San Francisco…" autocomplete="off">
+        <div class="dropdown" id="dropdown" style="display:none"></div>
+      </div>
+      <div class="chips" id="chips"></div>
+
+      <button class="link" id="mapToggle" style="margin-top:12px">📍 …or drop a pin on a map</button>
+      <div id="mapWrap">
+        <div id="map"></div>
+        <div id="mapHint">Click anywhere on the map to drop a pin.</div>
+        <button class="pinbtn" id="useSpot" disabled>Use this spot</button>
+      </div>
+
+      <div class="msg" id="msg"></div>
+    </div>
+
+    <div id="liveUI">
+      <div id="status">
+        <div class="card">
+          <p class="place" id="stPlace">—</p>
+          <p class="coords" id="stCoords"></p>
+          <div class="big">
+            <span class="level" id="stLevel">–</span>
+            <span class="unit">m</span>
+            <span class="trend" id="stTrend"></span>
+          </div>
+          <div class="clock" id="stPeak" style="margin-top:0;margin-bottom:8px"></div>
+          <div class="grid">
+            <div class="box"><div class="k">Next high</div><div class="v" id="stHigh">—</div></div>
+            <div class="box"><div class="k">Next low</div><div class="v" id="stLow">—</div></div>
+          </div>
+          <div class="clock" id="stClock"></div>
+          <div class="footrow">
+            <div>
+              <button class="link" id="changeLoc">change location</button>
+              &nbsp;·&nbsp;
+              <button class="link" id="refreshData">refresh now</button>
+            </div>
+            <span class="clock" id="stData"></span>
+          </div>
+        </div>
+      </div>
+
+      <div id="chartCard" class="card">
+        <div class="chartHead">
+          <span class="chartTitle" id="chartTitle">Today's tide</span>
+          <span class="seg">
+            <button class="segbtn on" id="segDay">Today</button>
+            <button class="segbtn" id="segWeek">7 days</button>
+          </span>
+        </div>
+        <canvas id="tideChart" width="520" height="150"></canvas>
+        <div class="chartTip" id="chartTip"></div>
+        <div id="wxStrip"></div>
+      </div>
+
+      <div id="appear" class="card">
+        <div class="arow">
+          <div class="actrl">Sea<input type="color" id="cSea"></div>
+          <div class="actrl">Sand<input type="color" id="cSand"></div>
+          <div class="actrl">Tide fade<input type="range" id="opTide" min="25" max="100" step="1"></div>
+          <div class="actrl">Layout
+            <div style="display:flex;gap:6px">
+              <button class="flipbtn" id="flipBtn">Flip</button>
+              <button class="flipbtn" id="rotLeft" title="Rotate left">‹</button>
+              <button class="flipbtn" id="rotRight" title="Rotate right">›</button>
+              <button class="flipbtn" id="autoBtn">Auto</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="js/main.js"></script>
 </body>
 </html>

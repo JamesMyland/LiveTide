@@ -1,0 +1,26 @@
+/* Tide chart card, its range toggle and hover tooltip, plus the weather strip. */
+
+#chartCard{position:relative;width:min(560px,94vw);margin-top:12px;display:none;padding:14px 16px}
+.chartTip{position:absolute;transform:translate(-50%,-140%);background:rgba(11,39,64,.92);
+  color:#fff;font-size:11px;font-weight:600;padding:4px 8px;border-radius:6px;white-space:nowrap;
+  pointer-events:none;display:none;z-index:5}
+.chartHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.chartTitle{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#5c7691}
+.seg{display:flex;gap:4px}
+.segbtn{border:1px solid #bcd6ea;background:#fff;color:#1f4c72;border-radius:7px;
+  padding:4px 9px;font-size:11px;font-weight:700;cursor:pointer}
+.segbtn.on{background:var(--sea1,#2a7fc4);color:#fff;border-color:transparent}
+#tideChart{width:100%;height:150px;display:block}
+
+/* ---- Weather strip (under the tide curve, same time window) ---- */
+#wxStrip{display:none;margin-top:10px;border-top:1px solid rgba(11,39,64,.10);padding-top:9px}
+.wx-strip-grid{display:grid;gap:6px;padding:0 10px 0 36px}   /* align to the chart plot area */
+.wx-strip-grid.w4{grid-template-columns:repeat(4,1fr)}
+.wx-strip-grid.w7{grid-template-columns:repeat(7,1fr)}
+.wx-cell{text-align:center;line-height:1.3}
+.wx-c-lbl{font-size:10px;font-weight:700;color:#5c7691}
+.wx-c-temp{font-size:12.5px;font-weight:700;color:#1f4c72}
+.wx-c-wind{font-size:11px;color:#33586f}
+.wx-c-spd{font-size:10.5px;color:#5c7691}
+.wx-arrow{display:inline-block;font-weight:700}
+.wx-strip-cap{font-size:10px;color:#88a0b4;margin-top:7px;text-transform:uppercase;letter-spacing:.4px;text-align:center}
