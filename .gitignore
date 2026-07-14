@@ -1,0 +1,7 @@
+# JetBrains IDE project files
+.idea/
+
+# OS cruft
+.DS_Store
+Thumbs.db
+desktop.ini
