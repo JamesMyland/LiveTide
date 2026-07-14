@@ -1,0 +1,26 @@
+/* Variables, reset, base layout, cards and form controls. */
+:root{
+  --sky1:#eaf6ff; --sky2:#bfe3ff;
+  --sea1:#2a7fc4; --sea2:#0b3d6b;
+  --sand1:#f4d998; --sand2:#d9b45f;
+  --ink:#0b2740;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:var(--ink); overflow:hidden; background:var(--sky2);
+}
+
+#ui{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;
+  align-items:center;justify-content:flex-start;padding:24px}
+.card{background:rgba(255,255,255,.82);backdrop-filter:blur(8px);
+  border-radius:16px;padding:18px 20px;box-shadow:0 10px 30px rgba(11,39,64,.18);
+  width:min(520px,94vw)}
+h1{margin:0 0 4px;font-size:20px;letter-spacing:.3px}
+.sub{margin:0 0 14px;font-size:13px;color:#3d5c78}
+label{display:block;font-size:12px;font-weight:600;margin:10px 0 4px;color:#274a68}
+input{width:100%;padding:11px 13px;border:1px solid #c7d9e8;border-radius:10px;
+  font-size:15px;outline:none;background:#fff}
+input:focus{border-color:var(--sea1);box-shadow:0 0 0 3px rgba(42,127,196,.18)}
+.link{background:none;border:0;color:#1f6bb0;font-size:12px;cursor:pointer;text-decoration:underline;padding:0}

@@ -1,0 +1,60 @@
+/* The full-screen tide scene: sky, sun, sand, sea, swell, flow current,
+   orientation (flip) and whole-app rotation. */
+
+#scene{position:fixed;inset:0;z-index:0;overflow:hidden}
+#sky{position:absolute;inset:0;background:linear-gradient(180deg,var(--sky1),var(--sky2))}
+#sun{position:absolute;top:7%;right:9%;width:80px;height:80px;border-radius:50%;
+  background:radial-gradient(circle at 50% 50%,#fff7d6,#ffd85e 60%,#ffca3a 100%);
+  box-shadow:0 0 60px 20px rgba(255,216,94,.55);}
+/* sand fills the whole base; sea is drawn on top and its height changes */
+#sand{position:absolute;left:0;right:0;bottom:0;height:100%;
+  background:linear-gradient(180deg,var(--sand1),var(--sand2));}
+#sea{position:absolute;left:0;right:0;bottom:0;height:40%;
+  background:linear-gradient(180deg,var(--sea1),var(--sea2));
+  opacity:var(--tide-op,.85);
+  transition:height 2s cubic-bezier(.37,0,.63,1), width 2s cubic-bezier(.37,0,.63,1), opacity .4s ease;}
+/* soft feathered surface — no hard waterline */
+#sea::before{content:"";position:absolute;left:0;right:0;top:-28px;height:34px;
+  background:linear-gradient(180deg,transparent,var(--sea1));opacity:.55;filter:blur(1px);}
+/* gentle, slow, blurred swell (white foam highlight, works with any sea colour) */
+#sea .swell{position:absolute;left:0;top:-16px;width:calc(100% + 400px);height:34px;
+  background-repeat:repeat-x;opacity:.35;filter:blur(3px);pointer-events:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='34'><path d='M0 18 C100 6 300 6 400 18 L400 34 L0 34 Z' fill='%23ffffff'/></svg>");
+  animation:swell 28s linear infinite;}
+#sea .swell.b{top:-9px;opacity:.22;filter:blur(4px);animation-duration:41s;animation-direction:reverse}
+@keyframes swell{from{transform:translateX(-400px)}to{transform:translateX(0)}}
+/* faint directional current: shows the tide flooding in / ebbing out */
+#sea .flow{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity 1s ease;
+  background:repeating-linear-gradient(0deg,
+    rgba(255,255,255,0) 0px, rgba(255,255,255,0) 24px,
+    rgba(255,255,255,.05) 32px, rgba(255,255,255,0) 48px);
+  background-size:100% 48px}
+body.flow-in #sea .flow, body.flow-out #sea .flow{opacity:1}
+body.o-up.flow-in    #sea .flow{animation:flowUp 6s linear infinite}
+body.o-up.flow-out   #sea .flow{animation:flowDown 6s linear infinite}
+body.o-down.flow-in  #sea .flow{animation:flowDown 6s linear infinite}
+body.o-down.flow-out #sea .flow{animation:flowUp 6s linear infinite}
+@keyframes flowUp{from{transform:translateY(0)}to{transform:translateY(-48px)}}
+@keyframes flowDown{from{transform:translateY(0)}to{transform:translateY(48px)}}
+
+/* ---- Orientation: --fill is the water level %; flip picks which end ---- */
+body:not(.o-up) #sun{display:none}
+/* vertical, rising from the base (default) */
+body.o-up #sea{left:0;right:0;bottom:0;top:auto;width:auto;height:var(--fill,40%);
+  background:linear-gradient(180deg,var(--sea1),var(--sea2))}
+body.o-up #sea::before{left:0;right:0;top:-28px;bottom:auto;width:auto;height:34px;
+  background:linear-gradient(180deg,transparent,var(--sea1))}
+/* vertical, filling from the top */
+body.o-down #sea{left:0;right:0;top:0;bottom:auto;width:auto;height:var(--fill,40%);
+  background:linear-gradient(0deg,var(--sea1),var(--sea2))}
+body.o-down #sea::before{left:0;right:0;bottom:-28px;top:auto;width:auto;height:34px;
+  background:linear-gradient(0deg,transparent,var(--sea1))}
+body.o-down #sea .swell{top:auto;bottom:-16px}
+body.o-down #sea .swell.b{top:auto;bottom:-9px}
+
+/* ---- Whole-app rotation: rotates BOTH the tide and the UI ---- */
+#app{position:fixed;top:0;left:0;width:100vw;height:100vh;
+  transform-origin:top left;transition:transform .5s ease}
+body.rot-90  #app{width:100vh;height:100vw;transform:translateX(100vw) rotate(90deg)}
+body.rot-180 #app{transform:translate(100vw,100vh) rotate(180deg)}
+body.rot-270 #app{width:100vh;height:100vw;transform:translateY(100vh) rotate(270deg)}

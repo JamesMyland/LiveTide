@@ -1,0 +1,37 @@
+/* Live status readout, the auto-hiding live UI wrapper, and the appearance panel. */
+
+#status{display:none;width:min(560px,94vw);margin-top:14px}
+#status .card{padding:16px 20px;width:100%}   /* fill the 560px wrapper so it matches the chart card */
+.place{font-size:22px;font-weight:700;margin:0}
+.coords{font-size:12px;color:#4a6a86;margin:2px 0 12px}
+.big{display:flex;align-items:baseline;gap:10px;margin-bottom:10px}
+.level{font-size:46px;font-weight:800;line-height:1}
+.unit{font-size:16px;color:#3d5c78}
+.trend{font-size:15px;font-weight:700;padding:4px 10px;border-radius:999px}
+.rising{background:#dff3e6;color:#1e7a45}
+.falling{background:#fde9e0;color:#b2542a}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+.box{background:#f2f8fd;border-radius:10px;padding:10px 12px}
+.box .k{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#5c7691}
+.box .v{font-size:16px;font-weight:700;margin-top:2px}
+.clock{font-size:13px;color:#3d5c78;margin-top:12px}
+.footrow{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+.demo-badge{display:inline-block;background:#ffe9a8;color:#7a5a12;font-size:11px;
+  font-weight:700;padding:3px 9px;border-radius:999px;margin-left:8px}
+
+/* ---- Auto-hiding live UI ---- */
+#liveUI{transition:opacity .6s ease}
+#liveUI.hide{opacity:0;pointer-events:none}
+
+/* ---- Appearance panel ---- */
+#appear{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:3;
+  display:none;padding:12px 18px;width:auto}
+.arow{display:flex;gap:20px;align-items:center;flex-wrap:wrap;justify-content:center}
+.actrl{display:flex;flex-direction:column;align-items:center;gap:5px;
+  font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#5c7691}
+input[type=color]{width:44px;height:30px;padding:2px;border:1px solid #c7d9e8;
+  border-radius:8px;background:#fff;cursor:pointer}
+input[type=range]{width:120px;padding:0;border:0}
+.flipbtn{border:1px solid #bcd6ea;background:#fff;color:#1f4c72;border-radius:8px;
+  padding:7px 12px;font-size:13px;font-weight:700;cursor:pointer}
+.flipbtn.on{background:var(--sea1);color:#fff;border-color:transparent}
