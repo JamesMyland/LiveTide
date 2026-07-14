@@ -6,42 +6,82 @@ Eventually intended for mobile / app-store distribution.
 
 ## Features
 
-- **Pick any coast three ways** — type-to-search any place name (Open-Meteo geocoder), one-tap preset spots, or drop a pin on an interactive map (Leaflet + OpenStreetMap). Searched and pinned locations are saved as reusable chips.
-- **Live sea-level background** — the sea fills to the current tide height as a fraction of the week's highest tide (e.g. 2 m of a 10 m peak fills 20%), moving continuously as time passes.
+- **Choose your tide-data provider** — a compact, required-on-first-use selector for **Open-Meteo** (free, no key, global), **Stormglass** (station-accurate, needs a free key) or **NOAA CO-OPS** (official, no key, US only). Each shows its trade-offs and a sign-up link where relevant. Heights are normalised so the lowest tide in view reads 0 m, keeping providers comparable.
+- **Find a location two ways** — type-to-search any place name (Open-Meteo geocoder) or drop a pin on an interactive map (Leaflet + OpenStreetMap). Chosen spots are saved as reusable chips.
+- **Live sea-level background** — the sea fills to the current tide height as a fraction of the week's peak (e.g. 2 m of a 10 m peak fills 20%), moving continuously as time passes.
 - **Ebb and flow** — a faint directional current drifts inward when the tide is flooding and outward when it's ebbing.
 - **Tide chart** — a curve for **Today** or the **Next 7 days**, with high/low markers, highest/lowest height ticks, am/pm quarter labels, a live "now" marker, and hover tooltips showing the time of each high and low.
+- **Weather layer** — temperature, wind speed and wind direction for the same coordinate (Open-Meteo Forecast API, no key), with a **Today / 7-day** toggle.
 - **Appearance controls** — customisable sea and sand gradient colours, adjustable tide opacity ("fade"), flip (fill from top or base), and 90° rotation (‹ / ›) that rotates the whole UI for a physically turned monitor, plus an **Auto** mode that follows the screen's orientation.
 - **Ambient mode** — the UI auto-hides after a few seconds of inactivity and reappears on mouse movement, leaving just the tide.
 
 ## Data sources
 
-- **[Stormglass](https://stormglass.io/)** — tide sea-level and extremes (requires a free API key).
-- **[Open-Meteo Geocoding](https://open-meteo.com/)** — place-name search (no key).
+- **[Open-Meteo](https://open-meteo.com/)** — marine tide model (sea level), weather forecast, and place-name geocoding. Free, no key, non-commercial.
+- **[Stormglass](https://stormglass.io/)** — station-based tide sea-level and high/low extremes (requires a free API key).
+- **[NOAA CO-OPS](https://api.tidesandcurrents.noaa.gov/api/prod/)** — official US tide-station predictions (no key, US coasts only).
 - **[BigDataCloud](https://www.bigdatacloud.com/)** — reverse geocoding for map pins (no key).
-- **[OpenStreetMap](https://www.openstreetmap.org/) / [Leaflet](https://leafletjs.com/)** — the map tiles and picker.
+- **[OpenStreetMap](https://www.openstreetmap.org/) / [Leaflet](https://leafletjs.com/)** — the map tiles and pin picker.
 
 ## Getting started
 
-1. Get a free API key from [stormglass.io](https://stormglass.io/).
-2. Open `tide.html` in a browser (double-click, or host it — see below).
-3. Paste your Stormglass key into the API key field and click **Save**.
-4. Search for a location, tap a preset, or drop a map pin.
-
-The key is stored only in your browser's `localStorage` — it is never sent anywhere except directly to the Stormglass API.
+1. Serve the app over http (see **Hosting** — ES modules do not load from a `file://` double-click).
+2. Choose a **tide data provider** (required). Open-Meteo needs no key; Stormglass needs a free key from [stormglass.io](https://stormglass.io/).
+3. If you chose Stormglass, paste your key into the field and click **Save** (stored only in your browser's `localStorage`).
+4. Search for a location or drop a map pin.
 
 ## Request usage and caching
 
-The Stormglass free tier allows **10 requests per day**. To stay within that, LiveTide fetches a **whole week** of data in a single request per location and caches it in `localStorage`. Reopening the page or revisiting a location reuses the cache and makes **no** further requests until the cached week is nearly used up. Heights are requested on the LAT datum (positive, tide-table style) with automatic fallback if unavailable.
-
-If you run out of requests, the app falls back to the last cached data. With no key at all, it shows a synthetic demo tide curve so the interface still works.
+Tide data is cached per location and provider in `localStorage`: LiveTide fetches a **whole week** in one request and reuses it until nearly spent, so reopening the page makes **no** further calls. This matters most for **Stormglass**, whose free tier allows only **10 requests/day**; Open-Meteo and NOAA are effectively unlimited for personal use. Weather is cached separately and refreshed about every 2 hours. With no provider data available the app falls back to cached data, or to a synthetic demo curve.
 
 ## Hosting
 
-LiveTide is a single self-contained static file (no build step, no dependencies to install). To publish via **GitHub Pages**, either rename `tide.html` to `index.html` or set Pages to serve this branch, then open the repo's Pages URL.
+LiveTide is a static site with no build step, but the JavaScript is split into **ES modules** under `js/`, which browsers only load over `http(s)` — **not** from a `file://` double-click. Serve it instead:
+
+- **Locally:** run `python -m http.server` (or any static server) in the project folder and open the printed URL.
+- **Anywhere:** GitHub Pages, Netlify, Cloudflare Pages, an S3 bucket, etc.
+
+### Deploying to GitHub Pages
+
+1. Push the code to the repository's default branch.
+2. In the repo, go to **Settings → Pages**.
+3. Under **Build and deployment**, set **Source** to **Deploy from a branch**.
+4. Choose your default branch and the **/ (root)** folder, then **Save**.
+5. Wait ~1 minute for the first build, then open:
+
+   ```
+   https://jamesmyland.github.io/LiveTide/
+   ```
+
+The root `index.html` automatically redirects to `tide.html`, so the app loads from the repository URL.
 
 ## Tech
 
-Vanilla HTML, CSS and JavaScript. Tide chart rendered with the Canvas API; map via Leaflet. No framework, no bundler.
+Vanilla HTML, CSS and JavaScript — no framework, no bundler. `tide.html` holds the markup and styles; all behaviour lives in ES modules under `js/`. The tide chart uses the Canvas API; the map uses Leaflet.
+
+### Project structure
+
+```
+tide.html              markup + styles; loads js/main.js as a module
+index.html             redirect to tide.html (for GitHub Pages)
+js/
+  main.js              bootstrap: wires modules, restores state
+  config.js            constants, provider metadata
+  state.js             shared mutable app state
+  dom.js format.js     DOM + colour/time/date helpers
+  cache.js tide.js     localStorage cache; interpolation, extremes, datum normalisation
+  apikey.js            Stormglass key persistence
+  geo.js map.js        place search; Leaflet pin picker
+  locations.js         location selection, saved spots, demo fallback
+  live.js              per-second tick, status panel, auto-hide
+  chart.js             day / 7-day tide chart + hover tooltips
+  weather.js           temperature + wind layer (day / week)
+  providerPicker.js    compact collapsible provider selector
+  appearance.js        colours, fade, flip, rotate, auto-orientation
+  providers/
+    index.js           dispatcher -> the selected provider
+    openmeteo.js        stormglass.js        noaa.js
+```
 
 ## Roadmap
 
