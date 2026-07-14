@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live Tide</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+  :root{
+    --sky1:#eaf6ff; --sky2:#bfe3ff;
+    --sea1:#2a7fc4; --sea2:#0b3d6b;
+    --sand1:#f4d998; --sand2:#d9b45f;
+    --ink:#0b2740;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink); overflow:hidden; background:var(--sky2);
+  }
+
+  /* ---- Full-screen scene ---- */
+  #scene{position:fixed;inset:0;z-index:0;overflow:hidden}
+  #sky{position:absolute;inset:0;background:linear-gradient(180deg,var(--sky1),var(--sky2))}
+  #sun{position:absolute;top:7%;right:9%;width:80px;height:80px;border-radius:50%;
+    background:radial-gradient(circle at 50% 50%,#fff7d6,#ffd85e 60%,#ffca3a 100%);
+    box-shadow:0 0 60px 20px rgba(255,216,94,.55);}
+  /* sand fills the whole base; sea is drawn on top and its height changes */
+  #sand{position:absolute;left:0;right:0;bottom:0;height:100%;
+    background:linear-gradient(180deg,var(--sand1),var(--sand2));}
+  #sea{position:absolute;left:0;right:0;bottom:0;height:40%;
+    background:linear-gradient(180deg,var(--sea1),var(--sea2));
+    opacity:var(--tide-op,.85);
+    transition:height 2s cubic-bezier(.37,0,.63,1), width 2s cubic-bezier(.37,0,.63,1), opacity .4s ease;}
+  /* soft feathered surface — no hard waterline */
+  #sea::before{content:"";position:absolute;left:0;right:0;top:-28px;height:34px;
+    background:linear-gradient(180deg,transparent,var(--sea1));opacity:.55;filter:blur(1px);}
+  /* gentle, slow, blurred swell (white foam highlight, works with any sea colour) */
+  #sea .swell{position:absolute;left:0;top:-16px;width:calc(100% + 400px);height:34px;
+    background-repeat:repeat-x;opacity:.35;filter:blur(3px);pointer-events:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='34'><path d='M0 18 C100 6 300 6 400 18 L400 34 L0 34 Z' fill='%23ffffff'/></svg>");
+    animation:swell 28s linear infinite;}
+  #sea .swell.b{top:-9px;opacity:.22;filter:blur(4px);animation-duration:41s;animation-direction:reverse}
+  @keyframes swell{from{transform:translateX(-400px)}to{transform:translateX(0)}}
+  /* faint directional current: shows the tide flooding in / ebbing out */
+  #sea .flow{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity 1s ease;
+    background:repeating-linear-gradient(0deg,
+      rgba(255,255,255,0) 0px, rgba(255,255,255,0) 24px,
+      rgba(255,255,255,.05) 32px, rgba(255,255,255,0) 48px);
+    background-size:100% 48px}
+  body.flow-in #sea .flow, body.flow-out #sea .flow{opacity:1}
+  body.o-up.flow-in    #sea .flow{animation:flowUp 6s linear infinite}
+  body.o-up.flow-out   #sea .flow{animation:flowDown 6s linear infinite}
+  body.o-down.flow-in  #sea .flow{animation:flowDown 6s linear infinite}
+  body.o-down.flow-out #sea .flow{animation:flowUp 6s linear infinite}
+  @keyframes flowUp{from{transform:translateY(0)}to{transform:translateY(-48px)}}
+  @keyframes flowDown{from{transform:translateY(0)}to{transform:translateY(48px)}}
+
+  /* ---- Overlay UI ---- */
+  #ui{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;
+    align-items:center;justify-content:flex-start;padding:24px}
+  .card{background:rgba(255,255,255,.82);backdrop-filter:blur(8px);
+    border-radius:16px;padding:18px 20px;box-shadow:0 10px 30px rgba(11,39,64,.18);
+    width:min(520px,94vw)}
+  h1{margin:0 0 4px;font-size:20px;letter-spacing:.3px}
+  .sub{margin:0 0 14px;font-size:13px;color:#3d5c78}
+  label{display:block;font-size:12px;font-weight:600;margin:10px 0 4px;color:#274a68}
+  input{width:100%;padding:11px 13px;border:1px solid #c7d9e8;border-radius:10px;
+    font-size:15px;outline:none;background:#fff}
+  input:focus{border-color:var(--sea1);box-shadow:0 0 0 3px rgba(42,127,196,.18)}
+  .results{position:relative}
+  .dropdown{position:absolute;left:0;right:0;top:calc(100% + 4px);background:#fff;
+    border:1px solid #d5e3ef;border-radius:10px;box-shadow:0 12px 24px rgba(11,39,64,.16);
+    overflow:hidden;z-index:5;max-height:260px;overflow-y:auto}
+  .dropdown div{padding:10px 13px;font-size:14px;cursor:pointer;border-bottom:1px solid #f0f5f9}
+  .dropdown div:last-child{border-bottom:0}
+  .dropdown div:hover{background:#eaf4fc}
+  .dropdown small{color:#5c7691}
+  .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+  .chip{border:1px solid #bcd6ea;background:#fff;color:#1f4c72;border-radius:999px;
+    padding:6px 12px;font-size:12.5px;cursor:pointer}
+  .chip:hover{background:#eaf4fc}
+  .msg{margin-top:10px;font-size:13px;color:#b23b3b;min-height:16px}
+  .keyrow{display:flex;gap:8px;align-items:flex-end}
+  .keyrow input{flex:1}
+  .keyrow button, .toggle{padding:11px 14px;border:0;border-radius:10px;background:var(--sea1);
+    color:#fff;font-weight:600;font-size:14px;cursor:pointer}
+  .link{background:none;border:0;color:#1f6bb0;font-size:12px;cursor:pointer;text-decoration:underline;padding:0}
+
+  /* ---- Status readout ---- */
+  #status{display:none;width:min(560px,94vw);margin-top:14px}
+  #status .card{padding:16px 20px}
+  .place{font-size:22px;font-weight:700;margin:0}
+  .coords{font-size:12px;color:#4a6a86;margin:2px 0 12px}
+  .big{display:flex;align-items:baseline;gap:10px;margin-bottom:10px}
+  .level{font-size:46px;font-weight:800;line-height:1}
+  .unit{font-size:16px;color:#3d5c78}
+  .trend{font-size:15px;font-weight:700;padding:4px 10px;border-radius:999px}
+  .rising{background:#dff3e6;color:#1e7a45}
+  .falling{background:#fde9e0;color:#b2542a}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+  .box{background:#f2f8fd;border-radius:10px;padding:10px 12px}
+  .box .k{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#5c7691}
+  .box .v{font-size:16px;font-weight:700;margin-top:2px}
+  .clock{font-size:13px;color:#3d5c78;margin-top:12px}
+  .footrow{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+  .demo-badge{display:inline-block;background:#ffe9a8;color:#7a5a12;font-size:11px;
+    font-weight:700;padding:3px 9px;border-radius:999px;margin-left:8px}
+
+  /* ---- Auto-hiding live UI ---- */
+  #liveUI{transition:opacity .6s ease}
+  #liveUI.hide{opacity:0;pointer-events:none}
+
+  /* ---- Appearance panel ---- */
+  #appear{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:3;
+    display:none;padding:12px 18px;width:auto}
+  .arow{display:flex;gap:20px;align-items:center;flex-wrap:wrap;justify-content:center}
+  .actrl{display:flex;flex-direction:column;align-items:center;gap:5px;
+    font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#5c7691}
+  input[type=color]{width:44px;height:30px;padding:2px;border:1px solid #c7d9e8;
+    border-radius:8px;background:#fff;cursor:pointer}
+  input[type=range]{width:120px;padding:0;border:0}
+  .flipbtn{border:1px solid #bcd6ea;background:#fff;color:#1f4c72;border-radius:8px;
+    padding:7px 12px;font-size:13px;font-weight:700;cursor:pointer}
+  .flipbtn.on{background:var(--sea1);color:#fff;border-color:transparent}
+
+  /* ---- Orientation: tide fills along whichever axis you choose ----
+     --fill is the water level %; o-up/down are vertical (landscape),
+     o-left/right are horizontal (portrait). */
+  body:not(.o-up) #sun{display:none}
+
+  /* vertical, rising from the base (default) */
+  body.o-up #sea{left:0;right:0;bottom:0;top:auto;width:auto;height:var(--fill,40%);
+    background:linear-gradient(180deg,var(--sea1),var(--sea2))}
+  body.o-up #sea::before{left:0;right:0;top:-28px;bottom:auto;width:auto;height:34px;
+    background:linear-gradient(180deg,transparent,var(--sea1))}
+
+  /* vertical, filling from the top */
+  body.o-down #sea{left:0;right:0;top:0;bottom:auto;width:auto;height:var(--fill,40%);
+    background:linear-gradient(0deg,var(--sea1),var(--sea2))}
+  body.o-down #sea::before{left:0;right:0;bottom:-28px;top:auto;width:auto;height:34px;
+    background:linear-gradient(0deg,transparent,var(--sea1))}
+  body.o-down #sea .swell{top:auto;bottom:-16px}
+  body.o-down #sea .swell.b{top:auto;bottom:-9px}
+
+  /* ---- Whole-app rotation: rotates BOTH the tide and the UI, so it reads
+     correctly on a physically turned monitor. Four steps via ‹ / › ---- */
+  #app{position:fixed;top:0;left:0;width:100vw;height:100vh;
+    transform-origin:top left;transition:transform .5s ease}
+  body.rot-90  #app{width:100vh;height:100vw;transform:translateX(100vw) rotate(90deg)}
+  body.rot-180 #app{transform:translate(100vw,100vh) rotate(180deg)}
+  body.rot-270 #app{width:100vh;height:100vw;transform:translateY(100vh) rotate(270deg)}
+
+  /* ---- Map pin picker ---- */
+  #mapWrap{display:none;margin-top:12px}
+  #map{height:260px;border-radius:12px;overflow:hidden;border:1px solid #c7d9e8;z-index:1}
+  .leaflet-container{font:inherit;background:#dfeef7}
+  #mapHint{font-size:12px;color:#41627e;margin:8px 0}
+  .pinbtn{padding:10px 14px;border:0;border-radius:10px;background:var(--sea1,#2a7fc4);
+    color:#fff;font-weight:600;font-size:14px;cursor:pointer}
+  .pinbtn:disabled{opacity:.5;cursor:default}
+
+  /* ---- Day tide chart (revealed with the UI on mouse move) ---- */
+  #chartCard{position:relative;width:min(560px,94vw);margin-top:12px;display:none;padding:14px 16px}
+  .chartTip{position:absolute;transform:translate(-50%,-140%);background:rgba(11,39,64,.92);
+    color:#fff;font-size:11px;font-weight:600;padding:4px 8px;border-radius:6px;white-space:nowrap;
+    pointer-events:none;display:none;z-index:5}
+  .chartHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+  .chartTitle{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#5c7691}
+  .seg{display:flex;gap:4px}
+  .segbtn{border:1px solid #bcd6ea;background:#fff;color:#1f4c72;border-radius:7px;
+    padding:4px 9px;font-size:11px;font-weight:700;cursor:pointer}
+  .segbtn.on{background:var(--sea1,#2a7fc4);color:#fff;border-color:transparent}
+  #tideChart{width:100%;height:150px;display:block}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="scene">
+    <div id="sky"></div>
+    <div id="sun"></div>
+    <div id="sand"></div>
+    <div id="sea"><div class="flow"></div><div class="swell"></div><div class="swell b"></div></div>
+  </div>
+
+  <div id="ui">
+    <div class="card" id="picker">
+      <h1>Live Tide <span id="demoBadge" class="demo-badge" style="display:none">demo data</span></h1>
+      <p class="sub">Search any coastal place, or tap a spot. The background is the live sea level — blue sea rising over yellow sand.</p>
+
+      <label>Stormglass API key</label>
+      <div class="keyrow">
+        <input id="key" type="password" placeholder="Paste your Stormglass API key" autocomplete="off">
+        <button id="saveKey">Save</button>
+      </div>
+      <button class="link" id="forgetKey" style="margin-top:6px;display:none">forget saved key</button>
+
+      <label>Location</label>
+      <div class="results">
+        <input id="search" type="text" placeholder="Type a place, e.g. Brighton, San Francisco…" autocomplete="off">
+        <div class="dropdown" id="dropdown" style="display:none"></div>
+      </div>
+      <div class="chips" id="chips"></div>
+
+      <button class="link" id="mapToggle" style="margin-top:12px">📍 …or drop a pin on a map</button>
+      <div id="mapWrap">
+        <div id="map"></div>
+        <div id="mapHint">Click anywhere on the map to drop a pin.</div>
+        <button class="pinbtn" id="useSpot" disabled>Use this spot</button>
+      </div>
+
+      <div class="msg" id="msg"></div>
+    </div>
+
+    <div id="liveUI">
+      <div id="status">
+        <div class="card">
+          <p class="place" id="stPlace">—</p>
+          <p class="coords" id="stCoords"></p>
+          <div class="big">
+            <span class="level" id="stLevel">–</span>
+            <span class="unit">m</span>
+            <span class="trend" id="stTrend"></span>
+          </div>
+          <div class="clock" id="stPeak" style="margin-top:0;margin-bottom:8px"></div>
+          <div class="grid">
+            <div class="box"><div class="k">Next high</div><div class="v" id="stHigh">—</div></div>
+            <div class="box"><div class="k">Next low</div><div class="v" id="stLow">—</div></div>
+          </div>
+          <div class="clock" id="stClock"></div>
+          <div class="footrow">
+            <div>
+              <button class="link" id="changeLoc">change location</button>
+              &nbsp;·&nbsp;
+              <button class="link" id="refreshData">refresh now</button>
+            </div>
+            <span class="clock" id="stData"></span>
+          </div>
+        </div>
+      </div>
+
+      <div id="chartCard" class="card">
+        <div class="chartHead">
+          <span class="chartTitle" id="chartTitle">Today's tide</span>
+          <span class="seg">
+            <button class="segbtn on" id="segDay">Today</button>
+            <button class="segbtn" id="segWeek">7 days</button>
+          </span>
+        </div>
+        <canvas id="tideChart" width="520" height="150"></canvas>
+        <div class="chartTip" id="chartTip"></div>
+      </div>
+
+      <div id="appear" class="card">
+        <div class="arow">
+          <div class="actrl">Sea<input type="color" id="cSea"></div>
+          <div class="actrl">Sand<input type="color" id="cSand"></div>
+          <div class="actrl">Tide fade<input type="range" id="opTide" min="25" max="100" step="1"></div>
+          <div class="actrl">Layout
+            <div style="display:flex;gap:6px">
+              <button class="flipbtn" id="flipBtn">Flip</button>
+              <button class="flipbtn" id="rotLeft" title="Rotate left">‹</button>
+              <button class="flipbtn" id="rotRight" title="Rotate right">›</button>
+              <button class="flipbtn" id="autoBtn">Auto</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const KEY_LS = "sg_api_key";
+
+/* ---------------- API key persistence ---------------- */
+function loadKey(){
+  const k = localStorage.getItem(KEY_LS);
+  if(k){ $("key").value = k; $("forgetKey").style.display="inline"; }
+}
+$("saveKey").onclick = () => {
+  const k = $("key").value.trim();
+  if(k){ localStorage.setItem(KEY_LS,k); $("forgetKey").style.display="inline"; flash("Key saved in this browser.","#1e7a45"); }
+};
+$("forgetKey").onclick = () => { localStorage.removeItem(KEY_LS); $("key").value=""; $("forgetKey").style.display="none"; flash("Saved key removed.","#1e7a45"); };
+function getKey(){ return ($("key").value || "").trim(); }
+function flash(t,c){ const m=$("msg"); m.textContent=t; m.style.color=c||"#b23b3b"; }
+
+/* ---------------- Preset tidal spots ---------------- */
+const PRESETS = [
+  {name:"Brighton, UK", lat:50.8, lng:-0.14, tz:"Europe/London"},
+  {name:"San Francisco, US", lat:37.81, lng:-122.47, tz:"America/Los_Angeles"},
+  {name:"Sydney, AU", lat:-33.85, lng:151.28, tz:"Australia/Sydney"},
+  {name:"Mont-Saint-Michel, FR", lat:48.63, lng:-1.51, tz:"Europe/Paris"},
+  {name:"Bay of Fundy, CA", lat:45.3, lng:-64.3, tz:"America/Halifax"},
+];
+/* saved spots: searches you pick get added here so you can re-select them */
+const SAVED_LS="tide_saved_spots";
+function keyOf(lat,lng){ return `${lat.toFixed(2)},${lng.toFixed(2)}`; }
+function readSaved(){ try{return JSON.parse(localStorage.getItem(SAVED_LS))||[];}catch(e){return [];} }
+function writeSaved(a){ try{localStorage.setItem(SAVED_LS,JSON.stringify(a));}catch(e){} }
+function addSaved(name,lat,lng,tz){
+  const k=keyOf(lat,lng);
+  if(PRESETS.some(p=>keyOf(p.lat,p.lng)===k)) return;      // already a preset
+  const arr=readSaved();
+  if(arr.some(s=>keyOf(s.lat,s.lng)===k)) return;          // already saved
+  arr.push({name,lat,lng,tz}); writeSaved(arr); renderChips();
+}
+function removeSaved(lat,lng){
+  writeSaved(readSaved().filter(s=>keyOf(s.lat,s.lng)!==keyOf(lat,lng))); renderChips();
+}
+function renderChips(){
+  const c=$("chips"); c.innerHTML="";
+  [...PRESETS.map(p=>({...p,preset:true})), ...readSaved()].forEach(p=>{
+    const chip=document.createElement("div"); chip.className="chip"; chip.textContent=p.name;
+    chip.onclick=()=>selectLocation(p.name,p.lat,p.lng,p.tz);
+    if(!p.preset){
+      const x=document.createElement("span"); x.textContent=" ✕";
+      x.style.cssText="opacity:.55;margin-left:4px";
+      x.onclick=e=>{ e.stopPropagation(); removeSaved(p.lat,p.lng); };
+      chip.appendChild(x);
+    }
+    c.appendChild(chip);
+  });
+}
+
+/* ---------------- Geocoder (Open-Meteo, no key) ---------------- */
+let searchTimer=null;
+$("search").addEventListener("input", ()=>{
+  clearTimeout(searchTimer);
+  const q=$("search").value.trim();
+  if(q.length<2){ $("dropdown").style.display="none"; return; }
+  searchTimer=setTimeout(()=>geocode(q),300);
+});
+async function geocode(q){
+  try{
+    const r=await fetch(`https://geocoding-api.open-meteo.com/v1/search?count=6&name=${encodeURIComponent(q)}`);
+    const j=await r.json();
+    const dd=$("dropdown"); dd.innerHTML="";
+    if(!j.results || !j.results.length){ dd.style.display="none"; return; }
+    j.results.forEach(res=>{
+      const label=[res.name,res.admin1,res.country].filter(Boolean).join(", ");
+      const d=document.createElement("div");
+      d.innerHTML=`${res.name} <small>${[res.admin1,res.country].filter(Boolean).join(", ")}</small>`;
+      d.onclick=()=>{ $("dropdown").style.display="none"; $("search").value=label;
+        addSaved(label,res.latitude,res.longitude,res.timezone);
+        selectLocation(label,res.latitude,res.longitude,res.timezone); };
+      dd.appendChild(d);
+    });
+    dd.style.display="block";
+  }catch(e){ flash("Couldn't reach the place search. Check your connection."); }
+}
+document.addEventListener("click",e=>{ if(!$("dropdown").contains(e.target)&&e.target!==$("search")) $("dropdown").style.display="none"; });
+
+/* ---------------- Tide data (with persistent caching) ----------------
+   Stormglass charges per REQUEST, not per data volume, and tide is a
+   deterministic prediction — so we pull a whole week in ONE request and
+   store it in localStorage. Reloading the page, or revisiting a spot,
+   reuses that cache and makes NO api call until the week is nearly used up. */
+let current=null; // {name,lat,lng,tz,levels:[{t,v}],extremes:[{t,v,type}],min,max,demo,fetchedAt}
+const CACHE_LS="tide_cache_v1";
+const LAST_LS ="tide_last_loc";
+const FETCH_DAYS=7;               // window pulled per request
+const MIN_FORWARD_MS=2*3600e3;    // keep using cache while >=2h of forward data remains
+
+function readStore(){ try{return JSON.parse(localStorage.getItem(CACHE_LS))||{};}catch(e){return {};} }
+function writeEntry(k,e){ const s=readStore(); s[k]=e; try{localStorage.setItem(CACHE_LS,JSON.stringify(s));}catch(err){} }
+function ckey(lat,lng){ return `${lat.toFixed(2)},${lng.toFixed(2)}`; }
+function cacheValid(e){ return e&&e.levels&&e.levels.length && Date.now() < e.levels[e.levels.length-1].t - MIN_FORWARD_MS; }
+function ago(ts){ if(!ts) return "just now"; const m=Math.round((Date.now()-ts)/60000);
+  if(m<1) return "just now"; if(m<60) return m+"m ago"; const h=Math.floor(m/60);
+  return h<24?h+"h ago":Math.floor(h/24)+"d ago"; }
+
+async function fetchTides(lat,lng,key){
+  // Prefer LAT datum (heights above lowest astronomical tide -> positive, tide-table
+  // style) so "2m of a 10m peak" fills 20%. Fall back to default datum / shorter window.
+  const attempts=[{days:FETCH_DAYS,datum:"LAT"},{days:FETCH_DAYS,datum:""},{days:2,datum:""}];
+  for(const {days,datum} of attempts){
+    const now=Math.floor(Date.now()/1000);
+    let base=`lat=${lat}&lng=${lng}&start=${now-6*3600}&end=${now+days*24*3600}`;
+    if(datum) base+=`&datum=${datum}`;
+    const opts={headers:{Authorization:key}};
+    const [slR,exR]=await Promise.all([
+      fetch(`https://api.stormglass.io/v2/tide/sea-level/point?${base}`,opts),
+      fetch(`https://api.stormglass.io/v2/tide/extremes/point?${base}`,opts)
+    ]);
+    if(slR.status===401||slR.status===403) return {error:"key"};
+    if(slR.status===402||slR.status===429) return {error:"limit"};
+    if(!slR.ok){ if(slR.status===400||slR.status===422) continue; return {error:"bad"}; }
+    const sl=await slR.json(), ex=await exR.json();
+    if(!sl.data||!sl.data.length) continue;
+    return {sl,ex};
+  }
+  return {error:"bad"};
+}
+
+async function selectLocation(name,lat,lng,tz,force){
+  const cacheKey=ckey(lat,lng);
+  try{ localStorage.setItem(LAST_LS,JSON.stringify({name,lat,lng,tz})); }catch(e){}
+
+  // 1) reuse cached data if it still covers the near future — zero api calls
+  if(!force){
+    const cached=readStore()[cacheKey];
+    if(cacheValid(cached)){ current={...cached,name,tz}; startLive();
+      flash(`Using cached data (fetched ${ago(cached.fetchedAt)}) — no request used.`,"#1e7a45"); return; }
+  }
+
+  const key=getKey();
+  if(!key){
+    current=buildDemo(name,lat,lng,tz); startLive();
+    flash("No API key — showing a demo tide curve. Add your key for live data.","#7a5a12"); return;
+  }
+
+  flash("Fetching a week of tide data from Stormglass (1 request)…","#274a68");
+  try{
+    const r=await fetchTides(lat,lng,key);
+    if(r.error==="key"){ flash("API key rejected (401/403). Check the key."); return; }
+    if(r.error==="limit"){
+      const cached=readStore()[cacheKey];
+      if(cached&&cached.levels&&cached.levels.length){ current={...cached,name,tz}; startLive();
+        flash("Daily request limit reached — showing last cached data.","#7a5a12"); return; }
+      flash("Stormglass daily request limit reached and nothing cached for here yet.","#7a5a12"); return;
+    }
+    if(r.error){ flash("No tide data returned. Try a coastal location."); return; }
+    const levels=r.sl.data.map(d=>({t:new Date(d.time).getTime(), v:d.sg}));
+    const extremes=(r.ex.data||[]).map(d=>({t:new Date(d.time).getTime(), v:d.height, type:d.type}));
+    const vals=levels.map(l=>l.v);
+    const entry={name,lat,lng,tz,levels,extremes,min:Math.min(...vals),max:Math.max(...vals),demo:false,fetchedAt:Date.now()};
+    writeEntry(cacheKey,entry);
+    current=entry; startLive(); flash("Live data loaded and cached for a week.","#1e7a45");
+  }catch(e){
+    const cached=readStore()[cacheKey];
+    if(cached&&cached.levels){ current={...cached,name,tz}; startLive(); flash("Network issue — showing cached data.","#7a5a12"); return; }
+    flash("Network error contacting Stormglass. Is the key valid and online?");
+  }
+}
+
+/* restore last-viewed location from cache on page load, without any api call */
+function restoreLast(){
+  let last; try{ last=JSON.parse(localStorage.getItem(LAST_LS)); }catch(e){}
+  if(!last) return;
+  const cached=readStore()[ckey(last.lat,last.lng)];
+  if(cacheValid(cached)){ current={...cached,name:last.name,tz:last.tz}; startLive();
+    flash(`Restored ${last.name} from cache (${ago(cached.fetchedAt)}) — no request used.`,"#1e7a45"); }
+}
+
+/* synthetic fallback: two tides a day, ~4h offset by longitude */
+function buildDemo(name,lat,lng,tz){
+  const levels=[], now=Date.now();
+  const period=12.42*3600e3; // semidiurnal
+  const phase=(lng/180)*Math.PI;
+  for(let h=-12; h<=24; h++){
+    const t=now+h*3600e3;
+    const v=1.8*Math.sin((2*Math.PI*t)/period + phase);
+    levels.push({t,v:+v.toFixed(3)});
+  }
+  const vals=levels.map(l=>l.v);
+  // derive extremes from the curve
+  const extremes=[];
+  for(let i=1;i<levels.length-1;i++){
+    if(levels[i].v>levels[i-1].v && levels[i].v>levels[i+1].v) extremes.push({t:levels[i].t,v:levels[i].v,type:"high"});
+    if(levels[i].v<levels[i-1].v && levels[i].v<levels[i+1].v) extremes.push({t:levels[i].t,v:levels[i].v,type:"low"});
+  }
+  return {name,lat,lng,tz,levels,extremes,min:Math.min(...vals),max:Math.max(...vals),demo:true};
+}
+
+/* ---------------- Interpolation ---------------- */
+function levelAt(ms){
+  const L=current.levels;
+  if(ms<=L[0].t) return L[0].v;
+  if(ms>=L[L.length-1].t) return L[L.length-1].v;
+  for(let i=0;i<L.length-1;i++){
+    if(ms>=L[i].t && ms<=L[i+1].t){
+      const f=(ms-L[i].t)/(L[i+1].t-L[i].t);
+      return L[i].v+(L[i+1].v-L[i].v)*f;
+    }
+  }
+  return L[L.length-1].v;
+}
+
+/* ---------------- Live loop ---------------- */
+let liveTimer=null;
+function startLive(){
+  $("picker").style.display="none";
+  $("status").style.display="block";
+  $("appear").style.display="block";
+  $("chartCard").style.display="block";
+  $("demoBadge").style.display=current.demo?"inline-block":"none";
+  $("stPlace").textContent=current.name;
+  $("stCoords").textContent=`${current.lat.toFixed(3)}, ${current.lng.toFixed(3)}${current.demo?"  ·  demo curve":""}`;
+  clearInterval(liveTimer);
+  tick(); liveTimer=setInterval(tick,1000);
+  poke();
+}
+function fmtTime(ms){
+  try{ return new Intl.DateTimeFormat([], {hour:"2-digit",minute:"2-digit",timeZone:current.tz||undefined}).format(new Date(ms)); }
+  catch(e){ return new Date(ms).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"}); }
+}
+function fmtCountdown(ms){
+  if(ms<0) return "";
+  const m=Math.round(ms/60000), h=Math.floor(m/60), mm=m%60;
+  return h>0?`in ${h}h ${mm}m`:`in ${mm}m`;
+}
+function tick(){
+  const now=Date.now();
+  const v=levelAt(now);
+  const vPrev=levelAt(now-5*60000);
+  const rising=v>=vPrev;
+
+  // fill = actual tide height as a fraction of the week's peak.
+  // base is the zero line: 0 for positive (LAT) data, or the week's low for MSL data.
+  const base=Math.min(0,current.min);
+  const denom=(current.max-base)||1;
+  const frac=Math.max(0,Math.min(1,(v-base)/denom));
+  document.documentElement.style.setProperty("--fill",(frac*100).toFixed(2)+"%");
+
+  $("stLevel").textContent=v.toFixed(2);
+  const tr=$("stTrend");
+  tr.textContent=rising?"▲ flooding (coming in)":"▼ ebbing (going out)";
+  tr.className="trend "+(rising?"rising":"falling");
+  // faint directional current: flooding flows toward the surface, ebbing away
+  document.body.classList.toggle("flow-in",rising);
+  document.body.classList.toggle("flow-out",!rising);
+  $("stPeak").textContent=`${Math.round(frac*100)}% of this week's ${current.max.toFixed(2)} m peak`;
+
+  // next high / low
+  const nextHigh=current.extremes.filter(e=>e.type==="high"&&e.t>now).sort((a,b)=>a.t-b.t)[0];
+  const nextLow =current.extremes.filter(e=>e.type==="low" &&e.t>now).sort((a,b)=>a.t-b.t)[0];
+  $("stHigh").textContent=nextHigh?`${fmtTime(nextHigh.t)} · ${nextHigh.v.toFixed(2)}m ${fmtCountdown(nextHigh.t-now)}`:"—";
+  $("stLow").textContent =nextLow ?`${fmtTime(nextLow.t)} · ${nextLow.v.toFixed(2)}m ${fmtCountdown(nextLow.t-now)}`:"—";
+
+  $("stClock").textContent="Local time: "+
+    (()=>{try{return new Intl.DateTimeFormat([],{hour:"2-digit",minute:"2-digit",second:"2-digit",timeZone:current.tz||undefined}).format(new Date());}
+    catch(e){return new Date().toLocaleTimeString();}})();
+  $("stData").textContent=current.demo?"synthetic data":"Stormglass · live sea level";
+  if(!$("liveUI").classList.contains("hide")) drawChart();
+
+  // refetch only when we've actually run past the cached week
+  if(now>current.levels[current.levels.length-1].t && !current.demo){
+    selectLocation(current.name,current.lat,current.lng,current.tz,true);
+  }
+}
+
+/* ---------------- Day tide chart ---------------- */
+function chartTheme(){
+  const cs=getComputedStyle(document.documentElement);
+  return { sea1:(cs.getPropertyValue("--sea1")||"#2a7fc4").trim(),
+           sea2:(cs.getPropertyValue("--sea2")||"#0b3d6b").trim() };
+}
+function hexA(hex,a){ hex=hex.replace("#",""); if(hex.length===3) hex=hex.split("").map(c=>c+c).join("");
+  const r=parseInt(hex.slice(0,2),16),g=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);
+  return `rgba(${r},${g},${b},${a})`; }
+function tzOffsetMs(tz,date){
+  try{ const p=new Intl.DateTimeFormat("en-US",{timeZone:tz,hour12:false,year:"numeric",month:"2-digit",
+      day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit"}).formatToParts(date)
+      .reduce((a,x)=>(a[x.type]=x.value,a),{});
+    return Date.UTC(+p.year,+p.month-1,+p.day,+p.hour,+p.minute,+p.second)-date.getTime();
+  }catch(e){ return -date.getTimezoneOffset()*60000; }
+}
+function dayWindow(){
+  const now=new Date();
+  if(current && current.tz){
+    const off=tzOffsetMs(current.tz,now);
+    const ln=new Date(now.getTime()+off);
+    const mid=Date.UTC(ln.getUTCFullYear(),ln.getUTCMonth(),ln.getUTCDate())-off;
+    return [mid,mid+864e5];
+  }
+  const d=new Date(); d.setHours(0,0,0,0);
+  return [d.getTime(), d.getTime()+864e5];
+}
+let chartRange="day";
+let chartPts=[];   // on-screen positions of high/low points, for hover tooltips
+function chartWindow(){ const [d0]=dayWindow(); return chartRange==="week"?[d0,d0+7*864e5]:[d0,d0+864e5]; }
+function ampm(h){ h=((h%24)+24)%24; const p=h<12?"am":"pm"; let hh=h%12; if(!hh)hh=12; return hh+p; }
+function drawChart(){
+  const cv=$("tideChart"); if(!cv||!current||!current.levels) return;
+  const card=$("chartCard"); const dpr=window.devicePixelRatio||1;
+  const W=Math.max(240,card.clientWidth-32), H=150;
+  cv.style.width=W+"px"; cv.width=W*dpr; cv.height=H*dpr;
+  const ctx=cv.getContext("2d"); ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,W,H);
+  const [t0,t1]=chartWindow();
+  const week=chartRange==="week";
+  const x0=36,x1=W-10,y0=12,y1=H-18;   // left gutter for height ticks
+  const N=week?336:96, S=[];
+  for(let i=0;i<=N;i++){ const t=t0+(t1-t0)*i/N; S.push([t,levelAt(t)]); }
+  const rawLo=Math.min(...S.map(s=>s[1])), rawHi=Math.max(...S.map(s=>s[1]));
+  let lo=rawLo, hi=rawHi;
+  const pad=(hi-lo)*0.12||0.2; lo-=pad; hi+=pad; const span=(hi-lo)||1;
+  const px=t=>x0+(t-t0)/(t1-t0)*(x1-x0);
+  const py=v=>y1-(v-lo)/span*(y1-y0);
+  const {sea1,sea2}=chartTheme();
+  // height ticks: highest & lowest across the visible curve
+  ctx.textAlign="right"; ctx.font="9px sans-serif";
+  [[rawHi,"#1e7a45"],[rawLo,"#b2542a"]].forEach(([v,c])=>{
+    const Y=py(v);
+    ctx.strokeStyle="rgba(11,39,64,.18)"; ctx.setLineDash([3,3]); ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(x0,Y); ctx.lineTo(x1,Y); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle=c; ctx.fillText(v.toFixed(1)+"m", x0-5, Y+3);
+  });
+  // gridlines + labels: am/pm quarters for the day view, weekday names for the week view
+  ctx.textAlign="center"; ctx.font="10px sans-serif";
+  if(week){
+    for(let d=0;d<=7;d++){ const X=px(t0+d*864e5);
+      ctx.fillStyle="rgba(11,39,64,.10)"; ctx.fillRect(X,y0,1,y1-y0);
+      if(d<7) for(let q=6;q<24;q+=6){ const Xq=px(t0+d*864e5+q*3600e3);   // faint am/pm quarter lines
+        ctx.fillStyle="rgba(11,39,64,.04)"; ctx.fillRect(Xq,y0,1,y1-y0); }
+      if(d<7){ const noon=t0+d*864e5+432e5;
+        const lbl=new Intl.DateTimeFormat([],{weekday:"short",timeZone:current.tz||undefined}).format(new Date(noon));
+        ctx.fillStyle="#5c7691"; ctx.fillText(lbl,px(noon),H-4); } }
+  } else {
+    for(let h=0;h<=24;h+=6){ const X=px(t0+h*3600e3);
+      ctx.fillStyle="rgba(11,39,64,.08)"; ctx.fillRect(X,y0,1,y1-y0);
+      ctx.fillStyle="#5c7691"; ctx.fillText(ampm(h),X,H-4); }
+  }
+  // tide curve
+  ctx.beginPath();
+  S.forEach(([t,v],i)=>{ const X=px(t),Y=py(v); i?ctx.lineTo(X,Y):ctx.moveTo(X,Y); });
+  ctx.lineWidth=2; ctx.strokeStyle=sea2; ctx.stroke();
+  ctx.lineTo(x1,y1); ctx.lineTo(x0,y1); ctx.closePath();
+  const g=ctx.createLinearGradient(0,y0,0,y1); g.addColorStop(0,hexA(sea1,.45)); g.addColorStop(1,hexA(sea1,.04));
+  ctx.fillStyle=g; ctx.fill();
+  // high / low markers (also recorded so hover can show their time)
+  chartPts=[];
+  current.extremes.filter(e=>e.t>=t0&&e.t<=t1).forEach(e=>{
+    const X=px(e.t),Y=py(e.v);
+    chartPts.push({x:X,y:Y,e});
+    ctx.beginPath(); ctx.arc(X,Y,week?2:3,0,Math.PI*2); ctx.fillStyle=e.type==="high"?"#1e7a45":"#b2542a"; ctx.fill();
+    if(!week){ ctx.fillStyle="#33475a"; ctx.font="9px sans-serif";
+      ctx.fillText(e.v.toFixed(1)+"m", X, e.type==="high"?Y-6:Y+12); }
+  });
+  // now marker
+  const now=Date.now();
+  if(now>=t0&&now<=t1){ const X=px(now);
+    ctx.strokeStyle="#e2554a"; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(X,y0); ctx.lineTo(X,y1); ctx.stroke();
+    const Y=py(levelAt(now)); ctx.beginPath(); ctx.arc(X,Y,4,0,Math.PI*2); ctx.fillStyle="#e2554a"; ctx.fill();
+    ctx.strokeStyle="#fff"; ctx.lineWidth=1.5; ctx.stroke(); }
+}
+window.addEventListener("resize",()=>{ if($("chartCard").style.display==="block") drawChart(); });
+function setChartRange(r){ chartRange=r;
+  $("segDay").classList.toggle("on",r==="day");
+  $("segWeek").classList.toggle("on",r==="week");
+  $("chartTitle").textContent=r==="week"?"Next 7 days":"Today's tide";
+  drawChart(); }
+$("segDay").onclick =()=>setChartRange("day");
+$("segWeek").onclick=()=>setChartRange("week");
+// hover a high/low point to see its time
+$("tideChart").addEventListener("mousemove",e=>{
+  const tip=$("chartTip"), mx=e.offsetX, my=e.offsetY;
+  let best=null, bd=1e9;
+  chartPts.forEach(p=>{ const d=Math.hypot(p.x-mx,p.y-my); if(d<bd){bd=d;best=p;} });
+  if(best && bd<16){
+    const ex=best.e; let when;
+    try{ when=new Intl.DateTimeFormat([],{weekday:chartRange==="week"?"short":undefined,
+      hour:"2-digit",minute:"2-digit",timeZone:current.tz||undefined}).format(new Date(ex.t)); }
+    catch(_){ when=new Date(ex.t).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}); }
+    tip.textContent=`${ex.type==="high"?"High":"Low"} ${ex.v.toFixed(2)}m · ${when}`;
+    const cv=$("tideChart");
+    tip.style.left=(cv.offsetLeft+best.x)+"px";
+    tip.style.top =(cv.offsetTop +best.y)+"px";
+    tip.style.display="block";
+    cv.style.cursor="pointer";
+  } else { tip.style.display="none"; $("tideChart").style.cursor="default"; }
+});
+$("tideChart").addEventListener("mouseleave",()=>{ $("chartTip").style.display="none"; });
+
+$("changeLoc").onclick=()=>{ clearInterval(liveTimer); clearTimeout(idleTimer);
+  $("liveUI").classList.remove("hide"); $("status").style.display="none"; $("appear").style.display="none";
+  $("chartCard").style.display="none"; $("picker").style.display="block"; };
+$("refreshData").onclick=()=>{ if(current) selectLocation(current.name,current.lat,current.lng,current.tz,true); };
+
+/* ---------------- Auto-hide live UI when idle ---------------- */
+let idleTimer=null;
+function poke(){
+  const lu=$("liveUI"); lu.classList.remove("hide"); clearTimeout(idleTimer);
+  if($("status").style.display==="block"){ drawChart(); idleTimer=setTimeout(()=>lu.classList.add("hide"),4000); }
+}
+["mousemove","touchstart","keydown","click"].forEach(ev=>window.addEventListener(ev,poke));
+$("liveUI").addEventListener("mouseenter",()=>clearTimeout(idleTimer));
+$("liveUI").addEventListener("mouseleave",poke);
+
+/* ---------------- Appearance (colours, tide fade, flip) ---------------- */
+const APPEAR_LS="tide_appearance";
+const DEF_SEA="#2a7fc4", DEF_SAND="#f4d998", DEF_OP=85;
+function shade(hex,pct){ // pct>0 lighten toward white, pct<0 darken toward black
+  hex=hex.replace('#',''); if(hex.length===3) hex=hex.split('').map(c=>c+c).join('');
+  let r=parseInt(hex.slice(0,2),16),g=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);
+  const t=pct<0?0:255, p=Math.abs(pct);
+  r=Math.round((t-r)*p)+r; g=Math.round((t-g)*p)+g; b=Math.round((t-b)*p)+b;
+  return "#"+[r,g,b].map(x=>x.toString(16).padStart(2,"0")).join("");
+}
+let appear={sea:DEF_SEA,sand:DEF_SAND,op:DEF_OP,flip:false,angle:0,auto:false};
+const portraitMQ=window.matchMedia("(orientation: portrait)");
+function isPortrait(){ return portraitMQ.matches; }
+function applyAppearance(){
+  const rs=document.documentElement.style;
+  rs.setProperty("--sea1",  shade(appear.sea, 0.18));
+  rs.setProperty("--sea2",  shade(appear.sea,-0.45));
+  rs.setProperty("--sand1", shade(appear.sand, 0.12));
+  rs.setProperty("--sand2", shade(appear.sand,-0.30));
+  rs.setProperty("--tide-op",(appear.op/100).toFixed(2));
+  // tide always fills vertically; flip picks which end
+  document.body.classList.remove("o-up","o-down");
+  document.body.classList.add(appear.flip?"o-down":"o-up");
+  // rotate the WHOLE app: auto snaps to screen orientation, else the manual angle
+  const angle=appear.auto ? (isPortrait()?90:0) : appear.angle;
+  document.body.classList.remove("rot-90","rot-180","rot-270");
+  if(angle) document.body.classList.add("rot-"+angle);
+  $("flipBtn").classList.toggle("on",appear.flip);
+  $("autoBtn").classList.toggle("on",appear.auto);
+  $("rotLeft").disabled=appear.auto;        // manual rotation is overridden while Auto is on
+  $("rotRight").disabled=appear.auto;
+}
+function saveAppearance(){ try{localStorage.setItem(APPEAR_LS,JSON.stringify(appear));}catch(e){} }
+function loadAppearance(){
+  let a={}; try{a=JSON.parse(localStorage.getItem(APPEAR_LS))||{};}catch(e){}
+  const angle = a.angle!=null ? ((a.angle%360)+360)%360 : (a.rotate?90:0); // migrate old bool
+  appear={sea:a.sea||DEF_SEA, sand:a.sand||DEF_SAND, op:(a.op??DEF_OP),
+          flip:!!a.flip, angle:angle, auto:!!a.auto};
+  $("cSea").value=appear.sea; $("cSand").value=appear.sand; $("opTide").value=appear.op;
+  applyAppearance();
+}
+function onAppearInput(){
+  appear.sea=$("cSea").value; appear.sand=$("cSand").value; appear.op=+$("opTide").value;
+  applyAppearance(); saveAppearance();
+}
+["input","change"].forEach(ev=>{
+  $("cSea").addEventListener(ev,onAppearInput);
+  $("cSand").addEventListener(ev,onAppearInput);
+  $("opTide").addEventListener(ev,onAppearInput);
+});
+function rotateBy(deg){ if(appear.auto) return; appear.angle=((appear.angle+deg)%360+360)%360; applyAppearance(); saveAppearance(); }
+$("flipBtn").onclick=()=>{ appear.flip=!appear.flip; applyAppearance(); saveAppearance(); };
+$("rotLeft").onclick =()=>rotateBy(-90);
+$("rotRight").onclick=()=>rotateBy(90);
+$("autoBtn").onclick=()=>{ appear.auto=!appear.auto; applyAppearance(); saveAppearance(); };
+// re-evaluate rotation when the screen orientation changes (only matters in Auto mode)
+try{ portraitMQ.addEventListener("change",()=>{ if(appear.auto) applyAppearance(); }); }
+catch(e){ portraitMQ.addListener(()=>{ if(appear.auto) applyAppearance(); }); }
+window.addEventListener("orientationchange",()=>{ if(appear.auto) applyAppearance(); });
+
+/* ---------------- Map pin picker (Leaflet + OpenStreetMap) ---------------- */
+let map=null, marker=null, picked=null;
+$("mapToggle").onclick=()=>{
+  const w=$("mapWrap"), show=w.style.display!=="block";
+  w.style.display=show?"block":"none";
+  $("mapToggle").textContent=show?"hide map":"📍 …or drop a pin on a map";
+  if(show) initMap();
+};
+function initMap(){
+  if(typeof L==="undefined"){ $("mapHint").textContent="Map library didn't load — check your connection."; return; }
+  if(map){ setTimeout(()=>map.invalidateSize(),60); return; }
+  map=L.map("map",{worldCopyJump:true}).setView([30,0],2);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    {maxZoom:19, attribution:"© OpenStreetMap contributors"}).addTo(map);
+  map.on("click", e=>onMapClick(e.latlng.lat, e.latlng.lng));
+  setTimeout(()=>map.invalidateSize(),60);
+}
+async function onMapClick(lat,lng){
+  lng=((lng+180)%360+360)%360-180; // normalise if user panned across copies
+  if(marker) marker.setLatLng([lat,lng]);
+  else marker=L.circleMarker([lat,lng],{radius:8,weight:2,color:"#0b3d6b",fillColor:"#2a7fc4",fillOpacity:.9}).addTo(map);
+  picked={name:`${lat.toFixed(3)}, ${lng.toFixed(3)}`, lat, lng, tz:null};
+  $("useSpot").disabled=false;
+  $("mapHint").textContent="Looking up place name…";
+  try{
+    const r=await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`);
+    const j=await r.json();
+    const nm=[j.city||j.locality, j.principalSubdivision, j.countryName].filter(Boolean).join(", ");
+    if(nm) picked.name=nm;
+    $("mapHint").textContent=(nm?nm+"  ":"")+`(${lat.toFixed(3)}, ${lng.toFixed(3)})`;
+  }catch(e){ $("mapHint").textContent=`Pin at ${lat.toFixed(3)}, ${lng.toFixed(3)}`; }
+}
+$("useSpot").onclick=()=>{
+  if(!picked) return;
+  addSaved(picked.name, picked.lat, picked.lng, picked.tz);
+  selectLocation(picked.name, picked.lat, picked.lng, picked.tz);
+};
+
+loadKey();
+loadAppearance();
+renderChips();
+restoreLast();
+</script>
+</body>
+</html>
