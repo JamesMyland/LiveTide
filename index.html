@@ -45,6 +45,16 @@
       </div>
       <div class="chips" id="chips"></div>
 
+      <label style="margin-top:14px">Dive sites (optional)</label>
+      <div class="keyrow">
+        <input id="diveKey" type="password" placeholder="divemap.gr API token (optional)" autocomplete="off">
+        <button id="diveSave">Save</button>
+      </div>
+      <div class="dive-note">Rich dive data from
+        <a href="https://divemap.gr/" target="_blank" rel="noopener">divemap.gr</a>,
+        falling back to free OpenStreetMap. A token isn't required to read data, but adding
+        your divemap.gr token raises rate limits.</div>
+
       <button class="link" id="mapToggle" style="margin-top:12px">📍 …or drop a pin on a map</button>
       <div id="mapWrap">
         <div id="map"></div>
@@ -58,6 +68,7 @@
     <div id="liveUI">
       <div id="status">
         <div class="card">
+          <button type="button" class="collapse-btn status-collapse" data-card="status" title="Collapse / expand">▾</button>
           <p class="place" id="stPlace">—</p>
           <p class="coords" id="stCoords"></p>
           <div class="big">
@@ -85,14 +96,29 @@
       <div id="chartCard" class="card">
         <div class="chartHead">
           <span class="chartTitle" id="chartTitle">Today's tide</span>
-          <span class="seg">
-            <button class="segbtn on" id="segDay">Today</button>
-            <button class="segbtn" id="segWeek">7 days</button>
+          <span class="head-right">
+            <span class="seg">
+              <button class="segbtn on" id="segDay">Today</button>
+              <button class="segbtn" id="segWeek">7 days</button>
+            </span>
+            <button type="button" class="collapse-btn" data-card="chartCard" title="Collapse / expand">▾</button>
           </span>
         </div>
         <canvas id="tideChart" width="520" height="150"></canvas>
         <div class="chartTip" id="chartTip"></div>
         <div id="wxStrip"></div>
+      </div>
+
+      <div id="diveCard" class="card">
+        <div class="chartHead">
+          <span class="chartTitle">Dive sites nearby</span>
+          <span class="head-right">
+            <span class="clock" id="diveSrc"></span>
+            <button type="button" class="collapse-btn" data-card="diveCard" title="Collapse / expand">▾</button>
+          </span>
+        </div>
+        <div id="diveMap"></div>
+        <div id="diveList"></div>
       </div>
 
       <div id="appear" class="card">
@@ -110,6 +136,18 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="diveModal" class="modal" hidden>
+    <div class="modal-box">
+      <button type="button" class="modal-close" id="modalClose" aria-label="Close">✕</button>
+      <h2 class="modal-title" id="modalTitle"></h2>
+      <div class="modal-body" id="modalBody"></div>
+      <div class="modal-foot">
+        <button type="button" class="pinbtn" id="modalMap">Dive map ↗</button>
+        <button type="button" class="pinbtn" id="modalMore">Find out more ↗</button>
       </div>
     </div>
   </div>

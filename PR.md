@@ -25,6 +25,14 @@ single-file app into ES modules with split CSS, and fixes mobile layout.
 - **NOTE:** ES modules require serving over http (GitHub Pages or a local
   server) — no longer runs from a `file://` double-click.
 
+## Dive sites layer
+- "Dive sites nearby" card listing the closest sites/centres to the selected
+  location, with type and distance.
+- Free by default via OpenStreetMap (Overpass, no key). Supplying a World Scuba
+  Diving Sites API key (RapidAPI, free ~20/day) switches to a richer catalogue;
+  its full list is fetched once and cached, then filtered by distance locally,
+  so changing location doesn't spend requests. Falls back to OSM on any error.
+
 ## Mobile
 - Display controls collapse behind a "⚙ Display" toggle (closed by default) so
   they don't overlap the tide curve.

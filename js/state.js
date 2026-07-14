@@ -22,6 +22,7 @@ export const S = {
   chartPts: [],         // on-screen high/low positions for hover tooltips
 
   weather: null,        // Open-Meteo forecast payload (rendered under the chart, same range)
+  dives: [],            // nearby dive sites for the active location
 
   appear: { sea: DEF_SEA, sand: DEF_SAND, op: DEF_OP, flip: false, angle: 0, auto: false },
 };

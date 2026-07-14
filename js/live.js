@@ -8,6 +8,7 @@ import { levelAt } from "./tide.js";
 import { fmtTime, fmtCountdown } from "./format.js";
 import { drawChart } from "./chart.js";
 import { loadWeather } from "./weather.js";
+import { loadDives } from "./dive.js";
 import { selectLocation } from "./locations.js";
 
 export function startLive() {
@@ -24,6 +25,7 @@ export function startLive() {
   S.liveTimer = setInterval(tick, 1000);
   poke();
   loadWeather();   // fetch/refresh weather for this location (cached ~2h)
+  loadDives();     // fetch nearby dive sites (cached ~24h)
 }
 
 export function tick() {
@@ -73,7 +75,7 @@ export function initLive() {
     clearInterval(S.liveTimer); clearTimeout(S.idleTimer);
     $("liveUI").classList.remove("hide");
     $("status").style.display = "none"; $("appear").style.display = "none"; $("chartCard").style.display = "none";
-    $("picker").style.display = "block";
+    $("diveCard").style.display = "none"; $("picker").style.display = "block";
   };
   $("refreshData").onclick = () => { if (S.current) selectLocation(S.current.name, S.current.lat, S.current.lng, S.current.tz, true); };
   ["mousemove", "touchstart", "keydown", "click"].forEach(ev => window.addEventListener(ev, poke));

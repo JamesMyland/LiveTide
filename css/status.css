@@ -1,7 +1,23 @@
 /* Live status readout, the auto-hiding live UI wrapper, and the appearance panel. */
 
 #status{display:none;width:min(560px,94vw);margin-top:14px}
-#status .card{padding:16px 20px;width:100%}   /* fill the 560px wrapper so it matches the chart card */
+#status .card{padding:16px 20px;width:100%;position:relative}   /* fill the 560px wrapper so it matches the chart card */
+
+/* ---- Per-panel collapse toggles (status / chart / dive) ---- */
+.head-right{display:flex;align-items:center;gap:8px}
+.collapse-btn{background:none;border:0;cursor:pointer;color:#5c7691;font-size:13px;
+  line-height:1;padding:2px 4px;transition:transform .2s ease}
+.collapsed .collapse-btn{transform:rotate(-90deg)}
+.status-collapse{position:absolute;top:12px;right:12px}
+#status.collapsed .grid,
+#status.collapsed #stPeak,
+#status.collapsed #stClock,
+#status.collapsed .footrow{display:none}
+#chartCard.collapsed #tideChart,
+#chartCard.collapsed .chartTip,
+#chartCard.collapsed #wxStrip,
+#chartCard.collapsed .seg{display:none}
+#diveCard.collapsed #diveList{display:none}
 .place{font-size:22px;font-weight:700;margin:0}
 .coords{font-size:12px;color:#4a6a86;margin:2px 0 12px}
 .big{display:flex;align-items:baseline;gap:10px;margin-bottom:10px}

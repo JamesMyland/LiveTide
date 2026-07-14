@@ -11,7 +11,7 @@ async function geocode(q) {
     const dd = $("dropdown"); dd.innerHTML = "";
     if (!j.results || !j.results.length) { dd.style.display = "none"; return; }
     j.results.forEach(res => {
-      const label = [res.name, res.admin1, res.country].filter(Boolean).join(", ");
+      const label = [res.name, res.admin1].filter(Boolean).join(", ");   // drop country from the saved name
       const d = document.createElement("div");
       d.innerHTML = `${res.name} <small>${[res.admin1, res.country].filter(Boolean).join(", ")}</small>`;
       d.onclick = () => {

@@ -24,6 +24,35 @@
 .wx-c-spd{font-size:10.5px;color:#5c7691}
 .wx-arrow{display:inline-block;font-weight:700}
 .wx-strip-cap{font-size:10px;color:#88a0b4;margin-top:7px;text-transform:uppercase;letter-spacing:.4px;text-align:center}
+
+/* ---- Dive sites nearby ---- */
+#diveCard{position:relative;width:min(560px,94vw);margin-top:12px;display:none;padding:14px 16px}
+#diveMap{height:220px;border-radius:12px;overflow:hidden;border:1px solid #c7d9e8;margin-bottom:10px}
+#diveCard.collapsed #diveMap{display:none}
+#diveList{display:flex;flex-direction:column;gap:7px}
+.dive-row{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:baseline;font-size:13px;color:#33475a}
+.dive-name{background:none;border:0;padding:0;margin:0;font:inherit;font-weight:700;color:#1f4c72;
+  text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  cursor:pointer;text-decoration:underline dotted;text-underline-offset:2px}
+.dive-type{font-size:11px;color:#5c7691;text-transform:capitalize}
+.dive-km{font-size:12px;color:#33586f;font-weight:600}
+.dive-search{background:none;border:0;cursor:pointer;font-size:13px;padding:0 2px;line-height:1}
+.dive-desc{font-size:12px;color:#4a6a86;margin:3px 0 2px;line-height:1.35}
+.dive-note{font-size:11px;color:#5c7691;margin-top:6px;line-height:1.35}
+.dive-note a{color:#1f6bb0}
+
+/* ---- Full-screen reader modal (dive site details) ---- */
+.modal{position:fixed;inset:0;z-index:50;background:rgba(11,39,64,.55);
+  display:flex;align-items:center;justify-content:center;padding:20px}
+.modal[hidden]{display:none}
+.modal-box{background:#fff;border-radius:16px;width:100%;max-width:700px;max-height:90vh;
+  display:flex;flex-direction:column;position:relative;padding:24px 26px;
+  box-shadow:0 24px 70px rgba(11,39,64,.45)}
+.modal-close{position:absolute;top:12px;right:14px;background:none;border:0;
+  font-size:18px;color:#5c7691;cursor:pointer;line-height:1}
+.modal-title{margin:0 28px 14px 0;font-size:22px;color:#0b2740}
+.modal-body{overflow-y:auto;flex:1;font-size:15px;line-height:1.55;color:#33475a;white-space:pre-wrap}
+.modal-foot{margin-top:20px;display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}
 /* desktop: show max/min inline as "26°/18°" */
 .wx-c-temp .wx-hi::after{content:"/";color:#9fb3c4;font-weight:400;margin:0 1px}
 
