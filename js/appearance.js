@@ -53,6 +53,13 @@ export function initAppearance() {
   $("rotLeft").onclick = () => rotateBy(-90);
   $("rotRight").onclick = () => rotateBy(90);
   $("autoBtn").onclick = () => { S.appear.auto = !S.appear.auto; applyAppearance(); saveAppearance(); };
+
+  // Display controls collapse behind a toggle on mobile (closed by default)
+  $("appearToggle").onclick = () => {
+    const open = $("appear").classList.toggle("open");
+    try { localStorage.setItem("tide_appear_open", open ? "1" : "0"); } catch (e) {}
+  };
+  try { if (localStorage.getItem("tide_appear_open") === "1") $("appear").classList.add("open"); } catch (e) {}
   try { portraitMQ.addEventListener("change", () => { if (S.appear.auto) applyAppearance(); }); }
   catch (e) { portraitMQ.addListener(() => { if (S.appear.auto) applyAppearance(); }); }
   window.addEventListener("orientationchange", () => { if (S.appear.auto) applyAppearance(); });
