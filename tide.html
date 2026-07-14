@@ -90,7 +90,7 @@
 
   /* ---- Status readout ---- */
   #status{display:none;width:min(560px,94vw);margin-top:14px}
-  #status .card{padding:16px 20px}
+  #status .card{padding:16px 20px;width:100%}   /* fill the 560px wrapper so it matches the chart card */
   .place{font-size:22px;font-weight:700;margin:0}
   .coords{font-size:12px;color:#4a6a86;margin:2px 0 12px}
   .big{display:flex;align-items:baseline;gap:10px;margin-bottom:10px}
@@ -173,6 +173,37 @@
     padding:4px 9px;font-size:11px;font-weight:700;cursor:pointer}
   .segbtn.on{background:var(--sea1,#2a7fc4);color:#fff;border-color:transparent}
   #tideChart{width:100%;height:150px;display:block}
+
+  /* ---- Provider selector (compact, collapsible) ---- */
+  .providers{margin-top:4px}
+  .prov-head{display:flex;align-items:center;gap:8px;cursor:pointer;padding:9px 11px;
+    border:1px solid #c7d9e8;border-radius:10px;background:#fff}
+  .prov-head.req{border-color:#e0a640;box-shadow:0 0 0 2px rgba(224,166,64,.18)}
+  .prov-head-label{font-weight:700;font-size:13px;color:#1f4c72}
+  .prov-head-val{margin-left:auto;font-size:12.5px;color:#4a6a86}
+  .prov-req{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;
+    padding:2px 7px;border-radius:999px;background:#fdecc8;color:#7a5a12}
+  .prov-caret{font-size:11px;color:#5c7691}
+  .prov-body{margin-top:8px}
+  .provSeg{display:flex;gap:4px}
+  .provBtn{flex:1;border:1px solid #c7d9e8;background:#fff;color:#1f4c72;border-radius:8px;
+    padding:7px 6px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
+  .provBtn.on{background:var(--sea1,#2a7fc4);color:#fff;border-color:transparent}
+  .prov-benefit{font-size:11.5px;color:#4a6a86;margin-top:7px;line-height:1.35}
+  .prov-link{font-size:11.5px;color:#1f6bb0;text-decoration:underline;display:inline-block;margin-top:4px}
+
+  /* ---- Weather strip (under the tide curve, same time window) ---- */
+  #wxStrip{display:none;margin-top:10px;border-top:1px solid rgba(11,39,64,.10);padding-top:9px}
+  .wx-strip-grid{display:grid;gap:6px;padding:0 10px 0 36px}   /* align to the chart plot area */
+  .wx-strip-grid.w4{grid-template-columns:repeat(4,1fr)}
+  .wx-strip-grid.w7{grid-template-columns:repeat(7,1fr)}
+  .wx-cell{text-align:center;line-height:1.3}
+  .wx-c-lbl{font-size:10px;font-weight:700;color:#5c7691}
+  .wx-c-temp{font-size:12.5px;font-weight:700;color:#1f4c72}
+  .wx-c-wind{font-size:11px;color:#33586f}
+  .wx-c-spd{font-size:10.5px;color:#5c7691}
+  .wx-arrow{display:inline-block;font-weight:700}
+  .wx-strip-cap{font-size:10px;color:#88a0b4;margin-top:7px;text-transform:uppercase;letter-spacing:.4px;text-align:center}
 </style>
 </head>
 <body>
@@ -187,14 +218,19 @@
   <div id="ui">
     <div class="card" id="picker">
       <h1>Live Tide <span id="demoBadge" class="demo-badge" style="display:none">demo data</span></h1>
-      <p class="sub">Search any coastal place, or tap a spot. The background is the live sea level — blue sea rising over yellow sand.</p>
+      <p class="sub">Choose a data provider, then search any coastal place or drop a map pin. The background is the live sea level — blue sea rising over yellow sand.</p>
 
-      <label>Stormglass API key</label>
-      <div class="keyrow">
-        <input id="key" type="password" placeholder="Paste your Stormglass API key" autocomplete="off">
-        <button id="saveKey">Save</button>
+      <label>Tide data provider</label>
+      <div class="providers" id="providers"></div>
+
+      <div id="keyBlock" style="display:none">
+        <label>Stormglass API key</label>
+        <div class="keyrow">
+          <input id="key" type="password" placeholder="Paste your Stormglass API key" autocomplete="off">
+          <button id="saveKey">Save</button>
+        </div>
+        <button class="link" id="forgetKey" style="margin-top:6px;display:none">forget saved key</button>
       </div>
-      <button class="link" id="forgetKey" style="margin-top:6px;display:none">forget saved key</button>
 
       <label>Location</label>
       <div class="results">
@@ -250,6 +286,7 @@
         </div>
         <canvas id="tideChart" width="520" height="150"></canvas>
         <div class="chartTip" id="chartTip"></div>
+        <div id="wxStrip"></div>
       </div>
 
       <div id="appear" class="card">
@@ -271,9 +308,53 @@
   </div>
 </div>
 
-<script>
+<script type="module" src="js/main.js"></script>
+
+<!-- The block below is the previous single-file build. It is now superseded by
+     the ES modules in js/ (loaded above) and is inert (type="text/plain").
+     Safe to delete. -->
+<script type="text/plain" id="legacy-inline-build">
 const $ = id => document.getElementById(id);
 const KEY_LS = "sg_api_key";
+const PROV_LS = "tide_provider";
+
+/* ---------------- Tide data providers ---------------- */
+const PROVIDERS={
+  openmeteo:{name:"Open-Meteo", tag:"no key", key:false, signup:null,
+    benefit:"Free, global, no sign-up. Hourly sea level from an ~8 km marine model — great coverage, a little less precise inside narrow estuaries.",
+    detail:"Open-Meteo marine model · hourly sea level (MSL) · global ~8 km"},
+  stormglass:{name:"Stormglass", tag:"API key", key:true, signup:"https://stormglass.io/",
+    benefit:"Station-calibrated accuracy with published high/low times. Free tier is 10 requests/day (LiveTide caches a week per call).",
+    detail:"Stormglass · sea level (LAT datum) + station high/low extremes"},
+  noaa:{name:"NOAA CO-OPS", tag:"no key · US", key:false, signup:null,
+    benefit:"Official US agency predictions — no key, no real limit, station-accurate. US coasts only.",
+    detail:"NOAA CO-OPS · nearest-station predictions (MLLW) + high/low · US only"}
+};
+let provider=localStorage.getItem(PROV_LS)||"openmeteo";
+if(!PROVIDERS[provider]) provider="openmeteo";
+function renderProviders(){
+  const box=$("providers"); if(!box) return; box.innerHTML="";
+  Object.entries(PROVIDERS).forEach(([id,p])=>{
+    const el=document.createElement("div");
+    el.className="prov"+(id===provider?" on":"");
+    el.innerHTML=`<div class="prov-top"><span class="prov-name">${p.name}</span>`+
+      `<span class="prov-tag${p.key?" key":""}">${p.tag}</span></div>`+
+      `<div class="prov-benefit">${p.benefit}</div>`+
+      (p.signup?`<a class="prov-link" href="${p.signup}" target="_blank" rel="noopener">Sign up for an API key ↗</a>`:"");
+    el.onclick=e=>{ if(e.target.classList.contains("prov-link")) return; setProvider(id); };
+    box.appendChild(el);
+  });
+  $("keyBlock").style.display = PROVIDERS[provider].key ? "block" : "none";
+}
+function setProvider(id){
+  if(!PROVIDERS[id]) return;
+  provider=id; try{localStorage.setItem(PROV_LS,id);}catch(e){}
+  renderProviders();
+  flash(`${PROVIDERS[id].name}: ${PROVIDERS[id].benefit}`,"#274a68");
+  // if a location is already live, reload it from the newly-selected provider
+  if(current && $("status").style.display==="block")
+    selectLocation(current.name,current.lat,current.lng,current.tz,true);
+}
 
 /* ---------------- API key persistence ---------------- */
 function loadKey(){
@@ -373,9 +454,23 @@ function ago(ts){ if(!ts) return "just now"; const m=Math.round((Date.now()-ts)/
   if(m<1) return "just now"; if(m<60) return m+"m ago"; const h=Math.floor(m/60);
   return h<24?h+"h ago":Math.floor(h/24)+"d ago"; }
 
-async function fetchTides(lat,lng,key){
-  // Prefer LAT datum (heights above lowest astronomical tide -> positive, tide-table
-  // style) so "2m of a 10m peak" fills 20%. Fall back to default datum / shorter window.
+function deriveExtremes(levels){
+  const ex=[];
+  for(let i=1;i<levels.length-1;i++){ const a=levels[i-1].v,b=levels[i].v,c=levels[i+1].v;
+    if(b>a&&b>=c) ex.push({t:levels[i].t,v:b,type:"high"});
+    if(b<a&&b<=c) ex.push({t:levels[i].t,v:b,type:"low"}); }
+  return ex;
+}
+// dispatch to the selected provider; each returns {levels,extremes[,station]} or {error}
+async function fetchTides(lat,lng){
+  if(provider==="stormglass") return fetchStormglass(lat,lng,getKey());
+  if(provider==="noaa")       return fetchNOAA(lat,lng);
+  return fetchOpenMeteo(lat,lng);
+}
+
+/* Stormglass — station based, needs an API key */
+async function fetchStormglass(lat,lng,key){
+  if(!key) return {error:"nokey"};
   const attempts=[{days:FETCH_DAYS,datum:"LAT"},{days:FETCH_DAYS,datum:""},{days:2,datum:""}];
   for(const {days,datum} of attempts){
     const now=Math.floor(Date.now()/1000);
@@ -391,49 +486,112 @@ async function fetchTides(lat,lng,key){
     if(!slR.ok){ if(slR.status===400||slR.status===422) continue; return {error:"bad"}; }
     const sl=await slR.json(), ex=await exR.json();
     if(!sl.data||!sl.data.length) continue;
-    return {sl,ex};
+    const levels=sl.data.map(d=>({t:new Date(d.time).getTime(), v:d.sg}));
+    const extremes=(ex.data||[]).map(d=>({t:new Date(d.time).getTime(), v:d.height, type:d.type}));
+    return {levels,extremes};
   }
   return {error:"bad"};
 }
 
+/* Open-Meteo marine — no key, global */
+async function fetchOpenMeteo(lat,lng){
+  const u=`https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lng}`+
+    `&hourly=sea_level_height_msl&timeformat=unixtime&past_days=1&forecast_days=7`;
+  let r; try{ r=await fetch(u); }catch(e){ return {error:"net"}; }
+  if(!r.ok) return {error:"bad"};
+  const j=await r.json(), H=j.hourly;
+  if(!H||!H.time||!H.sea_level_height_msl) return {error:"nodata"};
+  const levels=[];
+  for(let i=0;i<H.time.length;i++){ const v=H.sea_level_height_msl[i]; if(v!=null) levels.push({t:H.time[i]*1000,v}); }
+  if(!levels.length) return {error:"nodata"};
+  return {levels, extremes:deriveExtremes(levels)};
+}
+
+/* NOAA CO-OPS — no key, US coasts only. Snap to nearest tide-prediction station. */
+let noaaStations=null;
+async function noaaStationList(){
+  if(noaaStations) return noaaStations;
+  try{ const c=localStorage.getItem("noaa_stations"); if(c){ noaaStations=JSON.parse(c); return noaaStations; } }catch(e){}
+  let r; try{ r=await fetch("https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations.json?type=tidepredictions"); }
+  catch(e){ return null; }
+  if(!r.ok) return null;
+  const j=await r.json();
+  noaaStations=(j.stations||[]).map(s=>({id:s.id,name:s.name,lat:+s.lat,lng:+s.lng}));
+  try{ localStorage.setItem("noaa_stations",JSON.stringify(noaaStations)); }catch(e){}
+  return noaaStations;
+}
+function nearestStation(list,lat,lng){
+  let best=null,bd=1e18;
+  list.forEach(s=>{ const dx=s.lat-lat, dy=(s.lng-lng)*Math.cos(lat*Math.PI/180); const d=dx*dx+dy*dy; if(d<bd){bd=d;best=s;} });
+  return best?{station:best, km:Math.sqrt(bd)*111}:null;
+}
+function noaaDate(ms){ const d=new Date(ms), p=n=>String(n).padStart(2,"0"); return d.getUTCFullYear()+p(d.getUTCMonth()+1)+p(d.getUTCDate()); }
+async function fetchNOAA(lat,lng){
+  const list=await noaaStationList(); if(!list) return {error:"net"};
+  const near=nearestStation(list,lat,lng);
+  if(!near || near.km>150) return {error:"nostation"};
+  const st=near.station.id, nm=near.station.name;
+  const base=`https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?application=LiveTide`+
+    `&station=${st}&product=predictions&datum=MLLW&time_zone=gmt&units=metric&format=json`+
+    `&begin_date=${noaaDate(Date.now()-864e5)}&end_date=${noaaDate(Date.now()+7*864e5)}`;
+  const parse=t=>Date.parse(t.replace(" ","T")+"Z");
+  let hR,xR; try{ [hR,xR]=await Promise.all([fetch(base+"&interval=h"),fetch(base+"&interval=hilo")]); }
+  catch(e){ return {error:"net"}; }
+  let levels=[], extremes=[];
+  if(xR.ok){ const xj=await xR.json(); extremes=(xj.predictions||[]).map(p=>({t:parse(p.t),v:+p.v,type:p.type==="H"?"high":"low"})); }
+  if(hR.ok){ const hj=await hR.json(); levels=(hj.predictions||[]).map(p=>({t:parse(p.t),v:+p.v})); }
+  if(!levels.length && extremes.length) levels=extremes.map(x=>({t:x.t,v:x.v})); // subordinate stations: hi/lo only
+  if(!levels.length) return {error:"nodata"};
+  if(!extremes.length) extremes=deriveExtremes(levels);
+  return {levels,extremes,station:nm};
+}
+
 async function selectLocation(name,lat,lng,tz,force){
-  const cacheKey=ckey(lat,lng);
+  const prov=PROVIDERS[provider];
+  const cacheKey=provider+":"+ckey(lat,lng);   // cache is per-provider
   try{ localStorage.setItem(LAST_LS,JSON.stringify({name,lat,lng,tz})); }catch(e){}
 
   // 1) reuse cached data if it still covers the near future — zero api calls
   if(!force){
     const cached=readStore()[cacheKey];
     if(cacheValid(cached)){ current={...cached,name,tz}; startLive();
-      flash(`Using cached data (fetched ${ago(cached.fetchedAt)}) — no request used.`,"#1e7a45"); return; }
+      flash(`Using cached ${prov.name} data (${ago(cached.fetchedAt)}) — no request used.`,"#1e7a45"); return; }
   }
 
-  const key=getKey();
-  if(!key){
+  // providers that need a key: fall back to a demo curve if none entered
+  if(prov.key && !getKey()){
     current=buildDemo(name,lat,lng,tz); startLive();
-    flash("No API key — showing a demo tide curve. Add your key for live data.","#7a5a12"); return;
+    flash(`${prov.name} needs an API key — showing a demo curve. Add a key, or pick Open-Meteo (no key).`,"#7a5a12"); return;
   }
 
-  flash("Fetching a week of tide data from Stormglass (1 request)…","#274a68");
+  flash(`Fetching tide data from ${prov.name}…`,"#274a68");
   try{
-    const r=await fetchTides(lat,lng,key);
-    if(r.error==="key"){ flash("API key rejected (401/403). Check the key."); return; }
+    const r=await fetchTides(lat,lng);
+    if(r.error==="key"){ flash("Stormglass key rejected (401/403). Check the key."); return; }
+    if(r.error==="nokey"){ flash(`${prov.name} needs an API key.`,"#7a5a12"); return; }
+    if(r.error==="nostation"){ flash("NOAA has no tide station near here — it covers US coasts only. Try Open-Meteo for this spot.","#7a5a12"); return; }
     if(r.error==="limit"){
       const cached=readStore()[cacheKey];
       if(cached&&cached.levels&&cached.levels.length){ current={...cached,name,tz}; startLive();
         flash("Daily request limit reached — showing last cached data.","#7a5a12"); return; }
       flash("Stormglass daily request limit reached and nothing cached for here yet.","#7a5a12"); return;
     }
-    if(r.error){ flash("No tide data returned. Try a coastal location."); return; }
-    const levels=r.sl.data.map(d=>({t:new Date(d.time).getTime(), v:d.sg}));
-    const extremes=(r.ex.data||[]).map(d=>({t:new Date(d.time).getTime(), v:d.height, type:d.type}));
+    if(r.error){
+      const cached=readStore()[cacheKey];
+      if(cached&&cached.levels){ current={...cached,name,tz}; startLive(); flash("Couldn't reach the provider — showing cached data.","#7a5a12"); return; }
+      flash(`No tide data returned from ${prov.name}. Try another provider or a coastal spot.`); return;
+    }
+    const levels=r.levels, extremes=r.extremes||[];
     const vals=levels.map(l=>l.v);
-    const entry={name,lat,lng,tz,levels,extremes,min:Math.min(...vals),max:Math.max(...vals),demo:false,fetchedAt:Date.now()};
+    const entry={name,lat,lng,tz,levels,extremes,min:Math.min(...vals),max:Math.max(...vals),
+      demo:false,provider,station:r.station||null,fetchedAt:Date.now()};
     writeEntry(cacheKey,entry);
-    current=entry; startLive(); flash("Live data loaded and cached for a week.","#1e7a45");
+    current=entry; startLive();
+    flash(`Live ${prov.name} data loaded${r.station?" · "+r.station:""} and cached.`,"#1e7a45");
   }catch(e){
     const cached=readStore()[cacheKey];
     if(cached&&cached.levels){ current={...cached,name,tz}; startLive(); flash("Network issue — showing cached data.","#7a5a12"); return; }
-    flash("Network error contacting Stormglass. Is the key valid and online?");
+    flash(`Network error contacting ${prov.name}.`);
   }
 }
 
@@ -441,7 +599,7 @@ async function selectLocation(name,lat,lng,tz,force){
 function restoreLast(){
   let last; try{ last=JSON.parse(localStorage.getItem(LAST_LS)); }catch(e){}
   if(!last) return;
-  const cached=readStore()[ckey(last.lat,last.lng)];
+  const cached=readStore()[provider+":"+ckey(last.lat,last.lng)];
   if(cacheValid(cached)){ current={...cached,name:last.name,tz:last.tz}; startLive();
     flash(`Restored ${last.name} from cache (${ago(cached.fetchedAt)}) — no request used.`,"#1e7a45"); }
 }
@@ -534,7 +692,9 @@ function tick(){
   $("stClock").textContent="Local time: "+
     (()=>{try{return new Intl.DateTimeFormat([],{hour:"2-digit",minute:"2-digit",second:"2-digit",timeZone:current.tz||undefined}).format(new Date());}
     catch(e){return new Date().toLocaleTimeString();}})();
-  $("stData").textContent=current.demo?"synthetic data":"Stormglass · live sea level";
+  $("stData").textContent=current.demo?"synthetic data":
+    ((PROVIDERS[current.provider]&&PROVIDERS[current.provider].detail)||"live sea level")
+    +(current.station?" · "+current.station:"");
   if(!$("liveUI").classList.contains("hide")) drawChart();
 
   // refetch only when we've actually run past the cached week
@@ -780,6 +940,7 @@ $("useSpot").onclick=()=>{
 
 loadKey();
 loadAppearance();
+renderProviders();
 renderChips();
 restoreLast();
 </script>
