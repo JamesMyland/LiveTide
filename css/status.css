@@ -35,3 +35,13 @@ input[type=range]{width:120px;padding:0;border:0}
 .flipbtn{border:1px solid #bcd6ea;background:#fff;color:#1f4c72;border-radius:8px;
   padding:7px 12px;font-size:13px;font-weight:700;cursor:pointer}
 .flipbtn.on{background:var(--sea1);color:#fff;border-color:transparent}
+
+/* Display controls: full on desktop; collapsed behind a toggle on mobile so
+   they don't overlap the tide curve. */
+.appear-toggle{display:none;border:1px solid #bcd6ea;background:#fff;color:#1f4c72;
+  border-radius:999px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer}
+@media (max-width:640px){
+  .appear-toggle{display:block}
+  #appear .arow{display:none;margin-top:10px}
+  #appear.open .arow{display:flex}
+}

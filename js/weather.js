@@ -70,7 +70,9 @@ export function renderWeather() {
     cells = t.map((ts, i) => {
       const day = new Intl.DateTimeFormat([], { weekday: "short", timeZone: j.timezone || undefined }).format(new Date(ts * 1000));
       const dir = d.wind_direction_10m_dominant ? d.wind_direction_10m_dominant[i] : 0;
-      return cell(day, `${Math.round(d.temperature_2m_max[i])}°/${Math.round(d.temperature_2m_min[i])}°`, dir, Math.round(d.wind_speed_10m_max[i]));
+      const temp = `<span class="wx-hi">${Math.round(d.temperature_2m_max[i])}°</span>` +
+                   `<span class="wx-lo">${Math.round(d.temperature_2m_min[i])}°</span>`;
+      return cell(day, temp, dir, Math.round(d.wind_speed_10m_max[i]));
     }).join("");
   } else {
     const h = j.hourly || {}, ht = h.time || [], [t0] = dayWindow();
