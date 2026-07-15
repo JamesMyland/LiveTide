@@ -24,3 +24,13 @@ input{width:100%;padding:11px 13px;border:1px solid #c7d9e8;border-radius:10px;
   font-size:15px;outline:none;background:#fff}
 input:focus{border-color:var(--sea1);box-shadow:0 0 0 3px rgba(42,127,196,.18)}
 .link{background:none;border:0;color:#1f6bb0;font-size:12px;cursor:pointer;text-decoration:underline;padding:0}
+
+@media (max-width:640px){
+  /* Dynamic viewport units avoid the mobile browser toolbar covering the UI. */
+  #ui{
+    height:100dvh;
+    overflow-y:auto;
+    overscroll-behavior:contain;
+    padding:12px 12px calc(16px + env(safe-area-inset-bottom));
+  }
+}

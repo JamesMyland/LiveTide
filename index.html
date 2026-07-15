@@ -104,7 +104,8 @@
 
       <div id="diveCard" class="card">
         <div class="chartHead">
-          <span class="dive-title-tools"><span class="chartTitle">Dive sites nearby</span>
+          <span class="dive-title-tools">
+            <span class="poi-collapsed-title">Points of interest</span>
             <button type="button" class="filter-toggle" id="diveFiltersToggle" aria-expanded="false" aria-controls="diveFiltersBody" title="Show map layers">☷ <span>Map layers</span></button>
           </span>
           <span class="head-right">
@@ -126,6 +127,9 @@
           </div>
         </div>
         <div id="diveMap"></div>
+        <div class="dive-results-head" id="diveResultsHead" hidden>
+          <span class="chartTitle" id="diveResultsTitle">Dive sites nearby</span>
+        </div>
         <div id="diveList"></div>
       </div>
 
@@ -150,6 +154,14 @@
 
   <div id="diveModal" class="modal" hidden>
     <div class="modal-box">
+      <button type="button" class="modal-share" id="modalShare" aria-label="Share this card" title="Share">&#8599;</button>
+      <div class="share-menu" id="shareMenu" hidden>
+        <button type="button" data-share-method="device">Share via device</button>
+        <a data-share-method="whatsapp" target="_blank" rel="noopener">WhatsApp</a>
+        <a data-share-method="email">Email</a>
+        <a data-share-method="messenger">Messenger</a>
+        <button type="button" data-share-method="copy">Copy link</button>
+      </div>
       <button type="button" class="modal-close" id="modalClose" aria-label="Close">✕</button>
       <h2 class="modal-title"><span id="modalTitle"></span><span class="modal-country" id="modalCountry"></span></h2>
       <div class="modal-body" id="modalBody"></div>
