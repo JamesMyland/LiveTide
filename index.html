@@ -6,6 +6,9 @@
 <title>Live Tide</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js"></script>
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/scene.css">
 <link rel="stylesheet" href="css/picker.css">
@@ -45,16 +48,6 @@
       </div>
       <div class="chips" id="chips"></div>
 
-      <label style="margin-top:14px">Dive sites (optional)</label>
-      <div class="keyrow">
-        <input id="diveKey" type="password" placeholder="divemap.gr API token (optional)" autocomplete="off">
-        <button id="diveSave">Save</button>
-      </div>
-      <div class="dive-note">Rich dive data from
-        <a href="https://divemap.gr/" target="_blank" rel="noopener">divemap.gr</a>,
-        falling back to free OpenStreetMap. A token isn't required to read data, but adding
-        your divemap.gr token raises rate limits.</div>
-
       <button class="link" id="mapToggle" style="margin-top:12px">📍 …or drop a pin on a map</button>
       <div id="mapWrap">
         <div id="map"></div>
@@ -75,19 +68,19 @@
             <span class="level" id="stLevel">–</span>
             <span class="unit">m</span>
             <span class="trend" id="stTrend"></span>
+            <span class="clock" id="stPeak"></span>
           </div>
-          <div class="clock" id="stPeak" style="margin-top:0;margin-bottom:8px"></div>
           <div class="grid">
             <div class="box"><div class="k">Next high</div><div class="v" id="stHigh">—</div></div>
             <div class="box"><div class="k">Next low</div><div class="v" id="stLow">—</div></div>
           </div>
-          <div class="clock" id="stClock"></div>
           <div class="footrow">
             <div>
               <button class="link" id="changeLoc">change location</button>
               &nbsp;·&nbsp;
               <button class="link" id="refreshData">refresh now</button>
             </div>
+            <span class="clock" id="stClock"></span>
             <span class="clock" id="stData"></span>
           </div>
         </div>
@@ -111,11 +104,26 @@
 
       <div id="diveCard" class="card">
         <div class="chartHead">
-          <span class="chartTitle">Dive sites nearby</span>
+          <span class="dive-title-tools"><span class="chartTitle">Dive sites nearby</span>
+            <button type="button" class="filter-toggle" id="diveFiltersToggle" aria-expanded="false" aria-controls="diveFiltersBody" title="Show map layers">☷ <span>Map layers</span></button>
+          </span>
           <span class="head-right">
             <span class="clock" id="diveSrc"></span>
+            <button type="button" class="map-fullscreen-btn" id="diveFullscreen" title="Open map fullscreen" aria-label="Open map fullscreen" aria-pressed="false">⛶</button>
             <button type="button" class="collapse-btn" data-card="diveCard" title="Collapse / expand">▾</button>
           </span>
+        </div>
+        <div class="dive-filters">
+          <div class="dive-filter-panel" id="diveFiltersBody" hidden>
+            <div class="map-layer-toggles" aria-label="Map layers">
+              <label class="wreck-toggle" title="Wrecks"><input type="checkbox" data-map-layer="wrecks" aria-label="Show wrecks"><span class="layer-symbol wreck">⚓</span></label>
+              <label class="wreck-toggle" title="Unknown objects"><input type="checkbox" data-map-layer="unknown" aria-label="Show unknown objects"><span class="layer-symbol unknown">?</span></label>
+              <label class="wreck-toggle" title="Launches"><input type="checkbox" data-map-layer="launch" aria-label="Show launches"><span class="layer-symbol launch">↘</span></label>
+              <label class="wreck-toggle" title="Tide stations"><input type="checkbox" data-map-layer="tide-station" aria-label="Show tide stations"><span class="layer-symbol tide">∿</span></label>
+              <label class="wreck-toggle" title="Lighthouses"><input type="checkbox" data-map-layer="lighthouse" aria-label="Show lighthouses"><span class="layer-symbol light">✦</span></label>
+              <label class="wreck-toggle" title="UK dive sites"><input type="checkbox" data-map-layer="sites" aria-label="Show UK dive sites"><span class="layer-symbol site">▽</span></label>
+            </div>
+          </div>
         </div>
         <div id="diveMap"></div>
         <div id="diveList"></div>
@@ -143,12 +151,19 @@
   <div id="diveModal" class="modal" hidden>
     <div class="modal-box">
       <button type="button" class="modal-close" id="modalClose" aria-label="Close">✕</button>
-      <h2 class="modal-title" id="modalTitle"></h2>
+      <h2 class="modal-title"><span id="modalTitle"></span><span class="modal-country" id="modalCountry"></span></h2>
       <div class="modal-body" id="modalBody"></div>
       <div class="modal-foot">
         <button type="button" class="pinbtn" id="modalMap">Dive map ↗</button>
         <button type="button" class="pinbtn" id="modalMore">Find out more ↗</button>
       </div>
+    </div>
+  </div>
+  <div id="mediaModal" class="media-modal" hidden role="dialog" aria-modal="true" aria-label="Media viewer">
+    <div class="media-modal-box">
+      <button type="button" class="media-modal-close" id="mediaModalClose" aria-label="Close media">✕</button>
+      <div class="media-modal-content" id="mediaModalContent"></div>
+      <a class="media-modal-original" id="mediaModalOriginal" target="_blank" rel="noopener">Open original ↗</a>
     </div>
   </div>
 </div>

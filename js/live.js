@@ -67,6 +67,7 @@ export function tick() {
 // Reveal the UI; re-hide after 4s idle (only while a location is live).
 export function poke() {
   const lu = $("liveUI"); lu.classList.remove("hide"); clearTimeout(S.idleTimer);
+  if (document.body.classList.contains("map-fullscreen-active")) return;
   if ($("status").style.display === "block") { drawChart(); S.idleTimer = setTimeout(() => lu.classList.add("hide"), 4000); }
 }
 
