@@ -6,16 +6,17 @@ import { PROVIDERS, PROV_LS, DEF_SEA, DEF_SAND, DEF_OP } from "./config.js";
 // No default provider — the user must choose one on first load.
 let p = localStorage.getItem(PROV_LS);
 if (p && !PROVIDERS[p]) p = null;
+if (!p) p = "openmeteo";
 
 export const S = {
   current: null,        // active location + tide dataset
-  provider: p || null,  // selected provider id (null until chosen)
+  provider: p,          // selected provider id, defaulting to Open-Meteo
 
   liveTimer: null,      // per-second tick interval
   idleTimer: null,      // auto-hide timeout
   searchTimer: null,    // geocoder debounce
+  locationRequestId: 0,// invalidates late tide responses when changing view/location
 
-  map: null, marker: null, picked: null,   // Leaflet pin picker
   noaaStations: null,                        // cached NOAA station list
 
   chartRange: "day",    // "day" | "week"
