@@ -1,24 +1,29 @@
-// "Dive sites nearby" layer.
-//   Primary: divemap.gr REST API (rich data — description, depth, difficulty).
-//            Reads are public; an optional token raises rate limits.
-//   Fallback: OpenStreetMap dive sites/centres via Overpass (free, no key).
+// Dive sites layer, powered by the divemap.gr REST API (open project; the user
+// supplies their own token). On load we poll the whole catalogue into a cached
+// dataset; picking a location plots nearby sites on a map and lists them;
+// clicking a site fetches its full record for a rich detail overlay. Filters by
+// difficulty / country / tag. Falls back to OpenStreetMap (Overpass) when the
+// divemap dataset is empty or unreachable (e.g. CORS blocked).
 
 import { S } from "./state.js";
 import { $ } from "./dom.js";
 
-const DIVE_KEY_LS    = "dive_api_key";        // divemap.gr token (optional)
-const OSM_CACHE_LS   = "dive_osm_cache_v1";   // per-location Overpass results
-const DM_CACHE_LS    = "dive_divemap_cache";  // per-country divemap results
-const COUNTRY_LS     = "dive_country_cache";  // reverse-geocoded country per coord
-const TTL = 24 * 3600e3;                      // dive sites change rarely
-const RADIUS_KM = 30;                         // Overpass search radius
+const TOKEN_LS   = "dive_api_key";          // divemap.gr token (optional)
+const DATA_LS    = "dive_gr_dataset_v1";    // cached full catalogue
+const OSM_LS     = "dive_osm_cache_v1";     // per-location Overpass fallback
+const TTL        = 24 * 3600e3;
+const BASE       = "https://divemap.gr/api/v1";
+const RADIUS_KM  = 90;                       // show dataset sites within this of the point
+const MAX_PAGES  = 60;                       // safety cap for the catalogue poll
 
-const DIVEMAP_BASE = "https://divemap.gr/api/v1";
-const DM_RADIUS_KM = 80;                      // keep divemap results within this of the point
+let dataset = [];                            // full divemap.gr catalogue
+const filters = { country: "", difficulty: "", tag: "" };
+let diveMap = null, diveLayer = null;
 
-const readLS  = k => { try { return JSON.parse(localStorage.getItem(k)) || {}; } catch (e) { return {}; } };
+const readLS  = k => { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } };
 const writeLS = (k, o) => { try { localStorage.setItem(k, JSON.stringify(o)); } catch (e) {} };
-const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const authHeaders = () => { const t = getDiveKey(); return t ? { Authorization: "Bearer " + t } : {}; };
 
 function km(aLat, aLng, bLat, bLng) {
   const R = 6371, toR = x => x * Math.PI / 180;
@@ -27,121 +32,106 @@ function km(aLat, aLng, bLat, bLng) {
   return 2 * R * Math.asin(Math.sqrt(s));
 }
 
-export function loadDiveKey() { const k = localStorage.getItem(DIVE_KEY_LS); if (k && $("diveKey")) $("diveKey").value = k; }
+export function loadDiveKey() { const k = localStorage.getItem(TOKEN_LS); if (k && $("diveKey")) $("diveKey").value = k; }
 export function getDiveKey() { const el = $("diveKey"); return (el && el.value || "").trim(); }
 
-/* Free default: OpenStreetMap dive sites / centres / shops via Overpass. */
-async function fetchOverpass(lat, lng) {
+/* ---- Catalogue: poll every page once, cache for a day ---- */
+export async function initDiveData() {
+  const cached = readLS(DATA_LS);
+  if (cached && cached.list && Date.now() - cached.fetchedAt < TTL) { dataset = cached.list; S.diveData = dataset; buildFilters(); return; }
+  const out = [];
+  let page = 1, totalPages = 1;
+  do {
+    let r;
+    try { r = await fetch(`${BASE}/dive-sites/?page=${page}&page_size=100`, { headers: authHeaders() }); }
+    catch (e) { return; }                    // network / CORS -> leave dataset empty, fall back to OSM
+    if (!r.ok) return;
+    let j; try { j = await r.json(); } catch (e) { return; }
+    (j.items || []).forEach(s => out.push(s));
+    totalPages = j.total_pages || 1;
+    page++;
+  } while (page <= totalPages && page <= MAX_PAGES);
+  dataset = out; S.diveData = out;
+  writeLS(DATA_LS, { list: out, fetchedAt: Date.now() });
+  buildFilters();
+  if (S.current && $("status").style.display === "block") loadDives();  // refresh if already live
+}
+
+function buildFilters() {
+  const countries = [...new Set(dataset.map(s => s.country).filter(Boolean))].sort();
+  const diffs = [...new Set(dataset.map(s => s.difficulty_code).filter(Boolean))];
+  const tags = {};
+  dataset.forEach(s => (s.tags || []).forEach(t => { if (t && t.id != null) tags[t.id] = t.name; }));
+  const opt = (v, label, sel) => `<option value="${esc(v)}"${sel ? " selected" : ""}>${esc(label)}</option>`;
+  if ($("dfCountry")) $("dfCountry").innerHTML = opt("", "All countries") + countries.map(c => opt(c, c, c === filters.country)).join("");
+  if ($("dfDiff")) $("dfDiff").innerHTML = opt("", "All levels") + diffs.map(d => opt(d, difficultyLabel(d), d === filters.difficulty)).join("");
+  if ($("dfTag")) $("dfTag").innerHTML = opt("", "All tags") + Object.entries(tags).sort((a, b) => a[1].localeCompare(b[1])).map(([id, n]) => opt(id, n, id === filters.tag)).join("");
+}
+const difficultyLabel = code => ({ OPEN_WATER: "Open Water", ADVANCED_OPEN_WATER: "Advanced", DEEP_NITROX: "Deep / Nitrox", TECHNICAL_DIVING: "Technical" }[code] || code);
+
+function nearbyFiltered(lat, lng) {
+  return dataset.filter(s => {
+    if (filters.country && s.country !== filters.country) return false;
+    if (filters.difficulty && s.difficulty_code !== filters.difficulty) return false;
+    if (filters.tag && !(s.tags || []).some(t => String(t.id) === filters.tag)) return false;
+    const la = +s.latitude, lo = +s.longitude;
+    return !isNaN(la) && !isNaN(lo) && km(lat, lng, la, lo) <= RADIUS_KM;
+  });
+}
+
+/* ---- OpenStreetMap fallback (free, no key) ---- */
+async function overpass(lat, lng) {
+  const key = `${lat.toFixed(2)},${lng.toFixed(2)}`;
+  const store = readLS(OSM_LS) || {};
+  if (store[key] && Date.now() - store[key].fetchedAt < TTL) return store[key].list;
   const r_m = RADIUS_KM * 1000;
-  const q = `[out:json][timeout:25];(` +
-    `node["sport"="scuba_diving"](around:${r_m},${lat},${lng});` +
-    `node["amenity"="dive_centre"](around:${r_m},${lat},${lng});` +
-    `node["shop"="scuba_diving"](around:${r_m},${lat},${lng});` +
-    `);out center 80;`;
+  const q = `[out:json][timeout:25];(node["sport"="scuba_diving"](around:${r_m},${lat},${lng});node["amenity"="dive_centre"](around:${r_m},${lat},${lng}););out center 80;`;
   let r;
   try { r = await fetch("https://overpass-api.de/api/interpreter", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: "data=" + encodeURIComponent(q) }); }
-  catch (e) { return null; }
-  if (!r.ok) return null;
-  let j; try { j = await r.json(); } catch (e) { return null; }
-  return (j.elements || []).map(e => {
-    const la = e.lat != null ? e.lat : (e.center && e.center.lat);
-    const lo = e.lon != null ? e.lon : (e.center && e.center.lon);
+  catch (e) { return []; }
+  if (!r.ok) return [];
+  let j; try { j = await r.json(); } catch (e) { return []; }
+  const list = (j.elements || []).map(e => {
     const t = e.tags || {};
-    const kind = t.amenity === "dive_centre" ? "centre" : (t.shop === "scuba_diving" ? "shop" : (t["scuba_diving:type"] || "site"));
-    return { name: t.name || (kind === "centre" ? "Dive centre" : kind === "shop" ? "Dive shop" : "Dive site"), type: kind, lat: la, lng: lo, desc: t.description || t.note || "", source: "OpenStreetMap" };
-  }).filter(d => d.lat != null && d.lng != null);
-}
-async function overpassCached(lat, lng) {
-  const key = `${lat.toFixed(2)},${lng.toFixed(2)}`;
-  const store = readLS(OSM_CACHE_LS); const hit = store[key];
-  if (hit && Date.now() - hit.fetchedAt < TTL) return hit.sites;
-  const sites = await fetchOverpass(lat, lng);
-  if (sites) { store[key] = { sites, fetchedAt: Date.now() }; writeLS(OSM_CACHE_LS, store); }
-  return sites;
+    return { id: "osm" + e.id, name: t.name || "Dive site", latitude: e.lat, longitude: e.lon, description: t.description || t.note || "", country: "", difficulty_code: "", tags: [], _osm: true };
+  }).filter(d => d.latitude != null);
+  store[key] = { list, fetchedAt: Date.now() }; writeLS(OSM_LS, store);
+  return list;
 }
 
-/* divemap.gr has no lat/lng filter, so we query by country and distance-filter
-   locally. Country comes from a (cached) reverse-geocode of the point. */
-async function countryFor(lat, lng) {
-  const store = readLS(COUNTRY_LS), ck = `${lat.toFixed(1)},${lng.toFixed(1)}`;
-  if (store[ck]) return store[ck];
-  try {
-    const r = await fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lng}&localityLanguage=en`);
-    if (!r.ok) return null;
-    const j = await r.json();
-    if (j.countryName) { store[ck] = j.countryName; writeLS(COUNTRY_LS, store); }
-    return j.countryName || null;
-  } catch (e) { return null; }
-}
-
-/* Primary: divemap.gr. Rich fields (description, max_depth, difficulty). Reads
-   are public; a token (Bearer) is sent when provided. Cached per country. */
-async function fetchDivemap(lat, lng, token) {
-  const country = await countryFor(lat, lng);
-  if (!country) return null;
-  const store = readLS(DM_CACHE_LS); const hit = store[country];
-  let all;
-  if (hit && Date.now() - hit.fetchedAt < TTL) {
-    all = hit.list;
-  } else {
-    all = [];
-    const headers = token ? { Authorization: "Bearer " + token } : {};
-    for (let page = 1; page <= 8; page++) {   // cap pages so a huge country can't run away
-      let r;
-      try { r = await fetch(`${DIVEMAP_BASE}/dive-sites/?country=${encodeURIComponent(country)}&page=${page}&page_size=100`, { headers }); }
-      catch (e) { return null; }             // network/CORS -> fall back to Overpass
-      if (!r.ok) return null;
-      let j; try { j = await r.json(); } catch (e) { return null; }
-      (j.items || []).forEach(s => {
-        const bits = [];
-        if (s.max_depth) bits.push(`Max depth ${s.max_depth} m`);
-        if (s.difficulty_label) bits.push(s.difficulty_label);
-        const meta = bits.join(" · ");
-        all.push({
-          name: s.name || "Dive site",
-          type: s.difficulty_label || "site",
-          lat: +s.latitude, lng: +s.longitude,
-          desc: (meta ? meta + "\n\n" : "") + (s.description || ""),
-          source: "divemap.gr",
-        });
-      });
-      if (!j.has_next_page) break;
-    }
-    all = all.filter(d => !isNaN(d.lat) && !isNaN(d.lng));
-    store[country] = { list: all, fetchedAt: Date.now() }; writeLS(DM_CACHE_LS, store);
-  }
-  const near = all.filter(d => km(lat, lng, d.lat, d.lng) <= DM_RADIUS_KM);
-  return near.length ? near : null;
-}
-
+/* ---- Render list + map for the current location ---- */
 export async function loadDives() {
   const c = S.current; if (!c || !$("diveCard")) return;
-  let sites = await fetchDivemap(c.lat, c.lng, getDiveKey());   // rich primary
-  if (!sites || !sites.length) sites = await overpassCached(c.lat, c.lng);   // free fallback
-  S.dives = sites || [];
-  renderDives();
+  let sites = nearbyFiltered(c.lat, c.lng);
+  let source = "divemap.gr";
+  if (!sites.length) { sites = await overpass(c.lat, c.lng); source = "OpenStreetMap"; }
+  S.dives = sites;
+  renderDives(source);
 }
 
-function renderDives() {
+function renderDives(source) {
   const card = $("diveCard"); if (!card) return;
   const c = S.current, list = S.dives || [];
-  if (!c || !list.length) { card.style.display = "none"; return; }
-  const near = list.map(d => ({ ...d, km: km(c.lat, c.lng, d.lat, d.lng) })).sort((a, b) => a.km - b.km).slice(0, 8);
   card.style.display = "block";
-  $("diveList").innerHTML = near.map(d => {
-    const dist = d.km < 1 ? Math.round(d.km * 1000) + " m" : d.km.toFixed(1) + " km";
-    return `<div class="dive-row">` +
-      `<button type="button" class="dive-name" data-name="${esc(d.name)}" data-desc="${esc(d.desc || "")}" data-q="${esc(d.name + " dive site")}" data-lat="${d.lat}" data-lng="${d.lng}">${esc(d.name)}</button>` +
-      `<span class="dive-km">${dist}</span>` +
-      `<button type="button" class="dive-search" title="Search Google" data-search="${esc(d.name + " dive site")}">🔍</button>` +
-    `</div>`;
-  }).join("");
-  $("diveSrc").textContent = near[0].source;
-  renderDiveMap(near);
+  const near = list.map(s => ({ s, km: km(c.lat, c.lng, +s.latitude, +s.longitude) })).sort((a, b) => a.km - b.km).slice(0, 12);
+  if (!near.length) {
+    $("diveList").innerHTML = `<div class="dive-empty">No dive sites found near here.</div>`;
+    $("diveSrc").textContent = "";
+  } else {
+    $("diveList").innerHTML = near.map(({ s, km }) => {
+      const dist = km < 1 ? Math.round(km * 1000) + " m" : km.toFixed(1) + " km";
+      return `<div class="dive-row">` +
+        `<button type="button" class="dive-name" data-id="${esc(s.id)}">${esc(s.name)}</button>` +
+        `<span class="dive-km">${dist}</span>` +
+        `<button type="button" class="dive-search" title="Search Google" data-q="${esc(s.name + " dive site")}">🔍</button>` +
+      `</div>`;
+    }).join("");
+    $("diveSrc").textContent = source;
+  }
+  renderDiveMap(near.map(n => n.s));
 }
 
-let diveMap = null, diveLayer = null;
-function renderDiveMap(near) {
+function renderDiveMap(sites) {
   const el = $("diveMap"); if (!el || typeof L === "undefined") return;
   const c = S.current;
   if (!diveMap) {
@@ -150,53 +140,84 @@ function renderDiveMap(near) {
     diveLayer = L.layerGroup().addTo(diveMap);
   }
   diveLayer.clearLayers();
-  L.circleMarker([c.lat, c.lng], { radius: 6, color: "#e2554a", fillColor: "#e2554a", fillOpacity: .9, weight: 2 })
-    .bindTooltip(c.name).addTo(diveLayer);
+  L.circleMarker([c.lat, c.lng], { radius: 6, color: "#e2554a", fillColor: "#e2554a", fillOpacity: .9, weight: 2 }).bindTooltip(c.name).addTo(diveLayer);
   const pts = [[c.lat, c.lng]];
-  near.forEach(d => {
-    L.circleMarker([d.lat, d.lng], { radius: 5, color: "#0b3d6b", fillColor: "#2a7fc4", fillOpacity: .85, weight: 1.5 })
-      .bindTooltip(d.name)
-      .on("click", () => openModal(d.name, d.desc, d.name + " dive site", d.lat, d.lng))
-      .addTo(diveLayer);
-    pts.push([d.lat, d.lng]);
+  sites.forEach(s => {
+    const la = +s.latitude, lo = +s.longitude;
+    L.circleMarker([la, lo], { radius: 5, color: "#0b3d6b", fillColor: "#2a7fc4", fillOpacity: .85, weight: 1.5 })
+      .bindTooltip(s.name).on("click", () => openDetail(s)).addTo(diveLayer);
+    pts.push([la, lo]);
   });
-  setTimeout(() => {
-    diveMap.invalidateSize();
-    if (pts.length > 1) diveMap.fitBounds(pts, { padding: [25, 25], maxZoom: 12 });
-    else diveMap.setView([c.lat, c.lng], 11);
-  }, 60);
+  setTimeout(() => { diveMap.invalidateSize(); pts.length > 1 ? diveMap.fitBounds(pts, { padding: [25, 25], maxZoom: 12 }) : diveMap.setView([c.lat, c.lng], 11); }, 60);
 }
 
+/* ---- Rich detail overlay ---- */
 const googleSearch = q => window.open("https://www.google.com/search?q=" + encodeURIComponent(q || ""), "_blank", "noopener");
-// divemap.uk centres on latitude (Φ) / longitude (λ) query params
 const diveMapUrl = (lat, lng) => `https://divemap.uk/?${encodeURIComponent("Φ")}=${lat}&${encodeURIComponent("λ")}=${lng}&z=13`;
 
-function openModal(name, desc, q, lat, lng) {
-  $("modalTitle").textContent = name || "Dive site";
-  $("modalBody").textContent = (desc && desc.trim()) ? desc : "No description available for this site — use the links below to find out more.";
-  const m = $("diveModal");
-  m.dataset.q = q || name || ""; m.dataset.lat = lat || ""; m.dataset.lng = lng || "";
-  m.hidden = false;
+async function openDetail(site) {
+  renderModal(site);                         // show summary immediately
+  const m = $("diveModal"); m.hidden = false;
+  if (site._osm || site.id == null) return;
+  try {
+    const r = await fetch(`${BASE}/dive-sites/${site.id}`, { headers: authHeaders() });
+    if (r.ok) renderModal(await r.json());
+  } catch (e) {}
 }
-function closeModal() { $("diveModal").hidden = true; }
 
+function section(title, body) { return body ? `<div class="dv-sec"><h3>${esc(title)}</h3><p>${esc(body)}</p></div>` : ""; }
+
+function renderModal(s) {
+  const m = $("diveModal");
+  m.dataset.q = (s.name || "") + " dive site";
+  m.dataset.lat = s.latitude || ""; m.dataset.lng = s.longitude || "";
+  $("modalTitle").textContent = s.name || "Dive site";
+  const aliases = (s.aliases || []).map(a => typeof a === "string" ? a : a.alias).filter(Boolean);
+  const tags = (s.tags || []).map(t => typeof t === "string" ? t : t.name).filter(Boolean);
+  const chips = arr => arr.map(t => `<span class="dv-chip">${esc(t)}</span>`).join("");
+  const stat = (l, v) => v ? `<div class="dv-stat"><span>${esc(l)}</span><b>${esc(v)}</b></div>` : "";
+  const rating = s.average_rating ? `${(+s.average_rating).toFixed(1)}/10${s.total_ratings ? ` (${s.total_ratings})` : ""}` : "";
+  const comments = (s.comments || []).map(c =>
+    `<div class="dv-comment"><b>${esc((c.user && c.user.username) || "diver")}</b>${c.user && c.user.diving_certification ? ` · <span class="dv-cert">${esc(c.user.diving_certification)}</span>` : ""}<p>${esc(c.content)}</p></div>`).join("");
+
+  $("modalBody").innerHTML =
+    (aliases.length ? `<div class="dv-alias">a.k.a. ${esc(aliases.join(", "))}</div>` : "") +
+    `<div class="dv-meta">${[s.region, s.country].filter(Boolean).map(esc).join(", ")}</div>` +
+    (s.thumbnail ? `<img class="dv-thumb" src="${esc(s.thumbnail)}" alt="" referrerpolicy="no-referrer">` : "") +
+    `<div class="dv-stats">` +
+      stat("Max depth", s.max_depth ? s.max_depth + " m" : "") +
+      stat("Difficulty", s.difficulty_label || difficultyLabel(s.difficulty_code)) +
+      stat("Rating", rating) +
+      stat("Shore dir.", s.shore_direction ? Math.round(s.shore_direction) + "°" : "") +
+    `</div>` +
+    (tags.length ? `<div class="dv-chips">${chips(tags)}</div>` : "") +
+    section("Description", s.description) +
+    section("Marine life", s.marine_life) +
+    section("Access", s.access_instructions) +
+    section("Safety", s.safety_information) +
+    (comments ? `<div class="dv-sec"><h3>Reviews</h3>${comments}</div>` : "");
+}
+
+/* ---- Wiring ---- */
 export function initDive() {
   $("diveSave").onclick = () => {
     const k = getDiveKey();
-    if (k) localStorage.setItem(DIVE_KEY_LS, k); else localStorage.removeItem(DIVE_KEY_LS);
-    if (S.current && $("status").style.display === "block") loadDives();
+    if (k) localStorage.setItem(TOKEN_LS, k); else localStorage.removeItem(TOKEN_LS);
+    localStorage.removeItem(DATA_LS);          // token change -> refresh catalogue
+    initDiveData();
   };
-  // click a name to open the reader modal; the 🔍 button does a quick web search
+  ["dfCountry", "dfDiff", "dfTag"].forEach(id => { const el = $(id); if (el) el.onchange = () => { filters.country = $("dfCountry").value; filters.difficulty = $("dfDiff").value; filters.tag = $("dfTag").value; loadDives(); }; });
+
   $("diveList").addEventListener("click", e => {
-    const s = e.target.closest(".dive-search");
-    if (s) { googleSearch(s.getAttribute("data-search")); return; }
+    const sb = e.target.closest(".dive-search");
+    if (sb) { googleSearch(sb.getAttribute("data-q")); return; }
     const n = e.target.closest(".dive-name");
-    if (n) openModal(n.getAttribute("data-name"), n.getAttribute("data-desc"), n.getAttribute("data-q"), n.getAttribute("data-lat"), n.getAttribute("data-lng"));
+    if (n) { const site = (S.dives || []).find(s => String(s.id) === n.getAttribute("data-id")); if (site) openDetail(site); }
   });
-  // modal controls
-  $("modalClose").onclick = closeModal;
+
+  $("modalClose").onclick = () => { $("diveModal").hidden = true; };
   $("modalMore").onclick = () => googleSearch($("diveModal").dataset.q);
   $("modalMap").onclick = () => { const m = $("diveModal"); if (m.dataset.lat && m.dataset.lng) window.open(diveMapUrl(m.dataset.lat, m.dataset.lng), "_blank", "noopener"); };
-  $("diveModal").addEventListener("click", e => { if (e.target.id === "diveModal") closeModal(); });
-  document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+  $("diveModal").addEventListener("click", e => { if (e.target.id === "diveModal") $("diveModal").hidden = true; });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") $("diveModal").hidden = true; });
 }

@@ -6,7 +6,7 @@ import { initLive } from "./live.js";
 import { initChart } from "./chart.js";
 import { initAppearance, loadAppearance } from "./appearance.js";
 import { initMapPicker } from "./map.js";
-import { initDive, loadDiveKey } from "./dive.js";
+import { initDive, loadDiveKey, initDiveData } from "./dive.js";
 import { initCollapse } from "./collapse.js";
 import { renderProviders } from "./providerPicker.js";
 import { renderChips, restoreLast } from "./locations.js";
@@ -26,6 +26,7 @@ initCollapse();
 // restore persisted state
 loadKey();
 loadDiveKey();
+initDiveData();          // poll the divemap.gr catalogue once (cached)
 loadAppearance();
 renderProviders();
 renderChips();

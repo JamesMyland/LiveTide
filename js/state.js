@@ -23,6 +23,7 @@ export const S = {
 
   weather: null,        // Open-Meteo forecast payload (rendered under the chart, same range)
   dives: [],            // nearby dive sites for the active location
+  diveData: [],         // full divemap.gr dataset (polled once, cached)
 
   appear: { sea: DEF_SEA, sand: DEF_SAND, op: DEF_OP, flip: false, angle: 0, auto: false },
 };
