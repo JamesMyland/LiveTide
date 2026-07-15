@@ -54,11 +54,13 @@ export function initAppearance() {
   $("rotRight").onclick = () => rotateBy(90);
   $("autoBtn").onclick = () => { S.appear.auto = !S.appear.auto; applyAppearance(); saveAppearance(); };
 
-  // Display controls collapse behind a toggle on mobile (closed by default)
-  $("appearToggle").onclick = () => {
-    const open = $("appear").classList.toggle("open");
+  // Settings collapse behind a compact toggle (closed by default).
+  const setSettingsOpen = open => {
+    $("appear").classList.toggle("open", open);
     try { localStorage.setItem("tide_appear_open", open ? "1" : "0"); } catch (e) {}
   };
+  $("appearToggle").onclick = () => setSettingsOpen(!$("appear").classList.contains("open"));
+  $("appearClose").onclick = () => setSettingsOpen(false);
   try { if (localStorage.getItem("tide_appear_open") === "1") $("appear").classList.add("open"); } catch (e) {}
   try { portraitMQ.addEventListener("change", () => { if (S.appear.auto) applyAppearance(); }); }
   catch (e) { portraitMQ.addListener(() => { if (S.appear.auto) applyAppearance(); }); }

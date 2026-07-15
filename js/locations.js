@@ -31,6 +31,7 @@ export function buildDemo(name, lat, lng, tz) {
 
 export async function selectLocation(name, lat, lng, tz, force) {
   if (!S.provider) { flash("Choose a tide data provider first.", "#7a5a12"); openProviderPicker(); return; }
+  const requestId = ++S.locationRequestId;
   const prov = PROVIDERS[S.provider];
   const cacheKey = S.provider + ":" + ckey(lat, lng);   // cache is per-provider
   try { localStorage.setItem(LAST_LS, JSON.stringify({ name, lat, lng, tz })); } catch (e) {}
@@ -53,6 +54,7 @@ export async function selectLocation(name, lat, lng, tz, force) {
   flash(`Fetching tide data from ${prov.name}…`, "#274a68");
   try {
     const r = await fetchTides(lat, lng);
+    if (requestId !== S.locationRequestId) return;
     if (r.error === "key")       { flash("Stormglass key rejected (401/403). Check the key."); return; }
     if (r.error === "nokey")     { flash(`${prov.name} needs an API key.`, "#7a5a12"); return; }
     if (r.error === "nostation") { flash("NOAA has no tide station near here — it covers US coasts only. Try Open-Meteo for this spot.", "#7a5a12"); return; }
@@ -78,6 +80,7 @@ export async function selectLocation(name, lat, lng, tz, force) {
     S.current = entry; startLive();
     flash(`Live ${prov.name} data loaded${r.station ? " · " + r.station : ""} and cached.`, "#1e7a45");
   } catch (e) {
+    if (requestId !== S.locationRequestId) return;
     const cached = readStore()[cacheKey];
     if (cached && cached.levels) { S.current = { ...cached, name, tz }; startLive(); flash("Network issue — showing cached data.", "#7a5a12"); return; }
     flash(`Network error contacting ${prov.name}.`);
@@ -104,25 +107,25 @@ function writeSaved(a) { try { localStorage.setItem(SAVED_LS, JSON.stringify(a))
 export function addSaved(name, lat, lng, tz) {
   const k = keyOf(lat, lng);
   if (PRESETS.some(p => keyOf(p.lat, p.lng) === k)) return;   // already a preset
-  const arr = readSaved();
-  if (arr.some(s => keyOf(s.lat, s.lng) === k)) return;       // already saved
-  arr.push({ name, lat, lng, tz }); writeSaved(arr); renderChips();
+  const arr = readSaved().filter(s => keyOf(s.lat, s.lng) !== k);
+  arr.unshift({ name, lat, lng, tz }); writeSaved(arr.slice(0, 12)); renderChips();
 }
 function removeSaved(lat, lng) {
   writeSaved(readSaved().filter(s => keyOf(s.lat, s.lng) !== keyOf(lat, lng))); renderChips();
 }
 
 export function renderChips() {
-  const c = $("chips"); c.innerHTML = "";
-  [...PRESETS.map(p => ({ ...p, preset: true })), ...readSaved()].forEach(p => {
-    const chip = document.createElement("div"); chip.className = "chip"; chip.textContent = p.name;
-    chip.onclick = () => selectLocation(p.name, p.lat, p.lng, p.tz);
-    if (!p.preset) {
-      const x = document.createElement("span"); x.textContent = " ✕";
-      x.style.cssText = "opacity:.55;margin-left:4px";
-      x.onclick = e => { e.stopPropagation(); removeSaved(p.lat, p.lng); };
-      chip.appendChild(x);
-    }
-    c.appendChild(chip);
+  const select = $("locationHistory"); if (!select) return;
+  const places = [...PRESETS.map(p => ({ ...p, preset: true })), ...readSaved()].slice(0, 12);
+  select.innerHTML = `<option value="">Previous locations</option>`;
+  places.forEach((place, index) => {
+    const option = document.createElement("option"); option.value = String(index); option.textContent = place.name; select.appendChild(option);
   });
+  select.hidden = !places.length;
+  select.onchange = () => {
+    if (!select.value) return;
+    const place = places[+select.value];
+    if (place) { $("search").value = place.name; selectLocation(place.name, place.lat, place.lng, place.tz); }
+    select.value = "";
+  };
 }

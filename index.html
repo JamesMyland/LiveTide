@@ -11,9 +11,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js"></script>
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/scene.css">
-<link rel="stylesheet" href="css/picker.css">
-<link rel="stylesheet" href="css/status.css">
-<link rel="stylesheet" href="css/chart.css">
+<link rel="stylesheet" href="css/picker.css?v=20260715-favourites4">
+<link rel="stylesheet" href="css/status.css?v=20260715-location1">
+<link rel="stylesheet" href="css/chart.css?v=20260715-layers5">
 </head>
 <body>
 <div id="app">
@@ -27,33 +27,29 @@
   <div id="ui">
     <div class="card" id="picker">
       <h1>Live Tide <span id="demoBadge" class="demo-badge" style="display:none">demo data</span></h1>
-      <p class="sub">Choose a data provider, then search any coastal place or drop a map pin. The background is the live sea level — blue sea rising over yellow sand.</p>
+      <p class="sub">Search a coastal place, wreck, or dive site. The background shows the live sea level.</p>
 
-      <label>Tide data provider</label>
-      <div class="providers" id="providers"></div>
-
-      <div id="keyBlock" style="display:none">
-        <label>Stormglass API key</label>
-        <div class="keyrow">
-          <input id="key" type="password" placeholder="Paste your Stormglass API key" autocomplete="off">
-          <button id="saveKey">Save</button>
-        </div>
-        <button class="link" id="forgetKey" style="margin-top:6px;display:none">forget saved key</button>
-      </div>
-
-      <label>Location</label>
+      <label>Coastal location</label>
       <div class="results">
         <input id="search" type="text" placeholder="Type a place, e.g. Brighton, San Francisco…" autocomplete="off">
         <div class="dropdown" id="dropdown" style="display:none"></div>
       </div>
-      <div class="chips" id="chips"></div>
+      <select class="search-history" id="locationHistory" aria-label="Previous coastal locations" hidden>
+        <option value="">Previous locations</option>
+      </select>
 
-      <button class="link" id="mapToggle" style="margin-top:12px">📍 …or drop a pin on a map</button>
-      <div id="mapWrap">
-        <div id="map"></div>
-        <div id="mapHint">Click anywhere on the map to drop a pin.</div>
-        <button class="pinbtn" id="useSpot" disabled>Use this spot</button>
+      <label>Wreck or dive site</label>
+      <div class="results">
+        <input id="featureSearch" type="text" placeholder="Search by wreck or dive-site name" autocomplete="off">
+        <div class="dropdown" id="featureDropdown" style="display:none"></div>
       </div>
+      <select class="search-history" id="featureHistory" aria-label="Previous wreck and dive-site searches" hidden>
+        <option value="">Previous wrecks and dive sites</option>
+      </select>
+      <section class="picker-favourites" id="pickerFavourites">
+        <h2>Favourite dive sites</h2>
+        <div id="favouriteSites"><p class="favourites-empty">No favourites saved yet.</p></div>
+      </section>
 
       <div class="msg" id="msg"></div>
     </div>
@@ -76,9 +72,8 @@
           </div>
           <div class="footrow">
             <div>
-              <button class="link" id="changeLoc">change location</button>
-              &nbsp;·&nbsp;
-              <button class="link" id="refreshData">refresh now</button>
+              <button class="link change-location-btn" id="changeLoc"><span aria-hidden="true">⌖</span> Change location</button>
+              <span id="refreshControls">&nbsp;·&nbsp;<button class="link" id="refreshData">refresh now</button></span>
             </div>
             <span class="clock" id="stClock"></span>
             <span class="clock" id="stData"></span>
@@ -105,7 +100,7 @@
       <div id="diveCard" class="card">
         <div class="chartHead">
           <span class="dive-title-tools">
-            <span class="poi-collapsed-title">Points of interest</span>
+            <button type="button" class="poi-collapsed-title" data-collapse-target="diveCard">Points of interest</button>
             <button type="button" class="filter-toggle" id="diveFiltersToggle" aria-expanded="false" aria-controls="diveFiltersBody" title="Show map layers">☷ <span>Map layers</span></button>
           </span>
           <span class="head-right">
@@ -134,17 +129,32 @@
       </div>
 
       <div id="appear" class="card">
-        <button class="appear-toggle" id="appearToggle">⚙ Display</button>
+        <button class="appear-toggle" id="appearToggle">⚙ Settings</button>
+        <button type="button" class="appear-close" id="appearClose" aria-label="Close settings" title="Close settings">×</button>
         <div class="arow" id="appearBody">
-          <div class="actrl">Sea<input type="color" id="cSea"></div>
-          <div class="actrl">Sand<input type="color" id="cSand"></div>
-          <div class="actrl">Tide fade<input type="range" id="opTide" min="25" max="100" step="1"></div>
-          <div class="actrl">Layout
-            <div style="display:flex;gap:6px">
-              <button class="flipbtn" id="flipBtn">Flip</button>
-              <button class="flipbtn" id="rotLeft" title="Rotate left">‹</button>
-              <button class="flipbtn" id="rotRight" title="Rotate right">›</button>
-              <button class="flipbtn" id="autoBtn">Auto</button>
+          <div class="settings-provider">
+            <label>Tide data provider</label>
+            <div class="providers" id="providers"></div>
+            <div id="keyBlock" style="display:none">
+              <label>Stormglass API key</label>
+              <div class="keyrow">
+                <input id="key" type="password" placeholder="Paste your Stormglass API key" autocomplete="off">
+                <button id="saveKey">Save</button>
+              </div>
+              <button class="link" id="forgetKey" style="margin-top:6px;display:none">forget saved key</button>
+            </div>
+          </div>
+          <div class="settings-appearance">
+            <div class="actrl">Sea<input type="color" id="cSea"></div>
+            <div class="actrl">Sand<input type="color" id="cSand"></div>
+            <div class="actrl">Tide fade<input type="range" id="opTide" min="25" max="100" step="1"></div>
+            <div class="actrl">Layout
+              <div style="display:flex;gap:6px">
+                <button class="flipbtn" id="flipBtn">Flip</button>
+                <button class="flipbtn" id="rotLeft" title="Rotate left">‹</button>
+                <button class="flipbtn" id="rotRight" title="Rotate right">›</button>
+                <button class="flipbtn" id="autoBtn">Auto</button>
+              </div>
             </div>
           </div>
         </div>
@@ -154,6 +164,7 @@
 
   <div id="diveModal" class="modal" hidden>
     <div class="modal-box">
+      <button type="button" class="modal-favourite" id="modalFavourite" aria-label="Add dive site to favourites" title="Add to favourites" hidden>☆</button>
       <button type="button" class="modal-share" id="modalShare" aria-label="Share this card" title="Share">&#8599;</button>
       <div class="share-menu" id="shareMenu" hidden>
         <button type="button" data-share-method="device">Share via device</button>
@@ -166,7 +177,7 @@
       <h2 class="modal-title"><span id="modalTitle"></span><span class="modal-country" id="modalCountry"></span></h2>
       <div class="modal-body" id="modalBody"></div>
       <div class="modal-foot">
-        <button type="button" class="pinbtn" id="modalMap">Dive map ↗</button>
+        <button type="button" class="pinbtn" id="modalMap">Show me on map</button>
         <button type="button" class="pinbtn" id="modalMore">Find out more ↗</button>
       </div>
     </div>
@@ -180,6 +191,6 @@
   </div>
 </div>
 
-<script type="module" src="js/main.js"></script>
+<script type="module" src="js/main.js?v=20260715-location1"></script>
 </body>
 </html>

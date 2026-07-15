@@ -13,9 +13,7 @@
 #status.collapsed #stPeak,
 #status.collapsed #stClock,
 #status.collapsed .footrow{display:none}
-#chartCard.collapsed #tideChart,
 #chartCard.collapsed .chartTip,
-#chartCard.collapsed #wxStrip,
 #chartCard.collapsed .seg{display:none}
 #diveCard.collapsed #diveList{display:none}
 .place{grid-area:place;align-self:end;font-size:18px;font-weight:750;margin:0;padding-right:24px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -37,6 +35,7 @@
 @media(max-width:480px){#status .card{grid-template-columns:1fr;grid-template-areas:"place" "coords" "live" "events" "foot"}.big{justify-content:start;justify-self:start;padding:7px 0 0}.big #stPeak{justify-self:start}.grid{grid-template-columns:1fr}.footrow{grid-template-columns:1fr auto}.footrow>#stData{grid-column:1/-1;text-align:left}.place{white-space:normal}}
 .demo-badge{display:inline-block;background:#ffe9a8;color:#7a5a12;font-size:11px;
   font-weight:700;padding:3px 9px;border-radius:999px;margin-left:8px}
+.change-location-btn{display:inline-flex!important;align-items:center;gap:5px;padding:5px 9px!important;border:1px solid #9fc4df!important;border-radius:8px!important;background:#eef7fc!important;color:#1769aa!important;font-size:10px!important;font-weight:750!important;line-height:1!important;text-decoration:none!important;cursor:pointer;transition:background .15s,border-color .15s,transform .15s}.change-location-btn>span{font-size:14px;line-height:1}.change-location-btn:hover,.change-location-btn:focus{background:#dfeff9!important;border-color:#679fc7!important;outline:none;transform:translateY(-1px)}
 
 /* ---- Auto-hiding live UI ---- */
 #liveUI{transition:opacity .6s ease}
@@ -45,7 +44,11 @@
 /* ---- Appearance panel ---- */
 #appear{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:3;
   display:none;padding:12px 18px;width:auto}
+.appear-close{position:absolute;top:10px;right:11px;display:none;width:30px;height:30px;padding:0;border:0;border-radius:8px;background:#edf4f8;color:#5c7691;font-size:18px;line-height:1;cursor:pointer}.appear-close:hover,.appear-close:focus{background:#dfeaf1;color:#174c72;outline:none}#appear.open .appear-close{display:grid;place-items:center}
 .arow{display:flex;gap:20px;align-items:center;flex-wrap:wrap;justify-content:center}
+.settings-provider{flex:1 1 100%;width:100%;min-width:0;text-align:left;align-self:stretch}.settings-provider>label{margin-top:0}.settings-provider .providers{width:100%}
+.settings-appearance{flex:1 1 100%;display:flex;align-items:flex-end;justify-content:center;
+  gap:20px;flex-wrap:wrap;padding-top:10px;border-top:1px solid rgba(113,151,182,.24)}
 .actrl{display:flex;flex-direction:column;align-items:center;gap:5px;
   font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#5c7691}
 input[type=color]{width:44px;height:30px;padding:2px;border:1px solid #c7d9e8;
@@ -55,7 +58,7 @@ input[type=range]{width:120px;padding:0;border:0}
   padding:7px 12px;font-size:13px;font-weight:700;cursor:pointer}
 .flipbtn.on{background:var(--sea1);color:#fff;border-color:transparent}
 
-/* Display controls are collapsed by default on every view behind a faint
+/* Settings are collapsed by default on every view behind a faint
    toggle, so they never overlap the tide curve. Tap to open. */
 .appear-toggle{display:block;border:1px solid rgba(120,150,170,.4);
   background:rgba(255,255,255,.35);color:#1f4c72;border-radius:999px;
@@ -63,6 +66,8 @@ input[type=range]{width:120px;padding:0;border:0}
   opacity:.35;transition:opacity .2s ease}
 .appear-toggle:hover,.appear-toggle:focus{opacity:1}
 #appear.open .appear-toggle{opacity:1}
+#appear.open{width:min(720px,calc(100vw - 24px));padding:14px 54px 14px 18px}
 #appear:not(.open){background:none;box-shadow:none;backdrop-filter:none;padding:0}
 #appear .arow{display:none;margin-top:10px}
 #appear.open .arow{display:flex}
+@media(max-width:640px){#appear.open{width:calc(100vw - 16px);padding:12px 48px 12px 12px}.settings-provider{flex-basis:100%;min-width:0}.settings-appearance{gap:12px}}

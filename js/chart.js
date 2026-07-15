@@ -15,12 +15,13 @@ function chartWindow() {
 export function drawChart() {
   const cv = $("tideChart"); if (!cv || !S.current || !S.current.levels) return;
   const c = S.current, card = $("chartCard"), dpr = window.devicePixelRatio || 1;
-  const W = Math.max(240, card.clientWidth - 32), H = 150;
+  const compact = card.classList.contains("collapsed");
+  const W = compact ? 150 : Math.max(240, card.clientWidth - 32), H = compact ? 68 : 150;
   cv.style.width = W + "px"; cv.width = W * dpr; cv.height = H * dpr;
   const ctx = cv.getContext("2d"); ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
 
   const [t0, t1] = chartWindow(), week = S.chartRange === "week";
-  const x0 = 36, x1 = W - 10, y0 = 12, y1 = H - 18;   // left gutter for height ticks
+  const x0 = compact ? 4 : 36, x1 = W - (compact ? 4 : 10), y0 = compact ? 4 : 12, y1 = H - (compact ? 4 : 18);
   const N = week ? 336 : 96, samp = [];
   for (let i = 0; i <= N; i++) { const t = t0 + (t1 - t0) * i / N; samp.push([t, levelAt(t)]); }
   const rawLo = Math.min(...samp.map(s => s[1])), rawHi = Math.max(...samp.map(s => s[1]));
@@ -32,7 +33,7 @@ export function drawChart() {
 
   // height ticks: highest & lowest across the visible curve
   ctx.textAlign = "right"; ctx.font = "9px sans-serif";
-  [[rawHi, "#1e7a45"], [rawLo, "#b2542a"]].forEach(([v, col]) => {
+  if (!compact) [[rawHi, "#1e7a45"], [rawLo, "#b2542a"]].forEach(([v, col]) => {
     const Y = py(v);
     ctx.strokeStyle = "rgba(11,39,64,.18)"; ctx.setLineDash([3, 3]); ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(x0, Y); ctx.lineTo(x1, Y); ctx.stroke(); ctx.setLineDash([]);
@@ -41,7 +42,9 @@ export function drawChart() {
 
   // gridlines + labels: am/pm quarters (day) or weekday names (week)
   ctx.textAlign = "center"; ctx.font = "10px sans-serif";
-  if (week) {
+  if (compact) {
+    // The collapsed sparkline intentionally omits axes and labels.
+  } else if (week) {
     for (let d = 0; d <= 7; d++) {
       const X = px(t0 + d * 864e5);
       ctx.fillStyle = "rgba(11,39,64,.10)"; ctx.fillRect(X, y0, 1, y1 - y0);
@@ -74,7 +77,7 @@ export function drawChart() {
     const X = px(e.t), Y = py(e.v);
     S.chartPts.push({ x: X, y: Y, e });
     ctx.beginPath(); ctx.arc(X, Y, week ? 2 : 3, 0, Math.PI * 2); ctx.fillStyle = e.type === "high" ? "#1e7a45" : "#b2542a"; ctx.fill();
-    if (!week) { ctx.fillStyle = "#33475a"; ctx.font = "9px sans-serif"; ctx.fillText(e.v.toFixed(1) + "m", X, e.type === "high" ? Y - 6 : Y + 12); }
+    if (!week && !compact) { ctx.fillStyle = "#33475a"; ctx.font = "9px sans-serif"; ctx.fillText(e.v.toFixed(1) + "m", X, e.type === "high" ? Y - 6 : Y + 12); }
   });
 
   // now marker
@@ -115,5 +118,9 @@ export function initChart() {
     } else { tip.style.display = "none"; cv.style.cursor = "default"; }
   });
   cv.addEventListener("mouseleave", () => { $("chartTip").style.display = "none"; });
+  $("chartCard").addEventListener("paneltoggle", event => {
+    if (event.detail.collapsed) setChartRange("day");
+    else drawChart();
+  });
   window.addEventListener("resize", () => { if ($("chartCard").style.display === "block") drawChart(); });
 }

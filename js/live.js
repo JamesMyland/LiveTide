@@ -13,6 +13,8 @@ import { selectLocation } from "./locations.js";
 
 export function startLive() {
   const c = S.current;
+  $("refreshControls").hidden = !(PROVIDERS[S.provider] && PROVIDERS[S.provider].key);
+  ["status", "appear", "chartCard", "diveCard"].forEach(id => { $(id).hidden = false; });
   $("picker").style.display = "none";
   $("status").style.display = "block";
   $("appear").style.display = "block";
@@ -74,9 +76,11 @@ export function poke() {
 export function initLive() {
   $("changeLoc").onclick = () => {
     clearInterval(S.liveTimer); clearTimeout(S.idleTimer);
+    S.locationRequestId += 1;
     $("liveUI").classList.remove("hide");
     $("status").style.display = "none"; $("appear").style.display = "none"; $("chartCard").style.display = "none";
     $("diveCard").style.display = "none"; $("picker").style.display = "block";
+    ["status", "appear", "chartCard", "diveCard"].forEach(id => { $(id).hidden = true; });
   };
   $("refreshData").onclick = () => { if (S.current) selectLocation(S.current.name, S.current.lat, S.current.lng, S.current.tz, true); };
   ["mousemove", "touchstart", "keydown", "click"].forEach(ev => window.addEventListener(ev, poke));

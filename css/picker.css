@@ -1,5 +1,4 @@
-/* Location picker: search dropdown, saved-spot chips, map pin picker, and the
-   provider selector. */
+/* Location picker: search dropdown, saved searches, and provider controls. */
 
 .results{position:relative}
 .dropdown{position:absolute;left:0;right:0;top:calc(100% + 4px);background:#fff;
@@ -10,6 +9,8 @@
 .dropdown div:hover{background:#eaf4fc}
 .dropdown small{color:#5c7691}
 .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.search-history{width:100%;margin-top:7px;padding:7px 10px;border:1px solid #c7d9e8;border-radius:8px;background:#f8fbfd;color:#315b7e;font-size:11px;cursor:pointer}.search-history[hidden]{display:none}
+.picker-favourites{margin-top:12px;padding-top:10px;border-top:1px solid rgba(11,39,64,.12)}.picker-favourites[hidden]{display:none}.picker-favourites h2{margin:0 0 7px;color:#5c7691;font-size:9px;text-transform:uppercase;letter-spacing:.55px}.picker-favourites>div{display:flex;flex-wrap:wrap;gap:6px}.favourites-empty{margin:0;color:#7890a4;font-size:10px}.favourite-site{display:inline-flex;align-items:center;gap:6px;max-width:100%;min-height:28px;padding:4px 9px 4px 6px;border:1px solid #bdd5e6;border-radius:999px;background:#f9fcfe;color:#315b7e;font:inherit;line-height:1;text-align:left;box-shadow:0 1px 2px rgba(11,39,64,.05);cursor:pointer;transition:background .15s,border-color .15s,transform .15s}.favourite-site:hover,.favourite-site:focus{background:#eef7fc;border-color:#79acd0;outline:none;transform:translateY(-1px)}.favourite-site>span{display:flex;align-items:center;justify-content:center;width:18px;height:18px;flex:none;border-radius:50%;background:#fff2b8;color:#b97800;font-family:Arial,sans-serif;font-size:11px;line-height:1;padding:0 0 1px}.favourite-site>b{overflow:hidden;font-size:10px;text-overflow:ellipsis;white-space:nowrap}.favourite-site>small{overflow:hidden;max-width:120px;padding-left:6px;border-left:1px solid #d8e5ed;color:#7890a4;font-size:8px;text-overflow:ellipsis;white-space:nowrap}
 .chip{border:1px solid #bcd6ea;background:#fff;color:#1f4c72;border-radius:999px;
   padding:6px 12px;font-size:12.5px;cursor:pointer}
 .chip:hover{background:#eaf4fc}
@@ -19,11 +20,7 @@
 .keyrow button, .toggle{padding:11px 14px;border:0;border-radius:10px;background:var(--sea1);
   color:#fff;font-weight:600;font-size:14px;cursor:pointer}
 
-/* ---- Map pin picker ---- */
-#mapWrap{display:none;margin-top:12px}
-#map{height:260px;border-radius:12px;overflow:hidden;border:1px solid #c7d9e8;z-index:1}
 .leaflet-container{font:inherit;background:#dfeef7}
-#mapHint{font-size:12px;color:#41627e;margin:8px 0}
 .pinbtn{padding:10px 14px;border:0;border-radius:10px;background:var(--sea1,#2a7fc4);
   color:#fff;font-weight:600;font-size:14px;cursor:pointer}
 .pinbtn:disabled{opacity:.5;cursor:default}

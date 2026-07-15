@@ -16,6 +16,10 @@ export function initCollapse() {
     btn.onclick = () => {
       const collapsed = el.classList.toggle("collapsed");
       const s = read(); s[id] = collapsed; write(s);
+      el.dispatchEvent(new CustomEvent("paneltoggle", { detail: { collapsed } }));
     };
+  });
+  document.querySelectorAll("[data-collapse-target]").forEach(control => {
+    control.onclick = () => document.querySelector(`.collapse-btn[data-card="${control.dataset.collapseTarget}"]`)?.click();
   });
 }
