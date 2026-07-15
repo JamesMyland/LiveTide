@@ -9,6 +9,7 @@ import { S } from "./state.js";
 import { $ } from "./dom.js";
 import { fetchOpenMeteo } from "./providers/openmeteo.js";
 import { normaliseToLow } from "./tide.js";
+import { initSpeciesLayer, syncSpeciesLayer } from "./species.js";
 
 // Optional: paste your deployed Google Apps Script /exec URL here to load
 // divemap.gr live via the CORS-enabled proxy (see scripts/apps-script/Code.gs).
@@ -62,7 +63,19 @@ const savedMapLayers = new Set((savedDiveUi.layers || []).filter(k => MAP_LAYERS
 
 function saveDiveUi() {
   const layers = [...document.querySelectorAll("[data-map-layer]:checked")].map(input => input.dataset.mapLayer);
-  writeLS(DIVE_UI_LS, { layers });
+  writeLS(DIVE_UI_LS, { layers, catalogue: $("diveCatalogueLayer")?.checked !== false });
+}
+
+function applyDiveCatalogueSelection(on) {
+  if (diveMap && diveCluster) {
+    const shown = diveMap.hasLayer(diveCluster);
+    if (on && !shown) diveMap.addLayer(diveCluster);
+    else if (!on && shown) diveMap.removeLayer(diveCluster);
+  }
+  saveDiveUi();
+  divePage = 0;
+  if (diveMap) renderVisibleDives();
+  else if (!on) { $("diveList").innerHTML = ""; $("diveResultsHead").hidden = true; }
 }
 
 const isDiveSite = site => !!site && !site._wreck && (!site.mapKind || site.mapKind === "sites");
@@ -235,7 +248,7 @@ function renderDives(source) {
   const card = $("diveCard"); if (!card) return;
   const resultsHead = $("diveResultsHead"), src = $("diveSrc");
   if (resultsHead && src && src.parentElement !== resultsHead) resultsHead.appendChild(src);
-  const c = S.current, list = S.dives || [];
+  const c = S.current, list = $("diveCatalogueLayer")?.checked === false ? [] : (S.dives || []);
   card.style.display = "block";
   const near = list.map(s => ({ s, km: km(c.lat, c.lng, +s.latitude, +s.longitude) })).sort((a, b) => a.km - b.km).slice(0, 12);
   if (!near.length) {
@@ -262,7 +275,8 @@ function renderDives(source) {
 function renderVisibleDives() {
   if (!diveMap || !S.current) return;
   const bounds = diveMap.getBounds();
-  const catalogue = dataset.length ? filteredAll() : (S.dives || []);
+  const catalogueEnabled = $("diveCatalogueLayer")?.checked !== false;
+  const catalogue = catalogueEnabled ? (dataset.length ? filteredAll() : (S.dives || [])) : [];
   const sitesInput = document.querySelector('[data-map-layer="sites"]');
   const ukSites = sitesInput && sitesInput.checked && mapLayerState.sites.data
     ? mapLayerState.sites.data.filter(passesFilters) : [];
@@ -408,7 +422,8 @@ function renderDiveMap(all, near, preserveView = false) {
     diveCluster = (typeof L.markerClusterGroup === "function")
       ? L.markerClusterGroup({ maxClusterRadius: 45, showCoverageOnHover: false })
       : L.layerGroup();
-    diveMap.addLayer(diveCluster);
+    if ($("diveCatalogueLayer")?.checked !== false) diveMap.addLayer(diveCluster);
+    syncSpeciesLayer(diveMap);
   }
   diveCluster.clearLayers();
   diveMarkers.clear();
@@ -1322,6 +1337,12 @@ function showFeatureOnMap(site) {
   return true;
 }
 
+export function getDiveCatalogue() { return dataset.slice(); }
+export function openRecommendedDiveSite(site) {
+  if (!site) return;
+  showFeatureOnMap(site); openDetail(site);
+}
+
 function setMapFullscreen(on) {
   const card = $("diveCard"), button = $("diveFullscreen"); if (!card || !button) return;
   if (on) card.classList.remove("collapsed");
@@ -1344,6 +1365,12 @@ export function initDive() {
     activeFeature = null; syncSharedCardUrl(null);
   };
   renderFeatureHistory(); renderFavourites();
+  initSpeciesLayer(() => diveMap);
+  const catalogueToggle = $("diveCatalogueLayer");
+  if (catalogueToggle) {
+    catalogueToggle.checked = savedDiveUi.catalogue !== false;
+    catalogueToggle.onchange = () => applyDiveCatalogueSelection(catalogueToggle.checked);
+  }
   if ($("diveFullscreen")) $("diveFullscreen").onclick = () => setMapFullscreen(!$("diveCard").classList.contains("map-fullscreen"));
   const filterToggle = $("diveFiltersToggle"), filterBody = $("diveFiltersBody");
   if (filterToggle && filterBody) filterToggle.onclick = () => {

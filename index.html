@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="css/scene.css">
 <link rel="stylesheet" href="css/picker.css?v=20260715-favourites4">
 <link rel="stylesheet" href="css/status.css?v=20260715-location1">
-<link rel="stylesheet" href="css/chart.css?v=20260715-layers5">
+<link rel="stylesheet" href="css/chart.css?v=20260715-species-months1">
 </head>
 <body>
 <div id="app">
@@ -112,14 +112,39 @@
         <div class="dive-filters">
           <div class="dive-filter-panel" id="diveFiltersBody" hidden>
             <div class="map-layer-toggles" aria-label="Map layers">
+              <label class="wreck-toggle" title="Divemap dive sites"><input type="checkbox" id="diveCatalogueLayer" aria-label="Show Divemap dive sites"><span class="layer-symbol catalogue">▽</span></label>
               <label class="wreck-toggle" title="Wrecks"><input type="checkbox" data-map-layer="wrecks" aria-label="Show wrecks"><span class="layer-symbol wreck">⚓</span></label>
               <label class="wreck-toggle" title="Unknown objects"><input type="checkbox" data-map-layer="unknown" aria-label="Show unknown objects"><span class="layer-symbol unknown">?</span></label>
               <label class="wreck-toggle" title="Launches"><input type="checkbox" data-map-layer="launch" aria-label="Show launches"><span class="layer-symbol launch">↘</span></label>
               <label class="wreck-toggle" title="Tide stations"><input type="checkbox" data-map-layer="tide-station" aria-label="Show tide stations"><span class="layer-symbol tide">∿</span></label>
               <label class="wreck-toggle" title="Lighthouses"><input type="checkbox" data-map-layer="lighthouse" aria-label="Show lighthouses"><span class="layer-symbol light">✦</span></label>
               <label class="wreck-toggle" title="UK dive sites"><input type="checkbox" data-map-layer="sites" aria-label="Show UK dive sites"><span class="layer-symbol site">▽</span></label>
+              <label class="wreck-toggle" title="Marine life"><input type="checkbox" id="speciesLayerToggle" aria-label="Show marine life controls" aria-expanded="false" aria-controls="speciesPicker"><span class="layer-symbol species" aria-hidden="true">◉</span></label>
+            </div>
+            <div class="species-layer-controls" id="speciesLayerControls">
+              <div class="species-picker" id="speciesPicker" hidden>
+                <div class="species-combobox">
+                  <div class="species-selected" id="speciesSelected" aria-label="Selected species"></div>
+                  <input id="speciesSearch" type="search" autocomplete="off" placeholder="Search or browse species" role="combobox" aria-autocomplete="list" aria-controls="speciesSuggestions" aria-expanded="false">
+                  <div id="speciesSuggestions" class="species-suggestions" role="listbox" hidden></div>
+                </div>
+                <select id="speciesMonth" aria-label="Observation month"></select>
+              </div>
+              <div class="species-status" id="speciesStatus" hidden aria-live="polite"></div>
             </div>
           </div>
+        </div>
+        <div class="encounter-planner" id="encounterPlanner">
+          <div class="encounter-query">
+            <span aria-hidden="true">⌖</span>
+            <div class="encounter-species-search">
+              <input id="encounterPrompt" type="search" autocomplete="off" placeholder="Search for a species" aria-label="Species to find" role="combobox" aria-autocomplete="list" aria-controls="encounterSuggestions" aria-expanded="false">
+              <div class="encounter-suggestions" id="encounterSuggestions" role="listbox" hidden></div>
+            </div>
+            <button type="button" id="encounterFind" disabled>Choose month</button>
+          </div>
+          <div class="encounter-months" id="encounterMonths" hidden aria-label="Relative historical sighting likelihood by month"></div>
+          <div class="encounter-results" id="encounterResults" hidden aria-live="polite"></div>
         </div>
         <div id="diveMap"></div>
         <div class="dive-results-head" id="diveResultsHead" hidden>
@@ -191,6 +216,6 @@
   </div>
 </div>
 
-<script type="module" src="js/main.js?v=20260715-location1"></script>
+<script type="module" src="js/main.js?v=20260715-species-months1"></script>
 </body>
 </html>

@@ -6,6 +6,8 @@ Eventually intended for mobile / app-store distribution.
 
 ## Features
 
+- **Encounter planner** - enter species and a month in natural language to rank Divemap dive sites near historical OBIS observations, then open a recommendation directly on the map.
+
 - **Choose your tide-data provider** — a compact, required-on-first-use selector for **Open-Meteo** (free, no key, global), **Stormglass** (station-accurate, needs a free key) or **NOAA CO-OPS** (official, no key, US only). Each shows its trade-offs and a sign-up link where relevant. Heights are normalised so the lowest tide in view reads 0 m, keeping providers comparable.
 - **Find a location two ways** — type-to-search any place name (Open-Meteo geocoder) or drop a pin on an interactive map (Leaflet + OpenStreetMap). Chosen spots are saved as reusable chips.
 - **Live sea-level background** — the sea fills to the current tide height as a fraction of the week's peak (e.g. 2 m of a 10 m peak fills 20%), moving continuously as time passes.
@@ -16,6 +18,10 @@ Eventually intended for mobile / app-store distribution.
 - **Ambient mode** — the UI auto-hides after a few seconds of inactivity and reappears on mouse movement, leaving just the tide.
 
 ## Data sources
+
+- **[OBIS](https://obis.org/)** - dated global marine-species observations used by the seasonal distribution map layer.
+
+The marine-life selector includes 500 species: 50 curated entries plus 450 accepted species generated from the OBIS Animalia checklist. The generator resolves English common names from WoRMS where available and retains the scientific name and family as fallback, with taxonomy-derived categories, icons, and map colours. Observation coverage varies by species and contributing dataset.
 
 - **[Open-Meteo](https://open-meteo.com/)** — marine tide model (sea level), weather forecast, and place-name geocoding. Free, no key, non-commercial.
 - **[Stormglass](https://stormglass.io/)** — station-based tide sea-level and high/low extremes (requires a free API key).
@@ -33,6 +39,8 @@ Eventually intended for mobile / app-store distribution.
 ## Request usage and caching
 
 Tide data is cached per location and provider in `localStorage`: LiveTide fetches a **whole week** in one request and reuses it until nearly spent, so reopening the page makes **no** further calls. This matters most for **Stormglass**, whose free tier allows only **10 requests/day**; Open-Meteo and NOAA are effectively unlimited for personal use. Weather is cached separately and refreshed about every 2 hours. With no provider data available the app falls back to cached data, or to a synthetic demo curve.
+
+Marine-life observation datasets are cached in IndexedDB for 30 days per species. Existing localStorage entries are still read as a migration fallback, and stale saved observations remain available when OBIS cannot be reached.
 
 ## Hosting
 
