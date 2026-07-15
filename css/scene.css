@@ -55,6 +55,7 @@ body.o-down #sea .swell.b{top:auto;bottom:-9px}
 /* ---- Whole-app rotation: rotates BOTH the tide and the UI ---- */
 #app{position:fixed;top:0;left:0;width:100vw;height:100vh;
   transform-origin:top left;transition:transform .5s ease}
+@supports (height:100dvh){#app{height:100dvh}}
 body.rot-90  #app{width:100vh;height:100vw;transform:translateX(100vw) rotate(90deg)}
 body.rot-180 #app{transform:translate(100vw,100vh) rotate(180deg)}
 body.rot-270 #app{width:100vh;height:100vw;transform:translateY(100vh) rotate(270deg)}

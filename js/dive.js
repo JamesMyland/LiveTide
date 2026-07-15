@@ -32,6 +32,7 @@ const MAX_PAGES  = 60;                       // safety cap for the catalogue pol
 let dataset = [];                            // full divemap.gr catalogue
 let diveMap = null, diveCluster = null, meMarker = null;
 let divePage = 0;
+let activeFeature = null;
 const DIVE_PAGE_SIZE = 12;
 const diveMarkers = new Map();
 let highlightedMapElement = null;
@@ -147,13 +148,17 @@ export async function loadDives() {
 
 function renderDives(source) {
   const card = $("diveCard"); if (!card) return;
+  const resultsHead = $("diveResultsHead"), src = $("diveSrc");
+  if (resultsHead && src && src.parentElement !== resultsHead) resultsHead.appendChild(src);
   const c = S.current, list = S.dives || [];
   card.style.display = "block";
   const near = list.map(s => ({ s, km: km(c.lat, c.lng, +s.latitude, +s.longitude) })).sort((a, b) => a.km - b.km).slice(0, 12);
   if (!near.length) {
-    $("diveList").innerHTML = `<div class="dive-empty">No dive sites found near here.</div>`;
+    $("diveList").innerHTML = "";
+    resultsHead.hidden = true;
     $("diveSrc").textContent = "";
   } else {
+    resultsHead.hidden = false;
     $("diveList").innerHTML = near.map(({ s, km }) => {
       const dist = km < 1 ? Math.round(km * 1000) + " m" : km.toFixed(1) + " km";
       return `<div class="dive-row">` +
@@ -176,15 +181,28 @@ function renderVisibleDives() {
   const sitesInput = document.querySelector('[data-map-layer="sites"]');
   const ukSites = sitesInput && sitesInput.checked && mapLayerState.sites.data
     ? mapLayerState.sites.data.filter(passesFilters) : [];
-  const candidates = [...catalogue, ...ukSites];
+  const selectedLayerItems = Object.entries(mapLayerState).flatMap(([kind, state]) => {
+    const input = document.querySelector(`[data-map-layer="${kind}"]`);
+    return input && input.checked && state.data ? state.data.filter(passesFilters) : [];
+  });
+  const candidates = [...catalogue, ...selectedLayerItems];
   const visible = candidates.filter(s => bounds.contains([+s.latitude, +s.longitude]));
   S.visibleDives = visible;
   const sorted = visible.map(s => ({ s, km: km(S.current.lat, S.current.lng, +s.latitude, +s.longitude) }))
     .sort((a, b) => a.km - b.km);
   if (!sorted.length) {
-    $("diveList").innerHTML = `<div class="dive-empty">No filtered dive sites in the current map view.</div>`;
+    $("diveList").innerHTML = "";
+    $("diveResultsHead").hidden = true;
+    $("diveSrc").textContent = "";
     return;
   }
+  $("diveResultsHead").hidden = false;
+  const visibleKinds = new Set(visible.map(s => s.mapKind).filter(Boolean));
+  const labels = [];
+  if (visible.some(s => !s.mapKind || s.mapKind === "sites")) labels.push("dive sites");
+  const plurals = { wrecks: "wrecks", unknown: "unknown objects", launch: "launches", "tide-station": "tide stations", lighthouse: "lighthouses" };
+  Object.keys(plurals).forEach(kind => { if (visibleKinds.has(kind)) labels.push(plurals[kind]); });
+  $("diveResultsTitle").textContent = `Nearby ${labels.length > 1 ? labels.slice(0, -1).join(", ") + " and " + labels.at(-1) : labels[0]}`;
   const pages = Math.ceil(sorted.length / DIVE_PAGE_SIZE);
   divePage = Math.max(0, Math.min(divePage, pages - 1));
   const start = divePage * DIVE_PAGE_SIZE, shown = sorted.slice(start, start + DIVE_PAGE_SIZE);
@@ -193,6 +211,18 @@ function renderVisibleDives() {
     return `<div class="dive-row"><button type="button" class="dive-name" data-id="${esc(s.id)}">${esc(s.name)}</button><span class="dive-km">${dist}</span><button type="button" class="dive-search" title="Search Google" data-q="${esc(s.name + " dive site")}">⌕</button></div>`;
   }).join("") + (pages > 1 ? `<div class="dive-pagination"><button type="button" data-dive-page="prev"${divePage === 0 ? " disabled" : ""}>← Previous</button><span>Page ${divePage + 1} of ${pages}</span><button type="button" data-dive-page="next"${divePage >= pages - 1 ? " disabled" : ""}>Next →</button></div>` : "");
   $("diveSrc").textContent = ukSites.length ? "map view · multiple sources" : "divemap.gr · map view";
+  shown.forEach(({ s }) => {
+    if (!s.mapKind) return;
+    const button = [...$("diveList").querySelectorAll(".dive-name")].find(el => el.dataset.id === String(s.id));
+    if (!button) return;
+    const type = document.createElement("span");
+    type.className = "dive-type";
+    type.textContent = MAP_LAYERS[s.mapKind]?.label || "Map feature";
+    button.after(type);
+    const search = button.parentElement.querySelector(".dive-search");
+    if (search) search.dataset.q = `${s.name} ${type.textContent}`;
+  });
+  if (selectedLayerItems.length) $("diveSrc").textContent = "map view \u00b7 multiple sources";
 }
 
 function renderDiveMap(all, near, preserveView = false) {
@@ -356,7 +386,7 @@ async function toggleMapLayer(kind, on) {
   if (!diveMap) return;
   const state = mapLayerState[kind], style = MAP_LAYERS[kind];
   if (!state) return;
-  if (!on) { if (state.cluster) diveMap.removeLayer(state.cluster); if (kind === "sites") renderVisibleDives(); return; }
+  if (!on) { if (state.cluster) diveMap.removeLayer(state.cluster); renderVisibleDives(); return; }
   const list = await loadMapLayer(kind);
   const input = document.querySelector(`[data-map-layer="${kind}"]`);
   if (!input || !input.checked) return;
@@ -377,7 +407,7 @@ async function toggleMapLayer(kind, on) {
     state.markers.set(String(item.id), marker);
   });
   diveMap.addLayer(state.cluster);
-  if (kind === "sites") renderVisibleDives();
+  renderVisibleDives();
   const sd = $("diveSrc");
   if (sd && !list.length) sd.textContent = `${kind}: no data returned`;
 }
@@ -390,13 +420,54 @@ const recordMapUrl = s => s.mapKind
   : `https://www.google.com/maps?q=${encodeURIComponent(s.latitude + "," + s.longitude)}`;
 const diveMapUrl = (lat, lng) => `https://divemap.uk/?${encodeURIComponent("Φ")}=${lat}&${encodeURIComponent("λ")}=${lng}&z=13`;
 
+function sharedCardUrl(site = activeFeature) {
+  const url = new URL(location.href);
+  if (!site) return url.toString();
+  const kind = site.mapKind || "dive", id = site.sourceId || site.id || "";
+  url.searchParams.set("card", `${kind}:${id}`);
+  url.searchParams.set("lat", site.latitude);
+  url.searchParams.set("lng", site.longitude);
+  url.searchParams.set("name", site.name || "Marine feature");
+  return url.toString();
+}
+function syncSharedCardUrl(site) {
+  const url = new URL(location.href);
+  if (site) {
+    const shared = new URL(sharedCardUrl(site));
+    ["card", "lat", "lng", "name"].forEach(key => url.searchParams.set(key, shared.searchParams.get(key)));
+  } else ["card", "lat", "lng", "name"].forEach(key => url.searchParams.delete(key));
+  history.replaceState(null, "", url);
+}
 function openDetail(site) {
   // The snapshot records are already rich; the per-site /{id} call is CORS-blocked
   // in the browser too, so we render straight from the stored record.
+  activeFeature = site;
+  syncSharedCardUrl(site);
   renderModal(site);
+  enhanceModalLocation(site);
   $("diveModal").hidden = false;
   startCountryEnrichment(site);
   startFeatureEnrichment(site);
+  organiseCardSources();
+}
+
+export async function openSharedCard() {
+  const params = new URLSearchParams(location.search), value = params.get("card");
+  if (!value) return false;
+  const split = value.indexOf(":"), kind = split < 0 ? "dive" : value.slice(0, split), id = split < 0 ? value : value.slice(split + 1);
+  let site = null;
+  if (kind === "dive") site = dataset.find(item => String(item.id) === id);
+  else if (mapLayerState[kind]) {
+    const list = await loadMapLayer(kind);
+    site = list.find(item => String(item.sourceId || item.id) === id || String(item.id) === id);
+  }
+  if (!site) {
+    const lat = +params.get("lat"), lng = +params.get("lng");
+    if (!isNaN(lat) && !isNaN(lng)) site = { id, sourceId: id, mapKind: kind === "dive" ? "" : kind, latitude: lat, longitude: lng, name: params.get("name") || "Shared marine feature", dataSource: kind === "dive" ? "divemap.gr" : "divemap.uk via LiveTide proxy", mapProperties: {} };
+  }
+  if (!site) return false;
+  openDetail(site);
+  return true;
 }
 
 function section(title, body) {
@@ -404,12 +475,85 @@ function section(title, body) {
   const icons = { Description: "≡", History: "◷", "Marine life": "◌", Access: "↘", Safety: "△", Hazards: "△", Facilities: "⌂", Charges: "£" };
   return `<div class="dv-sec"><h3>${icons[title] ? `<span class="section-icon">${icons[title]}</span>` : ""}${esc(title)}</h3><p>${esc(body)}</p></div>`;
 }
-function sourceBlock(source) {
-  return source ? `<div class="dv-source"><span>Data source</span><b>${esc(source)}</b></div>` : "";
+function sourceUrl(source) {
+  const value = String(source || "").toLowerCase();
+  if (value.includes("divemap.uk")) return "https://divemap.uk/";
+  if (value.includes("divemap.gr")) return "https://divemap.gr/";
+  if (value.includes("openstreetmap")) return "https://www.openstreetmap.org/";
+  if (value.includes("hydrographic") || value.includes("ukho")) return "https://www.gov.uk/government/organisations/uk-hydrographic-office";
+  if (value.includes("open-meteo")) return "https://open-meteo.com/";
+  return "";
+}
+function sourceBlock(source, label = "Data source") {
+  if (!source) return "";
+  const href = sourceUrl(source);
+  const value = href ? `<a href="${href}" target="_blank" rel="noopener">${esc(source)} &nearr;</a>` : `<b>${esc(source)}</b>`;
+  return `<div class="dv-source"><span>${esc(label)}</span>${value}</div>`;
+}
+function organiseCardSources() {
+  const body = $("modalBody"); if (!body) return;
+  const sources = [...body.querySelectorAll(".dv-source,.station-forecast-source,.enrichment-sources,.site-weather-source")];
+  if (!sources.length) return;
+  let tray = body.querySelector(":scope > .card-sources");
+  if (!tray) {
+    tray = document.createElement("div"); tray.className = "card-sources";
+    tray.innerHTML = `<div class="card-sources-title">Data sources</div>`;
+  }
+  const sourceKey = source => {
+    const links = [...source.querySelectorAll("a[href]")].map(a => a.href.replace(/\/$/, "")).sort();
+    if (links.length) return links.join("|");
+    return source.textContent.replace(/(?:data|forecast)?\s*sources?/ig, "").replace(/cached.*$/i, "").trim().toLowerCase();
+  };
+  const seen = new Set([...tray.querySelectorAll(".card-source-row")].map(sourceKey));
+  sources.filter(source => !tray.contains(source)).forEach(source => {
+    if (source.classList.contains("site-weather-source") && !source.querySelector("a")) {
+      source.innerHTML = `<span>Forecast source</span><a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo Forecast + Marine &nearr;</a><small>Cached for 1 hour</small>`;
+    }
+    const key = sourceKey(source);
+    if (key && seen.has(key)) { source.remove(); return; }
+    if (key) seen.add(key);
+    source.classList.add("card-source-row");
+    tray.appendChild(source);
+  });
+  body.appendChild(tray);
 }
 function coordinate(value, positive, negative) {
   const n = +value;
   return isNaN(n) ? "" : `${Math.abs(n).toFixed(4)}° ${n >= 0 ? positive : negative}`;
+}
+function enhanceModalLocation(site) {
+  const lat = +site.latitude, lng = +site.longitude, body = $("modalBody");
+  if (!body || isNaN(lat) || isNaN(lng)) return;
+  const coordinateNode = body.querySelector(".ds-position>b,.feature-coordinates>b,.wk-position>b");
+  if (!coordinateNode) return;
+  coordinateNode.hidden = true;
+  const actions = coordinateNode.parentElement.querySelector(":scope > span") || coordinateNode.parentElement;
+  const toggle = document.createElement("button");
+  toggle.type = "button"; toggle.className = "location-toggle";
+  toggle.setAttribute("aria-expanded", "false"); toggle.setAttribute("aria-label", "Show location options");
+  toggle.title = "Show coordinates and location options"; toggle.innerHTML = "&#8982;";
+  actions.prepend(toggle);
+  const inlineTarget = coordinateNode.closest(".ds-overview")?.querySelector(".ds-badges") ||
+    coordinateNode.closest(".wk-overview")?.querySelector(".wk-topline");
+  if (inlineTarget && actions !== inlineTarget) {
+    actions.classList.add("overview-inline-actions");
+    inlineTarget.appendChild(actions);
+    coordinateNode.parentElement.classList.add("location-coordinate-row-empty");
+  }
+  const decimal = `${lat.toFixed(6)}, ${lng.toFixed(6)}`;
+  const panel = document.createElement("div");
+  panel.className = "location-panel"; panel.hidden = true;
+  panel.innerHTML = `<b>${esc(decimal)}</b><span><button type="button" class="location-copy">Copy</button><a href="geo:${lat},${lng}?q=${lat},${lng}(${encodeURIComponent(site.name || "Location")})">Device maps</a><a href="https://map.openseamap.org/?zoom=15&lat=${lat}&lon=${lng}" target="_blank" rel="noopener">Nautical chart &nearr;</a><a href="https://what3words.com/?map=${lat},${lng},18" target="_blank" rel="noopener">what3words &nearr;</a></span>`;
+  const overview = coordinateNode.closest(".ds-overview,.feature-overview,.wk-overview") || coordinateNode.parentElement;
+  overview.insertAdjacentElement("afterend", panel);
+  toggle.onclick = () => {
+    panel.hidden = !panel.hidden;
+    toggle.setAttribute("aria-expanded", String(!panel.hidden));
+  };
+  panel.querySelector(".location-copy").onclick = async event => {
+    try { await navigator.clipboard.writeText(decimal); event.currentTarget.textContent = "Copied"; }
+    catch (e) { event.currentTarget.textContent = decimal; }
+  };
 }
 const COUNTRY_CODES = { england:"GB-ENG",scotland:"GB-SCT",wales:"GB-WLS","northern ireland":"GB-NIR",uk:"GB",usa:"US" };
 let isoRegionNames = null;
@@ -612,14 +756,14 @@ function renderFeatureEnrichment(feature, fetchedAt) {
 async function loadFeatureEnrichment(id) {
   const target = $("featureEnrichment"); if (!target || target.dataset.featureId !== id) return;
   const store = readLS(FEATURE_LS) || {}, cached = store[id];
-  if (cached && Date.now() - cached.savedAt < FEATURE_TTL) { target.innerHTML = renderFeatureEnrichment(cached.feature, cached.fetchedAt); return; }
+  if (cached && Date.now() - cached.savedAt < FEATURE_TTL) { target.innerHTML = renderFeatureEnrichment(cached.feature, cached.fetchedAt); organiseCardSources(); return; }
   try {
     const r = await fetch(PROXY_URL + "?feature=" + encodeURIComponent(id), { cache: "no-cache" });
     const result = r.ok ? await r.json() : null;
     const current = $("featureEnrichment"); if (!current || current.dataset.featureId !== id) return;
     if (!result || result.error || !result.feature) { current.innerHTML = `<div class="enrichment-unavailable">Live Divemap details are unavailable.</div>`; return; }
     store[id] = { feature: result.feature, fetchedAt: result.fetchedAt, savedAt: Date.now() };
-    writeLS(FEATURE_LS, store); current.innerHTML = renderFeatureEnrichment(result.feature, result.fetchedAt);
+    writeLS(FEATURE_LS, store); current.innerHTML = renderFeatureEnrichment(result.feature, result.fetchedAt); organiseCardSources();
   } catch (e) {
     const current = $("featureEnrichment"); if (current && current.dataset.featureId === id) current.innerHTML = `<div class="enrichment-unavailable">Live Divemap details are unavailable.</div>`;
   }
@@ -725,7 +869,7 @@ async function loadSiteWeather(lat, lng) {
   const target = $("siteWeather"); if (!target) return;
   const key = `${(+lat).toFixed(3)},${(+lng).toFixed(3)}`, store = readLS(SITE_WEATHER_LS) || {}, cached = store[key];
   target.hidden = false;
-  if (cached && Date.now() - cached.savedAt < 3600e3) { target.innerHTML = cached.html; return; }
+  if (cached && Date.now() - cached.savedAt < 3600e3) { target.innerHTML = cached.html; organiseCardSources(); return; }
   target.innerHTML = `<div class="enrichment-loading"><i></i>Loading local conditions…</div>`;
   try {
     const forecastUrl = `https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(lat)}&longitude=${encodeURIComponent(lng)}&current=temperature_2m,apparent_temperature,weather_code,precipitation,wind_speed_10m,wind_direction_10m,wind_gusts_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum,wind_speed_10m_max,wind_direction_10m_dominant&forecast_days=7&wind_speed_unit=kn&timezone=auto`;
@@ -746,8 +890,8 @@ async function loadSiteWeather(lat, lng) {
         const high = daily.temperature_2m_max && daily.temperature_2m_max[i], low = daily.temperature_2m_min && daily.temperature_2m_min[i];
         const rain = daily.precipitation_probability_max && daily.precipitation_probability_max[i], wind = daily.wind_speed_10m_max && daily.wind_speed_10m_max[i], direction = daily.wind_direction_10m_dominant && daily.wind_direction_10m_dominant[i];
         return `<div><h4>${esc(day)}</h4><span>${esc(weatherLabel(daily.weather_code && daily.weather_code[i]))}</span><b>${high != null ? Math.round(high) + "°" : "—"}<small>${low != null ? "/" + Math.round(low) + "°" : ""}</small></b><em>☂ ${rain != null ? Math.round(rain) : 0}%</em><em>➤ ${wind != null ? Math.round(wind) : "—"} kn ${direction != null ? windCompass(direction) : ""}</em></div>`;
-      }).join("")}</div>` : "") + `<div class="site-weather-source">Open-Meteo Forecast + Marine · cached for 1 hour</div>`;
-    store[key] = { html, savedAt: Date.now() }; writeLS(SITE_WEATHER_LS, store); target.innerHTML = html;
+      }).join("")}</div>` : "") + `<div class="site-weather-source"><span>Forecast source</span><a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo Forecast + Marine &nearr;</a><small>Cached for 1 hour</small></div>`;
+    store[key] = { html, savedAt: Date.now() }; writeLS(SITE_WEATHER_LS, store); target.innerHTML = html; organiseCardSources();
   } catch (e) { target.innerHTML = `<div class="enrichment-unavailable">Local weather is temporarily unavailable.</div>`; }
 }
 
@@ -797,7 +941,8 @@ async function loadTideStationWeek(s, requestId) {
   const extremes = (result.extremes || []).filter(e => e.t >= +start && e.t < end).map(e => ({ ...e }));
   normaliseToLow(levels, extremes);
   target.innerHTML = tideWeekChart(levels) + renderTideDays(extremes, weather) +
-    `<div class="station-forecast-source"><span>Forecast source</span><b>Open-Meteo Marine + Forecast APIs</b><small>Fetched ${new Date().toLocaleString()} · heights normalized to the forecast low · wind shown at 00, 06, 12 and 18 hours</small></div>`;
+    `<div class="station-forecast-source"><span>Forecast source</span><a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo Marine + Forecast APIs &nearr;</a><small>Fetched ${new Date().toLocaleString()} · heights normalized to the forecast low · wind shown at 00, 06, 12 and 18 hours</small></div>`;
+  organiseCardSources();
 }
 
 function renderTideStationModal(s) {
@@ -863,7 +1008,7 @@ function renderModal(s) {
   m.dataset.divemapId = s.sourceId || (s.mapProperties && s.mapProperties.id) || "";
   $("modalTitle").textContent = s.name || "Dive site";
   $("modalMore").textContent = s._wreck ? "Search this wreck ↗" : "Find out more ↗";
-  if (s._wreck) { renderWreckModal(s); return; }
+  if (s._wreck) { renderWreckModal(s); $("modalBody").insertAdjacentHTML("beforeend", sourceBlock(s.dataSource || "UK Hydrographic Office (UKHO)")); return; }
   if (s.mapKind === "launch") { renderLaunchModal(s); return; }
   if (s.mapKind === "tide-station") { renderTideStationModal(s); return; }
   if (s.mapKind && s.mapKind !== "sites") { renderMapFeatureModal(s); return; }
@@ -928,6 +1073,11 @@ function setMapFullscreen(on) {
 }
 
 export function initDive() {
+  const closeDetail = () => {
+    $("diveModal").hidden = true; $("shareMenu").hidden = true;
+    $("modalShare").setAttribute("aria-expanded", "false");
+    activeFeature = null; syncSharedCardUrl(null);
+  };
   if ($("diveFullscreen")) $("diveFullscreen").onclick = () => setMapFullscreen(!$("diveCard").classList.contains("map-fullscreen"));
   const filterToggle = $("diveFiltersToggle"), filterBody = $("diveFiltersBody");
   if (filterToggle && filterBody) filterToggle.onclick = () => {
@@ -958,7 +1108,28 @@ export function initDive() {
   $("diveList").addEventListener("focusin", e => { const n = e.target.closest(".dive-name"); if (n) highlightSiteMarker(n.dataset.id, true); });
   $("diveList").addEventListener("focusout", e => { const n = e.target.closest(".dive-name"); if (n) highlightSiteMarker(n.dataset.id, false); });
 
-  $("modalClose").onclick = () => { $("diveModal").hidden = true; };
+  $("modalClose").onclick = closeDetail;
+  $("modalShare").onclick = () => {
+    const menu = $("shareMenu"), opening = menu.hidden, url = sharedCardUrl();
+    const title = activeFeature?.name || "LiveTide marine feature", message = `${title} - ${url}`;
+    menu.hidden = !opening; $("modalShare").setAttribute("aria-expanded", String(opening));
+    if (!opening) return;
+    menu.querySelector('[data-share-method="whatsapp"]').href = `https://wa.me/?text=${encodeURIComponent(message)}`;
+    menu.querySelector('[data-share-method="email"]').href = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(message)}`;
+    menu.querySelector('[data-share-method="messenger"]').href = `fb-messenger://share/?link=${encodeURIComponent(url)}`;
+  };
+  $("shareMenu").addEventListener("click", async event => {
+    const method = event.target.dataset.shareMethod; if (!method || !activeFeature) return;
+    const url = sharedCardUrl(), title = activeFeature.name || "LiveTide marine feature";
+    if (method === "device") {
+      event.preventDefault();
+      if (navigator.share) { try { await navigator.share({ title, text: `View ${title} on LiveTide`, url }); } catch (e) {} }
+      else { try { await navigator.clipboard.writeText(url); event.target.textContent = "Link copied"; } catch (e) {} }
+    } else if (method === "copy") {
+      event.preventDefault();
+      try { await navigator.clipboard.writeText(url); event.target.textContent = "Link copied"; } catch (e) { event.target.textContent = "Copy unavailable"; }
+    }
+  });
   $("modalMore").onclick = () => googleSearch($("diveModal").dataset.q);
   $("modalMap").onclick = () => { const m = $("diveModal"); if (m.dataset.lat && m.dataset.lng) window.open(divemapFeatureUrl(m.dataset.lat, m.dataset.lng, m.dataset.divemapId), "_blank", "noopener"); };
   $("diveModal").addEventListener("click", e => {
@@ -974,7 +1145,7 @@ export function initDive() {
       if (!closing) loadSiteWeather(weatherButton.dataset.lat, weatherButton.dataset.lng);
       return;
     }
-    if (e.target.id === "diveModal") $("diveModal").hidden = true;
+    if (e.target.id === "diveModal") closeDetail();
   });
   if ($("mediaModalClose")) $("mediaModalClose").onclick = closeMediaModal;
   if ($("mediaModal")) $("mediaModal").addEventListener("click", e => { if (e.target.id === "mediaModal") closeMediaModal(); });
@@ -982,6 +1153,6 @@ export function initDive() {
     if (e.key !== "Escape") return;
     if ($("mediaModal") && !$("mediaModal").hidden) { closeMediaModal(); return; }
     if ($("diveCard").classList.contains("map-fullscreen")) setMapFullscreen(false);
-    else $("diveModal").hidden = true;
+    else closeDetail();
   });
 }
