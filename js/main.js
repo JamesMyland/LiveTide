@@ -9,6 +9,7 @@ import { initDive, initDiveData, openSharedCard } from "./dive.js";
 import { initCollapse } from "./collapse.js";
 import { renderProviders } from "./providerPicker.js";
 import { renderChips, restoreLast } from "./locations.js";
+import { initEncounterPlanner } from "./planner.js";
 
 // attach event handlers
 initApiKey();
@@ -18,6 +19,7 @@ initChart();
 initAppearance();
 initDive();
 initCollapse();
+initEncounterPlanner();
 
 // restore persisted state
 loadKey();
