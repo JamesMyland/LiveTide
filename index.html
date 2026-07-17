@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="css/scene.css">
 <link rel="stylesheet" href="css/picker.css?v=20260715-favourites4">
 <link rel="stylesheet" href="css/status.css?v=20260715-location1">
-<link rel="stylesheet" href="css/chart.css?v=20260715-species-months1">
+<link rel="stylesheet" href="css/chart.css?v=20260716-planner-tidy1">
 </head>
 <body>
 <div id="app">
@@ -138,6 +138,7 @@
           <div class="encounter-query">
             <span aria-hidden="true">⌖</span>
             <div class="encounter-species-search">
+              <div class="encounter-selected" id="encounterSelected" aria-label="Species wishlist"></div>
               <input id="encounterPrompt" type="search" autocomplete="off" placeholder="Search for a species" aria-label="Species to find" role="combobox" aria-autocomplete="list" aria-controls="encounterSuggestions" aria-expanded="false">
               <div class="encounter-suggestions" id="encounterSuggestions" role="listbox" hidden></div>
             </div>
@@ -216,6 +217,6 @@
   </div>
 </div>
 
-<script type="module" src="js/main.js?v=20260715-species-months1"></script>
+<script type="module" src="js/main.js?v=20260716-planner-tidy1"></script>
 </body>
 </html>
