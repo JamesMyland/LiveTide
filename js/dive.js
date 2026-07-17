@@ -35,7 +35,8 @@ const RADIUS_KM  = 90;                       // show dataset sites within this o
 const MAX_PAGES  = 60;                       // safety cap for the catalogue poll
 
 let dataset = [];                            // full divemap.gr catalogue
-let diveMap = null, diveCluster = null, meMarker = null, focusMarker = null;
+let diveMap = null, diveCluster = null, meMarker = null, focusMarker = null, recommendationLayer = null;
+let recommendationMarkers = [];
 let divePage = 0;
 let activeFeature = null;
 let featureSearchTimer = null;
@@ -1337,7 +1338,48 @@ function showFeatureOnMap(site) {
   return true;
 }
 
-export function getDiveCatalogue() { return dataset.slice(); }
+export async function getDiveCatalogue() {
+  const ukSites = await loadMapLayer("sites"), seen = new Set();
+  return [...dataset, ...ukSites].filter(site => {
+    if (!isDiveSite(site) || !passesFilters(site)) return false;
+    const source = site.mapKind || (site._osm ? "osm" : "divemap.gr");
+    const id = site.sourceId || site.id;
+    const key = id ? `${source}:${id}` : `${source}:${String(site.name || "").toLowerCase()}:${(+site.latitude).toFixed(4)}:${(+site.longitude).toFixed(4)}`;
+    if (seen.has(key)) return false;
+    seen.add(key); return true;
+  });
+}
+export function showRecommendedDiveSites(sites) {
+  if (!diveMap || typeof L === "undefined") return;
+  if (recommendationLayer) recommendationLayer.clearLayers();
+  else recommendationLayer = L.layerGroup().addTo(diveMap);
+  recommendationMarkers = [];
+  const valid = (sites || []).filter(site => Number.isFinite(+site.latitude) && Number.isFinite(+site.longitude)).slice(0, 10);
+  if (!valid.length) return;
+  const bounds = L.latLngBounds([]);
+  valid.forEach((site, index) => {
+    const lat = +site.latitude, lng = +site.longitude;
+    const marker = L.marker([lat, lng], {
+      icon:L.divIcon({ className:"encounter-map-marker", html:`<span>${index + 1}</span>`, iconSize:[28, 34], iconAnchor:[14, 34] }),
+      zIndexOffset:1500,
+    }).bindTooltip(`#${index + 1} ${site.name || "Suggested dive site"}`, { direction:"top" })
+      .on("click", () => openDetail(site)).addTo(recommendationLayer);
+    recommendationMarkers.push(marker);
+    bounds.extend([Math.max(-90, lat - 3), Math.max(-180, lng - 3)]);
+    bounds.extend([Math.min(90, lat + 3), Math.min(180, lng + 3)]);
+  });
+  const card = $("diveCard");
+  if (card) { card.hidden = false; card.style.display = "block"; card.classList.remove("collapsed"); }
+  $("liveUI")?.classList.remove("hide");
+  setTimeout(() => { diveMap.invalidateSize(); diveMap.fitBounds(bounds, { padding:[30, 30], maxZoom:7, animate:true }); }, 80);
+}
+export function highlightRecommendedDiveSite(index, on) {
+  const marker = recommendationMarkers[+index]; if (!marker) return;
+  const element = marker.getElement();
+  if (element) element.classList.toggle("highlight", !!on);
+  marker.setZIndexOffset(on ? 3000 : 1500);
+  if (on) marker.openTooltip(); else marker.closeTooltip();
+}
 export function openRecommendedDiveSite(site) {
   if (!site) return;
   showFeatureOnMap(site); openDetail(site);
