@@ -9,7 +9,7 @@ import { S } from "./state.js";
 import { $ } from "./dom.js";
 import { fetchOpenMeteo } from "./providers/openmeteo.js";
 import { normaliseToLow } from "./tide.js";
-import { initSpeciesLayer, syncSpeciesLayer } from "./species.js";
+import { initSpeciesLayer, syncSpeciesLayer } from "./species.js?v=20260717-common-names1";
 
 // Optional: paste your deployed Google Apps Script /exec URL here to load
 // divemap.gr live via the CORS-enabled proxy (see scripts/apps-script/Code.gs).
@@ -18,10 +18,15 @@ const PROXY_URL  = "https://script.google.com/macros/s/AKfycbzbMceHEbQyN1dNAJnPL
 
 const DATA_LS    = "dive_gr_dataset_v1";    // cached full catalogue
 const OSM_LS     = "dive_osm_cache_v1";     // per-location Overpass fallback
+const OSM_AMERICAS_LS = "dive_osm_americas_v7"; // resumable per-tile Americas caches
+const OSM_CACHE_DB = "livetide_dive_cache_v1";
 const LAYER_LS   = "dive_map_layers_v1";     // cached divemap.uk GeoJSON sets
 const WRECK_LS   = "dive_wrecks_v1";         // legacy wreck cache migration path
 const DIVE_UI_LS = "dive_ui_filters_v1";     // selected levels, tags and visible map layers
+const BASEMAP_LS = "dive_basemap_v1";
 const FEATURE_LS = "dive_feature_enrichment_v2";
+const BATHYMETRY_LS = "dive_emodnet_bathymetry_v1";
+const MARINE_REGIONS_LS = "dive_marine_regions_v1";
 const SITE_WEATHER_LS = "dive_site_weather_v3";
 const SITE_WEATHER_DAY_LS = "dive_site_weather_day_v1";
 const COUNTRY_GEO_LS = "dive_country_geocode_v1";
@@ -29,6 +34,18 @@ const FEATURE_SEARCH_LS = "dive_feature_search_v1";
 const FEATURE_HISTORY_LS = "dive_feature_history_v1";
 const FAVOURITES_LS = "dive_site_favourites_v1";
 const TTL        = 7 * 24 * 3600e3;         // refresh cached data weekly
+const OVERPASS_CACHE_TTL = 30 * 24 * 3600e3; // regional OSM dive data changes slowly
+const OVERPASS_ENDPOINTS = [
+  "https://overpass-api.de/api/interpreter",
+  "https://overpass.kumi.systems/api/interpreter",
+  "https://overpass.private.coffee/api/interpreter",
+];
+const OVERPASS_REQUEST_GAP_MS = 10000;
+const OVERPASS_AMERICAS_DATASETS = [
+  { id:"north-america", layer:"osm-north-america", label:"North America", boxes:["24,-170,55,-110", "55,-170,84,-110", "24,-110,55,-50", "55,-110,84,-50"] },
+  { id:"central-america-caribbean", layer:"osm-central-america", label:"Central America and Caribbean", boxes:["5,-120,24,-90", "5,-90,24,-59"] },
+  { id:"south-america", layer:"osm-south-america", label:"South America", boxes:["-30,-92,5,-60", "-30,-60,5,-30", "-60,-92,-30,-60", "-60,-60,-30,-30"] },
+];
 const FEATURE_TTL = 7 * 24 * 3600e3;        // static Divemap detail; live forecasts bypass this cache
 const BASE       = "https://divemap.gr/api/v1";
 const RADIUS_KM  = 90;                       // show dataset sites within this of the point
@@ -36,7 +53,12 @@ const MAX_PAGES  = 60;                       // safety cap for the catalogue pol
 
 let dataset = [];                            // full divemap.gr catalogue
 let diveMap = null, diveCluster = null, meMarker = null, focusMarker = null, recommendationLayer = null;
+let streetBaseLayer = null, satelliteBaseLayer = null;
 let recommendationMarkers = [];
+let recommendationSites = [];
+let diveDataLoading = null;
+let surveyEvidencePromise = null;
+let featureEvidencePromise = null;
 let divePage = 0;
 let activeFeature = null;
 let featureSearchTimer = null;
@@ -52,19 +74,60 @@ const MAP_LAYERS = {
   "tide-station": { label: "Tide station", color: "#1973a5", icon: "∿" },
   lighthouse: { label: "Lighthouse", color: "#b17c00", icon: "✦" },
   sites: { label: "UK dive site", color: "#b23d76", icon: "▽" },
+  "osm-north-america": { label: "North American dive site", color: "#087f8c", icon: "N" },
+  "osm-central-america": { label: "Central American and Caribbean dive site", color: "#b26a24", icon: "C" },
+  "osm-south-america": { label: "South American dive site", color: "#7b4ca0", icon: "S" },
 };
-const mapLayerState = Object.fromEntries(Object.keys(MAP_LAYERS).map(k => [k, { cluster: null, data: null, loading: null, markers: new Map() }]));
+const mapLayerState = Object.fromEntries(Object.keys(MAP_LAYERS).map(k => [k, { cluster: null, data: null, incomplete: false, loading: null, markers: new Map() }]));
 let wreckCluster = null, wreckData = [], wrecksLoaded = false; // retained for old cached wreck loader
 
 const readLS  = k => { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } };
 const writeLS = (k, o) => { try { localStorage.setItem(k, JSON.stringify(o)); } catch (e) {} };
+const readDiveCache = key => new Promise(resolve => {
+  if (!window.indexedDB) { resolve(null); return; }
+  const request = indexedDB.open(OSM_CACHE_DB, 1);
+  request.onupgradeneeded = () => request.result.createObjectStore("catalogues");
+  request.onerror = () => resolve(null);
+  request.onsuccess = () => {
+    const db = request.result, transaction = db.transaction("catalogues", "readonly"), get = transaction.objectStore("catalogues").get(key);
+    get.onsuccess = () => resolve(get.result || null); get.onerror = () => resolve(null); transaction.oncomplete = () => db.close();
+  };
+});
+const writeDiveCache = (key, value) => new Promise(resolve => {
+  writeLS(key, value);
+  if (!window.indexedDB) { resolve(); return; }
+  const request = indexedDB.open(OSM_CACHE_DB, 1);
+  request.onupgradeneeded = () => request.result.createObjectStore("catalogues");
+  request.onerror = () => resolve();
+  request.onsuccess = () => {
+    const db = request.result, transaction = db.transaction("catalogues", "readwrite");
+    transaction.objectStore("catalogues").put(value, key); transaction.oncomplete = () => { db.close(); resolve(); }; transaction.onerror = () => { db.close(); resolve(); };
+  };
+});
 const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const savedDiveUi = readLS(DIVE_UI_LS) || {};
+let satelliteView = readLS(BASEMAP_LS) === "satellite";
 const savedMapLayers = new Set((savedDiveUi.layers || []).filter(k => MAP_LAYERS[k]));
 
 function saveDiveUi() {
   const layers = [...document.querySelectorAll("[data-map-layer]:checked")].map(input => input.dataset.mapLayer);
   writeLS(DIVE_UI_LS, { layers, catalogue: $("diveCatalogueLayer")?.checked !== false });
+}
+
+function setSatelliteView(on) {
+  satelliteView = !!on; writeLS(BASEMAP_LS, satelliteView ? "satellite" : "street");
+  $("diveMap")?.classList.toggle("satellite-view", satelliteView);
+  if (diveMap && streetBaseLayer && satelliteBaseLayer) {
+    if (diveMap.hasLayer(streetBaseLayer)) diveMap.removeLayer(streetBaseLayer);
+    if (diveMap.hasLayer(satelliteBaseLayer)) diveMap.removeLayer(satelliteBaseLayer);
+    (satelliteView ? satelliteBaseLayer : streetBaseLayer).addTo(diveMap).bringToBack();
+  }
+  const button = $("mapBasemapToggle"); if (!button) return;
+  button.textContent = satelliteView ? "▤" : "▧";
+  button.title = satelliteView ? "Street map view" : "Satellite view";
+  button.setAttribute("aria-label", satelliteView ? "Switch to street map view" : "Switch to satellite view");
+  button.setAttribute("aria-pressed", String(satelliteView));
+  document.dispatchEvent(new CustomEvent("livetide:basemap-changed", { detail:{ satellite:satelliteView } }));
 }
 
 function applyDiveCatalogueSelection(on) {
@@ -74,12 +137,15 @@ function applyDiveCatalogueSelection(on) {
     else if (!on && shown) diveMap.removeLayer(diveCluster);
   }
   saveDiveUi();
+  renderRecommendedDiveSites(false);
   divePage = 0;
-  if (diveMap) renderVisibleDives();
+  if (diveMap) requestAnimationFrame(() => { diveMap.invalidateSize({ pan:false }); renderVisibleDives(); });
   else if (!on) { $("diveList").innerHTML = ""; $("diveResultsHead").hidden = true; }
 }
 
-const isDiveSite = site => !!site && !site._wreck && (!site.mapKind || site.mapKind === "sites");
+const isDiveSite = site => !!site && !site._wreck && (
+  !site.mapKind || site.mapKind === "sites" || OVERPASS_AMERICAS_DATASETS.some(source => source.layer === site.mapKind)
+);
 const favouriteKey = site => String(site && (site.sourceId || site.id || `${site.name || "site"}:${(+site.latitude).toFixed(5)},${(+site.longitude).toFixed(5)}`));
 const favouriteRecord = site => ({
   id: site.id || "", sourceId: site.sourceId || "", name: site.name || "Favourite dive site",
@@ -171,23 +237,50 @@ function useDataset(list) {
 }
 function cacheAndUse(list) { writeLS(DATA_LS, { list: list, fetchedAt: Date.now() }); useDataset(list); }
 
+function catalogueKey(site) {
+  const name = String(site?.name || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  return `${name}:${(+site?.latitude).toFixed(3)}:${(+site?.longitude).toFixed(3)}`;
+}
+function mergeCatalogues(...lists) {
+  const merged = [], seenIds = new Set(), seenLocations = new Set();
+  lists.flat().filter(Boolean).forEach(site => {
+    const sourceId = site.sourceId || site.id;
+    const id = sourceId ? `${site.dataSource || "unknown"}:${sourceId}` : "";
+    const location = catalogueKey(site);
+    if ((id && seenIds.has(id)) || seenLocations.has(location)) return;
+    if (id) seenIds.add(id);
+    seenLocations.add(location);
+    merged.push(site);
+  });
+  return merged;
+}
+async function loadEnrichedDiveData() {
+  try {
+    const response = await fetch("data/enriched-divesites.json", { cache:"no-cache" });
+    if (!response.ok) return [];
+    const list = await response.json();
+    return Array.isArray(list) ? list.filter(passesFilters) : [];
+  } catch (error) { return []; }
+}
+
 /* ---- Catalogue: cached in localStorage and only re-pulled weekly (TTL) ---- */
-export async function initDiveData() {
+async function loadInitialDiveData() {
+  const enrichedPromise = loadEnrichedDiveData();
   // 1) fresh cache (< TTL) — no network at all
   const cached = readLS(DATA_LS);
-  if (cached && cached.list && cached.list.length && Date.now() - cached.fetchedAt < TTL) { useDataset(cached.list); return; }
+  if (cached && cached.list && cached.list.length && Date.now() - cached.fetchedAt < TTL) { useDataset(mergeCatalogues(cached.list, await enrichedPromise)); return; }
 
   // 2) CORS-enabled proxy (Google Apps Script), if configured — live data
   if (PROXY_URL) {
     try {
       const r = await fetch(PROXY_URL + "?set=divesites", { cache: "no-cache" });
-      if (r.ok) { const list = await r.json(); if (Array.isArray(list) && list.length) { cacheAndUse(list); return; } }
+      if (r.ok) { const list = await r.json(); if (Array.isArray(list) && list.length) { cacheAndUse(mergeCatalogues(list, await enrichedPromise)); return; } }
     } catch (e) {}
   }
   // 3) same-origin snapshot from scripts/fetch_data.py — avoids browser CORS entirely
   try {
     const r = await fetch("data/divesites.json", { cache: "no-cache" });
-    if (r.ok) { const list = await r.json(); if (Array.isArray(list) && list.length) { cacheAndUse(list); return; } }
+    if (r.ok) { const list = await r.json(); if (Array.isArray(list) && list.length) { cacheAndUse(mergeCatalogues(list, await enrichedPromise)); return; } }
   } catch (e) {}
   // 4) direct live poll — only works if the API sends CORS headers; else OSM fallback
   const out = [];
@@ -202,7 +295,14 @@ export async function initDiveData() {
     totalPages = j.total_pages || 1;
     page++;
   } while (page <= totalPages && page <= MAX_PAGES);
-  if (out.length) cacheAndUse(out);
+  const enriched = await enrichedPromise;
+  if (out.length || enriched.length) cacheAndUse(mergeCatalogues(out, enriched));
+}
+
+export function initDiveData() {
+  if (dataset.length) return Promise.resolve(dataset);
+  if (!diveDataLoading) diveDataLoading = loadInitialDiveData().then(() => dataset).finally(() => { diveDataLoading = null; });
+  return diveDataLoading;
 }
 
 const difficultyLabel = code => ({ OPEN_WATER: "Open Water", ADVANCED_OPEN_WATER: "Advanced", DEEP_NITROX: "Deep / Nitrox", TECHNICAL_DIVING: "Technical" }[code] || code);
@@ -232,6 +332,108 @@ async function overpass(lat, lng) {
     return { id: "osm" + e.id, name: t.name || "Dive site", latitude: e.lat, longitude: e.lon, description: t.description || t.note || "", country: "", difficulty_code: "", tags: [], _osm: true };
   }).filter(d => d.latitude != null);
   store[key] = { list, fetchedAt: Date.now() }; writeLS(OSM_LS, store);
+  return list;
+}
+
+const overpassDataset = kind => OVERPASS_AMERICAS_DATASETS.find(source => source.layer === kind);
+const overpassDatasetCacheKey = source => `${OSM_AMERICAS_LS}:${source.id}`;
+const overpassTileCacheKey = (source, index) => `${overpassDatasetCacheKey(source)}:tile:${index}`;
+
+async function readCachedOsmDataset(source) {
+  if (!source) return null;
+  const key = overpassDatasetCacheKey(source);
+  return readLS(key) || await readDiveCache(key);
+}
+
+async function fetchOverpassTile(box) {
+  const selectors = [
+    `nwr["scuba_diving:divespot"="yes"](${box});`,
+    `nwr["sport"="scuba_diving"]["name"](${box});`,
+    `nwr["scuba_diving:type"](${box});`,
+  ].join("");
+  const query = `[out:json][timeout:45];(${selectors});out center tags;`, failures = [];
+  for (const endpoint of OVERPASS_ENDPOINTS) {
+    const controller = new AbortController(), timer = setTimeout(() => controller.abort(), 55000);
+    try {
+      const response = await fetch(endpoint, {
+        method:"POST", headers:{ "Content-Type":"application/x-www-form-urlencoded;charset=UTF-8", Accept:"application/json" },
+        body:`data=${encodeURIComponent(query)}`, signal:controller.signal,
+      });
+      if (!response.ok) {
+        const error = new Error(`Overpass returned ${response.status}`); error.status = response.status; throw error;
+      }
+      const payload = await response.json();
+      if (payload.remark) {
+        const error = new Error(`Overpass query failed: ${payload.remark}`); error.status = /timed out/i.test(payload.remark) ? 504 : 502; throw error;
+      }
+      return payload.elements || [];
+    } catch (error) { failures.push(error); }
+    finally { clearTimeout(timer); }
+  }
+  const error = failures.at(-1) || new Error("No Overpass endpoint was available");
+  error.status ||= failures.find(failure => failure.status)?.status;
+  throw error;
+}
+
+function normaliseOsmDataset(elements, source) {
+  const seen = new Set();
+  return elements.map(element => {
+    const tags = element.tags || {}, lat = +(element.lat ?? element.center?.lat), lng = +(element.lon ?? element.center?.lon);
+    if (!Number.isFinite(lat) || !Number.isFinite(lng) || tags.amenity === "dive_centre" || tags.shop === "scuba_diving" || tags.club === "scuba_diving") return null;
+    const id = `osm-dive-${element.type}-${element.id}`; if (seen.has(id)) return null; seen.add(id);
+    const details = [tags["scuba_diving:type"], tags["scuba_diving:entry"] && `${tags["scuba_diving:entry"]} entry`, tags.natural, tags.historic].filter(Boolean);
+    return {
+      id, sourceId:`${element.type}/${element.id}`, name:tags.name || tags["name:en"] || "OpenStreetMap dive site",
+      latitude:lat, longitude:lng, region:tags["addr:state"] || tags["addr:province"] || "",
+      country:tags["addr:country"] || "", description:details.join(" · "),
+      max_depth:tags["scuba_diving:maxdepth"] || tags["scuba_diving:depth"] || "",
+      access_instructions:tags["scuba_diving:entry"] || "", mapKind:source.layer,
+      datasetId:source.id, datasetLabel:source.label, dataSource:`OpenStreetMap contributors · ${source.label}`,
+      tags:details, _osm:true,
+    };
+  }).filter(Boolean);
+}
+
+async function loadOsmAmericasDataset(kind) {
+  const source = overpassDataset(kind); if (!source) return [];
+  const cached = await readCachedOsmDataset(source);
+  if (cached?.complete && Date.now() - (cached.fetchedAt || 0) < OVERPASS_CACHE_TTL) {
+    console.info(`LiveTide loaded ${source.label} from cache (${(cached.list || []).length} records)`);
+    return cached.list || [];
+  }
+  const tiles = await Promise.all(source.boxes.map((box, index) => {
+    const key = overpassTileCacheKey(source, index);
+    return Promise.resolve(readLS(key)).then(local => local || readDiveCache(key));
+  }));
+  let requested = false, incomplete = false;
+  for (let index = 0; index < source.boxes.length; index++) {
+    const tileIsFresh = tiles[index]?.complete && Date.now() - (tiles[index].fetchedAt || 0) < OVERPASS_CACHE_TTL;
+    if (tileIsFresh) continue;
+    if (requested) await new Promise(resolve => setTimeout(resolve, OVERPASS_REQUEST_GAP_MS));
+    requested = true;
+    try {
+      const list = normaliseOsmDataset(await fetchOverpassTile(source.boxes[index]), source);
+      const key = overpassTileCacheKey(source, index), value = { list, fetchedAt:Date.now(), complete:true, bbox:source.boxes[index] };
+      await writeDiveCache(key, value);
+      const persisted = readLS(key) || await readDiveCache(key);
+      if (!persisted?.complete) throw new Error(`Could not persist ${key}`);
+      tiles[index] = value;
+      console.info(`LiveTide cached ${source.label} tile ${index + 1}/${source.boxes.length} (${list.length} records)`);
+    } catch (error) {
+      console.warn(`LiveTide Overpass ${source.label} tile ${index + 1}/${source.boxes.length} failed; continuing with remaining tiles`, error);
+      incomplete = true;
+      continue;
+    }
+  }
+  incomplete ||= tiles.some(tile => !tile?.complete);
+  const seen = new Set(), list = tiles.flatMap(tile => tile?.list || []).filter(item => {
+    const key = item.id || item.sourceId; if (seen.has(key)) return false; seen.add(key); return true;
+  });
+  if (!incomplete) {
+    const cacheKey = overpassDatasetCacheKey(source), value = { list, fetchedAt:Date.now(), complete:true };
+    await writeDiveCache(cacheKey, value);
+    console.info(`LiveTide cached complete ${source.label} dataset (${list.length} records)`);
+  } else Object.defineProperty(list, "_incomplete", { value:true });
   return list;
 }
 
@@ -418,7 +620,9 @@ function renderDiveMap(all, near, preserveView = false) {
     // proxy layers can be added.
     diveMap.setView([c.lat, c.lng], 11);
     diveMap.on("moveend", () => { divePage = 0; renderVisibleDives(); });
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 18 }).addTo(diveMap);
+    streetBaseLayer = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom:18, attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' });
+    satelliteBaseLayer = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", { maxZoom:19, attribution:'Imagery &copy; Esri and contributors' });
+    (satelliteView ? satelliteBaseLayer : streetBaseLayer).addTo(diveMap);
     // cluster sites when zoomed out; they split apart as you zoom in
     diveCluster = (typeof L.markerClusterGroup === "function")
       ? L.markerClusterGroup({ maxClusterRadius: 45, showCoverageOnHover: false })
@@ -440,7 +644,10 @@ function renderDiveMap(all, near, preserveView = false) {
       .bindTooltip(s.name).on("click", () => openDetail(s)).addTo(diveCluster);
     diveMarkers.set(String(s.id), marker);
   });
-  document.querySelectorAll("[data-map-layer]").forEach(input => toggleMapLayer(input.dataset.mapLayer, input.checked));
+  const layerInputs = [...document.querySelectorAll("[data-map-layer]")];
+  const overpassInputs = layerInputs.filter(input => overpassDataset(input.dataset.mapLayer));
+  void Promise.allSettled(layerInputs.filter(input => !overpassInputs.includes(input)).map(input => toggleMapLayer(input.dataset.mapLayer, input.checked)))
+    .finally(() => overpassInputs.forEach(input => { if (input.checked) void toggleMapLayer(input.dataset.mapLayer, true); }));
   const pts = [[c.lat, c.lng]];
   near.forEach(s => { const la = +s.latitude, lo = +s.longitude; if (!isNaN(la) && !isNaN(lo)) pts.push([la, lo]); });
   setTimeout(() => {
@@ -537,9 +744,10 @@ async function toggleWrecks(on) {
 /* ---- Additional divemap.uk proxy layers ---- */
 async function loadMapLayer(kind) {
   const state = mapLayerState[kind];
-  if (state.data && state.data.length) return state.data;
+  if (state.data && state.data.length && !state.incomplete) return state.data;
   if (state.loading) return state.loading;
   state.loading = (async () => {
+    if (overpassDataset(kind)) return loadOsmAmericasDataset(kind);
     // Keep the checked-in UKHO data as the preferred wreck source.
     if (kind === "wrecks") {
       try {
@@ -563,6 +771,7 @@ async function loadMapLayer(kind) {
   })();
   const loaded = await state.loading;
   state.data = loaded && loaded.length ? loaded : null;
+  state.incomplete = !!loaded?._incomplete;
   state.loading = null;
   return loaded || [];
 }
@@ -571,7 +780,11 @@ async function toggleMapLayer(kind, on) {
   if (!diveMap) return;
   const state = mapLayerState[kind], style = MAP_LAYERS[kind];
   if (!state) return;
-  if (!on) { if (state.cluster) diveMap.removeLayer(state.cluster); renderVisibleDives(); return; }
+  if (!on) {
+    if (state.cluster) diveMap.removeLayer(state.cluster);
+    requestAnimationFrame(() => { diveMap.invalidateSize({ pan:false }); renderVisibleDives(); });
+    return;
+  }
   const list = await loadMapLayer(kind);
   const input = document.querySelector(`[data-map-layer="${kind}"]`);
   if (!input || !input.checked) return;
@@ -599,6 +812,11 @@ async function toggleMapLayer(kind, on) {
 
 function reconcileMapLayerUi() {
   if (!diveMap) return;
+  if (diveCluster) {
+    const checked = $("diveCatalogueLayer")?.checked !== false, shown = diveMap.hasLayer(diveCluster);
+    if (checked && !shown) diveMap.addLayer(diveCluster);
+    else if (!checked && shown) diveMap.removeLayer(diveCluster);
+  }
   Object.entries(mapLayerState).forEach(([kind, state]) => {
     if (!state.cluster) return;
     const checked = !!document.querySelector(`[data-map-layer="${kind}"]`)?.checked;
@@ -612,9 +830,25 @@ function reconcileMapLayerUi() {
   });
 }
 
+function syncAmericasLayerToggle() {
+  const button = $("americasLayerToggle"); if (!button) return;
+  const active = OVERPASS_AMERICAS_DATASETS.some(source => document.querySelector(`[data-map-layer="${source.layer}"]`)?.checked);
+  button.classList.toggle("on", active);
+  button.setAttribute("aria-pressed", String(active));
+}
+
+function setAmericasLayerModal(open) {
+  const modal = $("americasLayerModal"), button = $("americasLayerToggle"); if (!modal || !button) return;
+  modal.hidden = !open;
+  button.setAttribute("aria-expanded", String(open));
+  if (open) modal.querySelector("input")?.focus();
+  else button.focus();
+}
+
 async function applyMapLayerSelection(input) {
   appliedLayerControls.set(input.dataset.mapLayer, input.checked);
   divePage = 0; saveDiveUi();
+  renderRecommendedDiveSites(false);
   reconcileMapLayerUi();
   input.closest("label")?.classList.add("loading");
   const source = $("diveSrc"), kind = input.dataset.mapLayer, label = MAP_LAYERS[kind]?.label || kind;
@@ -628,6 +862,7 @@ async function applyMapLayerSelection(input) {
   finally {
     input.closest("label")?.classList.remove("loading");
     reconcileMapLayerUi();
+    if (overpassDataset(kind)) syncAmericasLayerToggle();
   }
 }
 
@@ -675,6 +910,10 @@ function openDetail(site) {
   $("diveModal").hidden = false;
   startCountryEnrichment(site);
   startFeatureEnrichment(site);
+  startSurveyEvidenceEnrichment(site);
+  startFeatureEvidenceEnrichment(site);
+  startBathymetryEnrichment(site);
+  startMarineRegionsEnrichment(site);
   organiseCardSources();
 }
 
@@ -685,7 +924,10 @@ export async function openSharedCard(input = location.href) {
   let site = null;
   if (kind === "dive") site = dataset.find(item => String(item.id) === id);
   else if (mapLayerState[kind]) {
-    const list = await loadMapLayer(kind);
+    const source = overpassDataset(kind);
+    const enabled = !!document.querySelector(`[data-map-layer="${kind}"]`)?.checked;
+    const cached = source && !enabled ? await readCachedOsmDataset(source) : null;
+    const list = source && !enabled ? cached?.list || [] : await loadMapLayer(kind);
     site = list.find(item => String(item.sourceId || item.id) === id || String(item.id) === id);
   }
   if (!site) {
@@ -704,6 +946,7 @@ function section(title, body) {
 }
 function sourceUrl(source) {
   const value = String(source || "").toLowerCase();
+  if (value.includes("opendivemap")) return "https://opendivemap.com/";
   if (value.includes("divemap.uk")) return "https://divemap.uk/";
   if (value.includes("divemap.gr")) return "https://divemap.gr/";
   if (value.includes("openstreetmap")) return "https://www.openstreetmap.org/";
@@ -716,6 +959,22 @@ function sourceBlock(source, label = "Data source") {
   const href = sourceUrl(source);
   const value = href ? `<a href="${href}" target="_blank" rel="noopener">${esc(source)} &nearr;</a>` : `<b>${esc(source)}</b>`;
   return `<div class="dv-source"><span>${esc(label)}</span>${value}</div>`;
+}
+function sourceMetadataBlock(site) {
+  const attribution = String(site?.attribution || "").trim(), licence = String(site?.licence || "").trim();
+  if (!attribution && !licence && !site?.sourceUrl) return "";
+  const link = site.sourceUrl ? `<a href="${esc(site.sourceUrl)}" target="_blank" rel="noopener">Open source record ↗</a>` : "";
+  const reference = site.referenceUrl ? `<a href="${esc(site.referenceUrl)}" target="_blank" rel="noopener">Open site reference ↗</a>` : "";
+  const review = site.rightsReview ? `<small>Reuse includes third-party material and remains flagged for rights confirmation.</small>` : "";
+  return `<div class="enrichment-section source-record-metadata"><h3>Dataset provenance</h3><div class="feature-details">` +
+    (attribution ? `<div><span>Attribution</span><b>${esc(attribution)}</b></div>` : "") +
+    (licence ? `<div><span>Licence</span><b>${esc(licence)}</b></div>` : "") +
+    (site.sourceUpdatedAt ? `<div><span>Source updated</span><b>${esc(new Date(site.sourceUpdatedAt).toLocaleDateString())}</b></div>` : "") +
+    (site.publicAccess === true ? `<div><span>Source access status</span><b>Public access listed</b></div>` : "") +
+    (site.sourceProject ? `<div><span>Source project</span><b>${esc(site.sourceProject)}</b></div>` : "") +
+    (site.upstreamDataSource ? `<div><span>Upstream compilation</span><b>${esc(site.upstreamDataSource)}</b></div>` : "") +
+    (Number.isFinite(Number(site.relativeImportance)) ? `<div><span>Source importance</span><b>${esc(site.relativeImportance)}</b></div>` : "") +
+    `</div>${review}${link}${reference}</div>`;
 }
 function organiseCardSources() {
   const body = $("modalBody"); if (!body) return;
@@ -861,7 +1120,7 @@ function renderDiveSiteModal(s) {
   const enrichmentId = s.sourceId || (s.mapProperties && s.mapProperties.id) || "";
   const chip = text => `<span>${esc(text)}</span>`;
   const stat = (icon, label, value) => value ? `<div class="dv-stat"><i>${icon}</i><span>${esc(label)}</span><b>${esc(value)}</b></div>` : "";
-  const stats = stat("↧", "Maximum depth", s.max_depth ? s.max_depth + " m" : "") + stat("★", "Rating", rating) + stat("⌖", "From selected spot", distance == null ? "" : distance < 1 ? Math.round(distance * 1000) + " m" : distance.toFixed(1) + " km") + stat("➤", "Shore direction", s.shore_direction ? Math.round(s.shore_direction) + "°" : "");
+  const stats = stat("↧", "Maximum depth", s.max_depth ? s.max_depth + " m" : "") + stat("★", "Rating", rating) + stat("⌖", "From selected spot", distance == null ? "" : distance < 1 ? Math.round(distance * 1000) + " m" : distance.toFixed(1) + " km") + stat("➤", "Shore direction", s.shore_direction ? Math.round(s.shore_direction) + "°" : "") + stat("·", "Route markers", s.markerCount ? String(s.markerCount) : "");
   const comments = (s.comments || []).map(c =>
     `<div class="dv-comment"><b>${esc((c.user && c.user.username) || "diver")}</b>${c.user && c.user.diving_certification ? ` · <span class="dv-cert">${esc(c.user.diving_certification)}</span>` : ""}<p>${esc(c.content)}</p></div>`).join("");
   $("modalBody").innerHTML =
@@ -876,11 +1135,21 @@ function renderDiveSiteModal(s) {
     (tags.length > 3 ? `<div class="dv-sec"><h3>Site features</h3><div class="dv-chips">${tags.map(t => `<span class="dv-chip">${esc(t)}</span>`).join("")}</div></div>` : "") +
     (comments ? `<div class="dv-sec"><h3>Reviews</h3>${comments}</div>` : "") +
     (enrichmentId && s.mapKind === "sites" ? `<div class="feature-enrichment" id="featureEnrichment" data-feature-id="${esc(enrichmentId)}"><div class="enrichment-loading"><i></i>Loading live Divemap details…</div></div>` : "") +
+    (enrichmentId && source.includes("OpenDiveMap") ? `<div class="feature-enrichment" id="openDiveMapEnrichment" data-feature-id="${esc(enrichmentId)}"><div class="enrichment-loading"><i></i>Loading OpenDiveMap details…</div></div>` : "") +
+    `<div class="feature-enrichment survey-evidence-enrichment" id="surveyEvidenceEnrichment"><div class="enrichment-loading"><i></i>Checking nearby reef surveys…</div></div>` +
+    `<div class="feature-enrichment feature-evidence-enrichment" id="featureEvidenceEnrichment"><div class="enrichment-loading"><i></i>Checking nearby underwater features…</div></div>` +
+    `<div class="feature-enrichment bathymetry-enrichment" id="bathymetryEnrichment"><div class="enrichment-loading"><i></i>Checking seabed depth…</div></div>` +
+    `<div class="feature-enrichment marine-regions-enrichment" id="marineRegionsEnrichment"><div class="enrichment-loading"><i></i>Checking marine geography…</div></div>` +
+    sourceMetadataBlock(s) +
     sourceBlock(source);
 }
 
 function startFeatureEnrichment(site) {
   const id = site && (site.sourceId || (site.mapProperties && site.mapProperties.id));
+  if (id && String(site.dataSource || "").includes("OpenDiveMap")) {
+    loadOpenDiveMapEnrichment(String(id));
+    return;
+  }
   if (!id || !site.mapKind) return;
   let target = $("featureEnrichment");
   if (!target) {
@@ -891,6 +1160,178 @@ function startFeatureEnrichment(site) {
   target.dataset.featureId = String(id);
   target.innerHTML = `<div class="enrichment-loading"><i></i>Loading live Divemap details…</div>`;
   loadFeatureEnrichment(String(id));
+}
+
+function renderOpenDiveMapEnrichment(feature, history, fetchedAt) {
+  const p = feature?.properties || {}, changes = Array.isArray(history) ? history.length : 0;
+  const tags = p.tags && typeof p.tags === "object" ? p.tags : {};
+  const aliases = Object.entries(tags).filter(([key]) => key === "alt_name" || key === "old_name" || key.startsWith("names_"))
+    .flatMap(([, value]) => Array.isArray(value) ? value : String(value || "").split(";")).filter(Boolean);
+  const details = [
+    ["Environment", p.environment], ["Entry", p.entry],
+    ["Maximum depth", p.max_depth != null ? `${p.max_depth} m` : ""],
+    ["Sea", p.sea_name], ["Region", p.region_name || p.region_code],
+    ["Last source update", p.updated_at ? new Date(p.updated_at).toLocaleString() : ""],
+    ["Recorded revisions", changes || ""],
+  ].filter(([, value]) => value !== "" && value != null);
+  const topologies = Array.isArray(p.topologies) ? p.topologies : [];
+  return `<div class="enrichment-head"><span>OpenDiveMap enrichment</span><b>Checked ${esc(new Date(fetchedAt).toLocaleString())}</b></div>` +
+    (details.length ? `<div class="feature-details">${details.map(([label, value]) => `<div><span>${esc(label)}</span><b>${esc(value)}</b></div>`).join("")}</div>` : "") +
+    (topologies.length ? `<div class="dv-sec"><h3>Site topology</h3><div class="dv-chips">${topologies.map(value => `<span class="dv-chip">${esc(String(value).replaceAll("_", " "))}</span>`).join("")}</div></div>` : "") +
+    (aliases.length ? `<div class="dv-sec"><h3>Source aliases</h3><p>${esc([...new Set(aliases)].join(", "))}</p></div>` : "") +
+    `<div class="enrichment-sources"><span>Source record</span><a href="https://opendivemap.com/sites/${encodeURIComponent(p.id || "")}" target="_blank" rel="noopener">OpenDiveMap ↗</a></div>`;
+}
+
+async function loadOpenDiveMapEnrichment(id) {
+  const target = $("openDiveMapEnrichment");
+  if (!target || target.dataset.featureId !== id) return;
+  const cacheKey = `opendivemap:${id}`, store = readLS(FEATURE_LS) || {}, cached = store[cacheKey];
+  if (cached && Date.now() - cached.savedAt < FEATURE_TTL) {
+    target.innerHTML = renderOpenDiveMapEnrichment(cached.feature, cached.history, cached.fetchedAt);
+    organiseCardSources(); return;
+  }
+  try {
+    const base = `https://api.opendivemap.com/v1/sites/${encodeURIComponent(id)}`;
+    const [featureResponse, historyResponse] = await Promise.all([fetch(base), fetch(base + "/history")]);
+    if (!featureResponse.ok) throw new Error(`OpenDiveMap returned ${featureResponse.status}`);
+    const feature = await featureResponse.json();
+    const history = historyResponse.ok ? await historyResponse.json() : [];
+    const current = $("openDiveMapEnrichment"); if (!current || current.dataset.featureId !== id) return;
+    const value = { feature, history:Array.isArray(history) ? history : [], fetchedAt:Date.now(), savedAt:Date.now() };
+    store[cacheKey] = value; writeLS(FEATURE_LS, store);
+    current.innerHTML = renderOpenDiveMapEnrichment(value.feature, value.history, value.fetchedAt);
+    organiseCardSources();
+  } catch (error) {
+    const current = $("openDiveMapEnrichment");
+    if (current && current.dataset.featureId === id) current.innerHTML = `<div class="enrichment-unavailable">OpenDiveMap details are temporarily unavailable. The cached catalogue record is still shown above.</div>`;
+  }
+}
+
+function loadSurveyEvidence() {
+  if (!surveyEvidencePromise) surveyEvidencePromise = fetch("data/dive-survey-evidence.json")
+    .then(response => response.ok ? response.json() : [])
+    .then(list => Array.isArray(list) ? list : [])
+    .catch(() => []);
+  return surveyEvidencePromise;
+}
+
+async function startSurveyEvidenceEnrichment(site) {
+  const target = $("surveyEvidenceEnrichment"), latitude = +site?.latitude, longitude = +site?.longitude;
+  if (!target || !Number.isFinite(latitude) || !Number.isFinite(longitude)) return;
+  const evidence = await loadSurveyEvidence(), current = $("surveyEvidenceEnrichment");
+  if (!current) return;
+  const nearby = evidence.map(record => ({ record, distance:km(latitude, longitude, +record.latitude, +record.longitude) }))
+    .filter(item => item.distance <= 50).sort((a, b) => a.distance - b.distance).slice(0, 5);
+  if (!nearby.length) { current.remove(); return; }
+  current.innerHTML = `<div class="enrichment-head"><span>Nearby reef survey evidence</span><b>${nearby.length} station${nearby.length === 1 ? "" : "s"} within 50 km</b></div>` +
+    `<div class="related-list">${nearby.map(({ record, distance }) => `<div><b>${esc(record.name)}</b><span>${distance < 1 ? `${Math.round(distance * 1000)} m` : `${distance.toFixed(1)} km`} · ${esc([record.area, record.ecoregion, record.programs].filter(Boolean).join(" · "))}</span></div>`).join("")}</div>` +
+    `<div class="enrichment-sources"><span>Survey evidence only, not proof of public dive access</span><a href="https://www.data.gov.au/data/dataset/imos-national-reef-monitoring-network-sub-facility-site-information" target="_blank" rel="noopener">IMOS National Reef Monitoring Network ↗</a><small>Formal dataset licence requires confirmation.</small></div>`;
+  organiseCardSources();
+}
+
+function loadFeatureEvidence() {
+  if (!featureEvidencePromise) featureEvidencePromise = fetch("data/dive-feature-evidence.json")
+    .then(response => response.ok ? response.json() : [])
+    .then(payload => {
+      if (Array.isArray(payload)) return payload;
+      const sources = payload?.sources || {}, records = Array.isArray(payload?.records) ? payload.records : [];
+      return records.map(record => ({ ...(sources[record.sourceKey] || {}), ...record }));
+    })
+    .catch(() => []);
+  return featureEvidencePromise;
+}
+
+async function startFeatureEvidenceEnrichment(site) {
+  const target = $("featureEvidenceEnrichment"), latitude = +site?.latitude, longitude = +site?.longitude;
+  if (!target || !Number.isFinite(latitude) || !Number.isFinite(longitude)) { target?.remove(); return; }
+  const evidence = await loadFeatureEvidence(), current = $("featureEvidenceEnrichment");
+  if (!current) return;
+  const nearby = evidence.map(record => ({ record, distance:km(latitude, longitude, +record.latitude, +record.longitude) }))
+    .filter(item => item.distance <= 30).sort((a, b) => a.distance - b.distance).slice(0, 5);
+  if (!nearby.length) { current.remove(); return; }
+  const sources = [...new Map(nearby.map(({ record }) => [record.dataSource, record])).values()];
+  current.innerHTML = `<div class="enrichment-head"><span>Nearby underwater features</span><b>${nearby.length} within 30 km</b></div>` +
+    `<div class="related-list">${nearby.map(({ record, distance }) => {
+      const detail = [distance < 1 ? `${Math.round(distance * 1000)} m` : `${distance.toFixed(1)} km`, record.featureType, record.sourceOrigin,
+        record.whenLost && `lost ${record.whenLost}`, record.deploymentDate && `deployed ${record.deploymentDate}`,
+        record.materialCategory || record.materialDescription, record.depthFeet && `${record.depthFeet} ft depth`,
+        record.depthLabel, record.reliefFeet && `${record.reliefFeet} ft relief`, record.chart && `chart ${record.chart}`,
+        record.positionQuality && `${record.positionQuality} position quality`, record.protection].filter(Boolean).join(" · ");
+      const name = record.referenceUrl ? `<a href="${esc(record.referenceUrl)}" target="_blank" rel="noopener">${esc(record.name)}</a>` : `<b>${esc(record.name)}</b>`;
+      return `<div>${name}<span>${esc(detail)}</span></div>`;
+    }).join("")}</div>` +
+    `<div class="enrichment-sources"><span>Feature evidence only; verify protection, access, position and diving safety independently. Not for navigation.</span>` +
+    sources.map(record => record.sourceUrl ? `<a href="${esc(record.sourceUrl)}" target="_blank" rel="noopener">${esc(record.dataSource)} ↗</a>` : `<b>${esc(record.dataSource)}</b>`).join("") +
+    sources.map(record => `<small>${esc([record.licence, record.attribution].filter(Boolean).join(" · "))}</small>`).join("") + `</div>`;
+  organiseCardSources();
+}
+
+function emodnetBathymetryEligible(latitude, longitude) {
+  return latitude >= 24 && latitude <= 72 && longitude >= -36 && longitude <= 43;
+}
+
+async function startBathymetryEnrichment(site) {
+  const target = $("bathymetryEnrichment"), latitude = +site?.latitude, longitude = +site?.longitude;
+  if (!target || !Number.isFinite(latitude) || !Number.isFinite(longitude) || !emodnetBathymetryEligible(latitude, longitude) || !PROXY_URL) {
+    target?.remove(); return;
+  }
+  const key = `${latitude.toFixed(4)},${longitude.toFixed(4)}`, store = readLS(BATHYMETRY_LS) || {}, cached = store[key];
+  let result = cached && Date.now() - cached.savedAt < 30 * 24 * 3600e3 ? cached.result : null;
+  if (!result) try {
+    const response = await fetch(`${PROXY_URL}?bathymetry=${encodeURIComponent(`${latitude},${longitude}`)}`, { cache:"no-cache" });
+    const value = response.ok ? await response.json() : null;
+    if (value && !Array.isArray(value) && !value.error && Number.isFinite(+value.depthMetres)) {
+      result = value; store[key] = { result:value, savedAt:Date.now() }; writeLS(BATHYMETRY_LS, store);
+    }
+  } catch (error) {}
+  const current = $("bathymetryEnrichment"); if (!current) return;
+  if (!result) { current.remove(); return; }
+  const sample = result.sample || {}, reference = sample.reference || {};
+  const range = Number.isFinite(+sample.min) && Number.isFinite(+sample.max) ? `${Math.abs(+sample.min).toFixed(1)}–${Math.abs(+sample.max).toFixed(1)} m` : "";
+  current.innerHTML = `<div class="enrichment-head"><span>Seabed depth</span><b>EMODnet DTM</b></div><div class="feature-details">` +
+    `<div><span>Modelled depth</span><b>${(+result.depthMetres).toFixed(1)} m</b></div>` +
+    (range ? `<div><span>Cell range</span><b>${esc(range)}</b></div>` : "") +
+    (sample.stdev != null ? `<div><span>Cell variation</span><b>${Math.abs(+sample.stdev).toFixed(2)} m</b></div>` : "") +
+    (reference.identifier ? `<div><span>Survey reference</span><b>${esc(reference.identifier)}</b></div>` : "") +
+    `</div><div class="enrichment-sources"><span>Modelled seabed cell, not a safe diving depth or navigation value</span><a href="${esc(reference.metadata_url || result.sourceUrl || "https://rest.emodnet-bathymetry.eu/")}" target="_blank" rel="noopener">EMODnet Bathymetry ↗</a></div>`;
+  organiseCardSources();
+}
+
+const MARINE_REGION_TYPES = [
+  "Bay", "Gulf", "Strait", "Channel", "Sound", "Sea", "Ocean", "IHO Sea Area",
+  "Marine Ecoregion of the World (MEOW)", "Large Marine Ecosystem", "Marine Province",
+  "Marine Region", "EEZ",
+];
+
+async function startMarineRegionsEnrichment(site) {
+  const target = $("marineRegionsEnrichment"), latitude = +site?.latitude, longitude = +site?.longitude;
+  if (!target || !Number.isFinite(latitude) || !Number.isFinite(longitude)) { target?.remove(); return; }
+  const key = `${latitude.toFixed(4)},${longitude.toFixed(4)}`;
+  const store = readLS(MARINE_REGIONS_LS) || {}, cached = store[key];
+  let records = cached && Date.now() - cached.savedAt < 30 * 24 * 3600e3 ? cached.records : null;
+  if (!records) try {
+    const url = `https://www.marineregions.org/rest/getGazetteerRecordsByLatLong.json/${latitude}/${longitude}/`;
+    const response = await fetch(url, { headers:{ Accept:"application/json" } });
+    const value = response.ok ? await response.json() : null;
+    if (Array.isArray(value)) {
+      records = value;
+      store[key] = { records:value, savedAt:Date.now() };
+      writeLS(MARINE_REGIONS_LS, store);
+    }
+  } catch (error) {}
+  const current = $("marineRegionsEnrichment"); if (!current) return;
+  if (!records) { current.remove(); return; }
+  const existing = new Set([site.sea, site.region].filter(Boolean).map(value => String(value).trim().toLowerCase()));
+  const selected = records
+    .filter(record => MARINE_REGION_TYPES.includes(record.placeType) && record.preferredGazetteerNameLang === "English")
+    .filter(record => record.status !== "synonym" && !existing.has(String(record.preferredGazetteerName || "").trim().toLowerCase()))
+    .filter((record, index, list) => list.findIndex(item => item.MRGID === record.MRGID && item.placeType === record.placeType) === index)
+    .slice(0, 6);
+  if (!selected.length) { current.remove(); return; }
+  current.innerHTML = `<div class="enrichment-head"><span>Marine geography</span><b>Marine Regions</b></div><div class="feature-details">` +
+    selected.map(record => `<div><span>${esc(record.placeType)}</span><b>${esc(record.preferredGazetteerName)}</b></div>`).join("") +
+    `</div><div class="enrichment-sources"><span>Geographic context only; not for legal or navigational use</span><a href="https://www.marineregions.org/" target="_blank" rel="noopener">Marine Regions (VLIZ) ↗</a><small>CC BY 4.0</small></div>`;
+  organiseCardSources();
 }
 
 const enrichedValue = field => field && field.value != null ? String(field.value) : "";
@@ -1339,8 +1780,13 @@ function showFeatureOnMap(site) {
 }
 
 export async function getDiveCatalogue() {
-  const ukSites = await loadMapLayer("sites"), seen = new Set();
-  return [...dataset, ...ukSites].filter(site => {
+  const [, ukSites, cachedDatasets] = await Promise.all([
+    initDiveData(), loadMapLayer("sites"), Promise.all(OVERPASS_AMERICAS_DATASETS.map(readCachedOsmDataset)),
+  ]);
+  const osmAmericas = OVERPASS_AMERICAS_DATASETS.flatMap((source, index) =>
+    mapLayerState[source.layer].data || cachedDatasets[index]?.list || []);
+  const seen = new Set();
+  return [...dataset, ...(S.dives || []), ...ukSites, ...osmAmericas].filter(site => {
     if (!isDiveSite(site) || !passesFilters(site)) return false;
     const source = site.mapKind || (site._osm ? "osm" : "divemap.gr");
     const id = site.sourceId || site.id;
@@ -1349,29 +1795,34 @@ export async function getDiveCatalogue() {
     seen.add(key); return true;
   });
 }
-export function showRecommendedDiveSites(sites) {
+function renderRecommendedDiveSites(fitView = false) {
   if (!diveMap || typeof L === "undefined") return;
   if (recommendationLayer) recommendationLayer.clearLayers();
   else recommendationLayer = L.layerGroup().addTo(diveMap);
-  recommendationMarkers = [];
-  const valid = (sites || []).filter(site => Number.isFinite(+site.latitude) && Number.isFinite(+site.longitude)).slice(0, 10);
+  recommendationMarkers = Array(recommendationSites.length).fill(null);
+  const valid = recommendationSites.map((site, index) => ({ site, index })).filter(({ site }) => Number.isFinite(+site.latitude) && Number.isFinite(+site.longitude));
   if (!valid.length) return;
   const bounds = L.latLngBounds([]);
-  valid.forEach((site, index) => {
+  valid.forEach(({ site, index }) => {
     const lat = +site.latitude, lng = +site.longitude;
     const marker = L.marker([lat, lng], {
       icon:L.divIcon({ className:"encounter-map-marker", html:`<span>${index + 1}</span>`, iconSize:[28, 34], iconAnchor:[14, 34] }),
       zIndexOffset:1500,
     }).bindTooltip(`#${index + 1} ${site.name || "Suggested dive site"}`, { direction:"top" })
       .on("click", () => openDetail(site)).addTo(recommendationLayer);
-    recommendationMarkers.push(marker);
+    recommendationMarkers[index] = marker;
     bounds.extend([Math.max(-90, lat - 3), Math.max(-180, lng - 3)]);
     bounds.extend([Math.min(90, lat + 3), Math.min(180, lng + 3)]);
   });
   const card = $("diveCard");
   if (card) { card.hidden = false; card.style.display = "block"; card.classList.remove("collapsed"); }
   $("liveUI")?.classList.remove("hide");
-  setTimeout(() => { diveMap.invalidateSize(); diveMap.fitBounds(bounds, { padding:[30, 30], maxZoom:7, animate:true }); }, 80);
+  if (fitView) setTimeout(() => { diveMap.invalidateSize(); diveMap.fitBounds(bounds, { padding:[30, 30], maxZoom:7, animate:true }); }, 80);
+}
+
+export function showRecommendedDiveSites(sites) {
+  recommendationSites = (sites || []).slice(0, 10);
+  renderRecommendedDiveSites(recommendationSites.length > 0);
 }
 export function highlightRecommendedDiveSite(index, on) {
   const marker = recommendationMarkers[+index]; if (!marker) return;
@@ -1379,6 +1830,18 @@ export function highlightRecommendedDiveSite(index, on) {
   if (element) element.classList.toggle("highlight", !!on);
   marker.setZIndexOffset(on ? 3000 : 1500);
   if (on) marker.openTooltip(); else marker.closeTooltip();
+}
+export function focusRecommendedDiveObservations(site, cells) {
+  if (!diveMap || typeof L === "undefined" || !site || !cells?.length) return false;
+  const bounds = L.latLngBounds([[+site.latitude, +site.longitude]]);
+  cells.slice(0, 4).forEach(cell => {
+    bounds.extend([cell.lat, cell.lng]);
+    bounds.extend([cell.lat + cell.size, cell.lng + cell.size]);
+  });
+  const card = $("diveCard");
+  if (card) { card.hidden = false; card.style.display = "block"; card.classList.remove("collapsed"); }
+  setTimeout(() => { diveMap.invalidateSize(); diveMap.fitBounds(bounds, { padding:[45, 45], maxZoom:7, animate:true }); }, 60);
+  return true;
 }
 export function openRecommendedDiveSite(site) {
   if (!site) return;
@@ -1411,9 +1874,9 @@ export function initDive() {
   const catalogueToggle = $("diveCatalogueLayer");
   if (catalogueToggle) {
     catalogueToggle.checked = savedDiveUi.catalogue !== false;
-    catalogueToggle.onchange = () => applyDiveCatalogueSelection(catalogueToggle.checked);
   }
   if ($("diveFullscreen")) $("diveFullscreen").onclick = () => setMapFullscreen(!$("diveCard").classList.contains("map-fullscreen"));
+  if ($("mapBasemapToggle")) { $("mapBasemapToggle").onclick = () => setSatelliteView(!satelliteView); setSatelliteView(satelliteView); }
   const filterToggle = $("diveFiltersToggle"), filterBody = $("diveFiltersBody");
   if (filterToggle && filterBody) filterToggle.onclick = () => {
     const open = filterBody.hidden;
@@ -1428,8 +1891,25 @@ export function initDive() {
   document.querySelectorAll("[data-map-layer]").forEach(input => {
     input.checked = savedMapLayers.has(input.dataset.mapLayer);
     appliedLayerControls.set(input.dataset.mapLayer, input.checked);
-    input.onchange = e => applyMapLayerSelection(e.target);
   });
+  syncAmericasLayerToggle();
+  const americasModal = $("americasLayerModal");
+  if ($("americasLayerToggle")) $("americasLayerToggle").onclick = () => setAmericasLayerModal(true);
+  if ($("americasLayerClose")) $("americasLayerClose").onclick = () => setAmericasLayerModal(false);
+  if ($("americasLayerDone")) $("americasLayerDone").onclick = () => setAmericasLayerModal(false);
+  if (americasModal) {
+    americasModal.onchange = event => {
+      const input = event.target;
+      if (input?.matches?.("[data-map-layer]") && overpassDataset(input.dataset.mapLayer)) void applyMapLayerSelection(input);
+    };
+    americasModal.addEventListener("click", event => { if (event.target === americasModal) setAmericasLayerModal(false); });
+  }
+  const layerControls = $("diveFiltersBody");
+  if (layerControls) layerControls.onchange = event => {
+    const input = event.target;
+    if (input === catalogueToggle) applyDiveCatalogueSelection(input.checked);
+    else if (input?.matches?.("[data-map-layer]")) applyMapLayerSelection(input);
+  };
   clearInterval(layerControlTimer);
   layerControlTimer = setInterval(watchMapLayerControls, 300);
   if ($("featureSearch")) $("featureSearch").addEventListener("input", () => {
@@ -1506,6 +1986,7 @@ export function initDive() {
   if ($("mediaModal")) $("mediaModal").addEventListener("click", e => { if (e.target.id === "mediaModal") closeMediaModal(); });
   document.addEventListener("keydown", e => {
     if (e.key !== "Escape") return;
+    if ($("americasLayerModal") && !$("americasLayerModal").hidden) { setAmericasLayerModal(false); return; }
     if ($("mediaModal") && !$("mediaModal").hidden) { closeMediaModal(); return; }
     if ($("diveCard").classList.contains("map-fullscreen")) setMapFullscreen(false);
     else closeDetail();

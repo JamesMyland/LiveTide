@@ -15,6 +15,7 @@
  *   ?set=wrecks | unknown | launch | tide-station | lighthouse | sites
  *                    -> corresponding divemap.uk public GeoJSON layer
  *   ?search=<name>    -> compact wreck and dive-site name matches for key-up search
+ *   ?bathymetry=<lat>,<lng> -> EMODnet DTM depth sample for European seas
  *
  * NOTE: divemap.uk layers are third-party data — check their licence and add
  * attribution before publishing, and they sit behind Cloudflare so may be
@@ -27,8 +28,10 @@ function doGet(e) {
   var set = (e && e.parameter && e.parameter.set) || 'divesites';
   var featureId = e && e.parameter && e.parameter.feature;
   var search = e && e.parameter && e.parameter.search;
+  var bathymetry = e && e.parameter && e.parameter.bathymetry;
   try {
-    var data = search ? searchDiveFeatures(search)
+    var data = bathymetry ? getBathymetrySample(bathymetry)
+      : search ? searchDiveFeatures(search)
       : featureId ? getUkFeature(featureId)
       : (set === 'divesites') ? getDiveSites()
       : (UK_SETS.indexOf(set) >= 0) ? getUkGeoJson(set)
@@ -37,6 +40,24 @@ function doGet(e) {
   } catch (err) {
     return json({ error: String(err) });
   }
+}
+
+function getBathymetrySample(value) {
+  var parts = String(value || '').split(','), lat = Number(parts[0]), lng = Number(parts[1]);
+  if (parts.length !== 2 || !isFinite(lat) || !isFinite(lng) || lat < -90 || lat > 90 || lng < -180 || lng > 180) {
+    return { error: 'invalid bathymetry coordinate' };
+  }
+  var cache = CacheService.getScriptCache(), cacheKey = 'emodnet-depth-' + lat.toFixed(4) + '-' + lng.toFixed(4);
+  var hit = cache.get(cacheKey); if (hit) return JSON.parse(hit);
+  var geom = 'POINT(' + lng.toFixed(6) + ' ' + lat.toFixed(6) + ')';
+  var response = UrlFetchApp.fetch('https://rest.emodnet-bathymetry.eu/depth_sample?geom=' + encodeURIComponent(geom), { muteHttpExceptions:true });
+  if (response.getResponseCode() !== 200) return { error:'EMODnet HTTP ' + response.getResponseCode() };
+  var sample = JSON.parse(response.getContentText()), representative = sample.smoothed != null ? sample.smoothed : sample.avg;
+  if (representative == null || !isFinite(Number(representative))) return { error:'no EMODnet depth at coordinate' };
+  var out = { latitude:lat, longitude:lng, depthMetres:Math.abs(Number(representative)), sample:sample,
+    source:'EMODnet Bathymetry DTM', sourceUrl:'https://rest.emodnet-bathymetry.eu/', fetchedAt:new Date().toISOString() };
+  try { cache.put(cacheKey, JSON.stringify(out), 21600); } catch (err) {}
+  return out;
 }
 
 function searchDiveFeatures(value) {

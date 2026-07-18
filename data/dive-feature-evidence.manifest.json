@@ -1,0 +1,62 @@
+{
+  "generatedAt": "2026-07-18T01:23:34.760Z",
+  "formatVersion": 2,
+  "records": 24710,
+  "sources": [
+    {
+      "id": "fl-fwc-artificial-reefs",
+      "records": 4548,
+      "url": "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12",
+      "sourceUrl": "https://myfwc.com/fishing/saltwater/artificial-reefs/locate/",
+      "licence": "Available without restriction; attribution expected",
+      "attribution": "Florida Fish and Wildlife Conservation Commission, Division of Marine Fisheries Management",
+      "evidenceClass": "artificial_reef_deployment"
+    },
+    {
+      "id": "us-noaa-awois-wrecks",
+      "records": 12660,
+      "url": "https://services5.arcgis.com/HDRa0B57OVrv2E1q/arcgis/rest/services/Wrecks_and_Obstructions/FeatureServer/0",
+      "sourceUrl": "https://www.fisheries.noaa.gov/inport/item/70439",
+      "licence": "Public free informational use; source citation required; not for navigation",
+      "attribution": "NOAA Office of Coast Survey; public service mirror provided by New York Department of State",
+      "evidenceClass": "charted_wreck_or_obstruction"
+    },
+    {
+      "id": "wa-museum-shipwrecks",
+      "records": 305,
+      "url": "https://public-services.slip.wa.gov.au/public/rest/services/SLIP_Public_Services/People_and_Society/MapServer/0",
+      "sourceUrl": "https://catalogue.data.wa.gov.au/dataset/shipwrecks",
+      "licence": "CC BY 4.0",
+      "attribution": "© Western Australian Museum",
+      "evidenceClass": "recorded_wreck"
+    },
+    {
+      "id": "vicmap-hydro-wrecks",
+      "records": 30,
+      "url": "https://opendata.maps.vic.gov.au/geoserver/wfs",
+      "sourceUrl": "https://discover.data.vic.gov.au/dataset/vicmap-hydro-navigation-point",
+      "licence": "CC BY 4.0",
+      "attribution": "State of Victoria, Department of Transport and Planning",
+      "evidenceClass": "charted_wreck"
+    },
+    {
+      "id": "emodnet-heritage-wrecks",
+      "records": 7073,
+      "url": "https://ows.emodnet-humanactivities.eu/wfs",
+      "sourceUrl": "https://emodnet.ec.europa.eu/en/human-activities",
+      "licence": "CC BY 4.0",
+      "attribution": "EMODnet Human Activities; original authority retained per record",
+      "evidenceClass": "heritage_wreck"
+    },
+    {
+      "id": "ph-namria-wrecks",
+      "records": 94,
+      "url": "https://geoserver.geoportal.gov.ph/geoserver/geoportal/wms?service=WMS&version=1.1.1&request=GetMap&layers=geoportal%3Ahd_wreck&styles=&bbox=116.7,4.5,125.7,21.7&width=2048&height=2048&srs=EPSG%3A4326&format=application%2Fvnd.google-earth.kml%2Bxml&transparent=true",
+      "sourceUrl": "https://www.geoportal.gov.ph/",
+      "licence": "Open under NAMRIA Memorandum Order No. 008, series of 2022",
+      "attribution": "National Mapping and Resource Information Authority (NAMRIA), Geoportal Philippines",
+      "evidenceClass": "navigational_wreck"
+    }
+  ],
+  "failures": []
+}

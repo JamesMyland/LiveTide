@@ -8,7 +8,7 @@ import { levelAt } from "./tide.js";
 import { fmtTime, fmtCountdown } from "./format.js";
 import { drawChart } from "./chart.js";
 import { loadWeather } from "./weather.js";
-import { loadDives } from "./dive.js";
+import { loadDives } from "./dive.js?v=20260718-americas-recommendations1";
 import { selectLocation } from "./locations.js";
 
 export function startLive() {

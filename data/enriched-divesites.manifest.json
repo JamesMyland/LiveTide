@@ -1,0 +1,62 @@
+{
+  "generatedAt": "2026-07-18T00:16:41.986Z",
+  "records": 3416,
+  "sources": [
+    {
+      "id": "opendivemap",
+      "records": 3123,
+      "url": "https://api.opendivemap.com/v1/sites",
+      "licence": "ODbL-1.0"
+    },
+    {
+      "id": "taiwan-tourism-dive-attractions",
+      "records": 6,
+      "url": "https://media.taiwan.net.tw/XMLReleaseAll_public/v2.0/Zh_tw/Attraction-json.zip",
+      "catalogueUrl": "https://data.gov.tw/dataset/7777",
+      "licence": "Taiwan Open Government Data License 1.0",
+      "attribution": "Taiwan Tourism Administration, Ministry of Transportation and Communications",
+      "sourceUpdatedAt": "2026-07-18T02:30:47+08:00",
+      "classification": "Manually reviewed public attractions explicitly described as recreational diving locations"
+    },
+    {
+      "id": "nz-doc-hauraki-dive-sites",
+      "records": 39,
+      "url": "https://seasketch.doc.govt.nz/arcgis/rest/services/Hauraki/Marine_Use_Activities_test/MapServer/1",
+      "licence": "CC BY 4.0 for DOC-produced material; third-party rights require confirmation",
+      "attribution": "Department of Conservation (NZ), Waikato Regional Council, and Dive New Zealand",
+      "rightsReview": true,
+      "description": "Locations of known Diving locations in the Hauraki Gulf Marine Park. Site locations merged from DOC and Waikato Regional Council databases and Dive New Zealand.",
+      "serviceVersion": 10.71
+    },
+    {
+      "id": "noaa-nccos-caribbean-scuba-spots",
+      "records": 68,
+      "url": "https://gis.ngdc.noaa.gov/arcgis/rest/services/nccos/BiogeographicAssessments_USCaribbeanPrioritization/MapServer/14",
+      "licence": "NOAA public service; credited third-party source rights require confirmation",
+      "attribution": "NOAA NCCOS; Puerto Rico source: caribdiveguide.com; USVI source: wannadive.net",
+      "rightsReview": true,
+      "description": "Known SCUBA diving spots in Puerto Rico and US Virgin Islands.",
+      "serviceVersion": 11.5
+    },
+    {
+      "id": "bc-coastal-diving-sites",
+      "records": 184,
+      "url": "https://maps.gov.bc.ca/arcgis/rest/services/whse/bcgw_pub_whse_environmental_monitoring/MapServer/23",
+      "licence": "Open Government Licence - British Columbia",
+      "catalogueUrl": "https://catalogue.data.gov.bc.ca/dataset/6f344ab9-279f-4782-b53a-fa15ffbfa3f7",
+      "attribution": "Province of British Columbia",
+      "description": "Feature class name is 'WHSE_ENVIRONMENTAL_MONITORING.CHRA_DIVING_SITES_POINT'. See metadata: https://catalogue.data.gov.bc.ca/dataset/6f344ab9-279f-4782-b53a-fa15ffbfa3f7",
+      "serviceVersion": 10.91
+    },
+    {
+      "id": "wa-dpird-abrolhos-dive-trails",
+      "records": 7,
+      "url": "https://public-services.slip.wa.gov.au/public/rest/services/SLIP_Public_Services/People_and_Society/MapServer/12",
+      "licence": "CC BY 4.0",
+      "attribution": "© State of Western Australia, Department of Primary Industries and Regional Development",
+      "description": "This dataset represents the dive trails located at the Houtman Abrolhos Islands.\n\nLicense: Creative Commons Attribution 4.0 \n\nTags: abrolhos, cultural-society-and-demography, dive trail, diving, marine, recreation, scuba, snorkelling\n\nContact: gis.support@dpird.wa.gov.au",
+      "serviceVersion": 12.1
+    }
+  ],
+  "failures": []
+}
