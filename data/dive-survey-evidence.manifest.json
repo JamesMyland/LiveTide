@@ -1,0 +1,17 @@
+{
+  "generatedAt": "2026-07-17T23:28:22.962Z",
+  "records": 4862,
+  "sources": [
+    {
+      "id": "imos-nrmn-rls",
+      "url": "https://geoserver-123.aodn.org.au/geoserver/ows",
+      "typeName": "imos:ep_site_list_public_data",
+      "records": 4862,
+      "attribution": "Integrated Marine Observing System (IMOS), National Reef Monitoring Network and Reef Life Survey contributors",
+      "licence": "Catalogue states freely available for non-profit use; formal dataset licence is unspecified and requires confirmation",
+      "rightsReview": true,
+      "evidenceClass": "diver_survey_station"
+    }
+  ],
+  "failures": []
+}

@@ -37,6 +37,7 @@ clasp open                          # Deploy ▸ Manage deployments ▸ copy the
 
 - `?set=divesites` — full divemap.gr catalogue (JSON array)
 - `?set=wrecks|unknown|launch|tide-station|lighthouse|sites` — divemap.uk GeoJSON
+- `?bathymetry=<lat>,<lng>` — cached EMODnet Bathymetry DTM depth sample
 - `?search=<name>` — debounced key-up search results for wreck and dive-site names;
   the cold path queries divemap.gr directly and fetches the UK GeoJSON indexes,
   so a first-time visitor does not require a pre-existing cache

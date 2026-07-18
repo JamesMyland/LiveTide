@@ -1,7 +1,7 @@
 // Seasonal marine-life observations from OBIS, aggregated by calendar month.
 
 import { $ } from "./dom.js";
-import { GENERATED_SPECIES } from "./species-catalogue.js";
+import { GENERATED_SPECIES } from "./species-catalogue.js?v=20260717-common-names1";
 
 const OBIS = "https://api.obis.org/v3";
 const CACHE_LS = "tide_obis_species_v1";
@@ -10,7 +10,7 @@ const DB_NAME = "livetide-marine-life";
 const DB_STORE = "species";
 const CACHE_TTL = 30 * 24 * 3600e3;
 const MAX_RECORDS = 10000;
-const MAX_SELECTED = 4;
+const MAX_SELECTED = 8;
 const CELL_SIZE = 2;
 const CURATED_SPECIES = [
   { common:"Whale shark", scientific:"Rhincodon typus", icon:"🦈", color:"#168b87" },
@@ -159,6 +159,18 @@ function speciesCategory(item) {
   return "fish";
 }
 
+export function getSpeciesCategories(excluded = []) {
+  const blocked = new Set(excluded);
+  return CATEGORIES.map(category => ({ ...category,
+    count:SPECIES.filter(item => speciesCategory(item) === category.id && !blocked.has(item.scientific)).length,
+  })).filter(category => category.count);
+}
+
+export function browseSpeciesCatalogue(category, excluded = [], limit = 50) {
+  const blocked = new Set(excluded);
+  return SPECIES.filter(item => speciesCategory(item) === category && !blocked.has(item.scientific)).slice(0, limit);
+}
+
 function matchingSpecies(query) {
   const value = String(query || "").trim().toLowerCase();
   const matches = SPECIES.filter(item => !selected.some(choice => choice.scientific === item.scientific) && (!activeCategory || speciesCategory(item) === activeCategory) && (!value || item.common.toLowerCase().includes(value) || item.scientific.toLowerCase().includes(value)));
@@ -280,7 +292,7 @@ export function findPromptSpecies(text, limit = 4) {
 
 export async function getSpeciesObservations(taxon) { return fetchSpecies(taxon); }
 
-export async function showSpeciesEvidence(taxa, month) {
+export async function showSpeciesEvidence(taxa, month, focusEvidence = false) {
   selected = (taxa || []).slice(0, MAX_SELECTED);
   const monthSelect = $("speciesMonth"), picker = $("speciesPicker"), status = $("speciesStatus");
   if (monthSelect) monthSelect.value = String(month);
@@ -289,6 +301,34 @@ export async function showSpeciesEvidence(taxa, month) {
   setEnabled(true); renderSelected(); saveUi(true);
   datasets = new Map();
   await loadSelection();
+  if (focusEvidence) focusStrongestEvidence(month);
+}
+
+export function clearSpeciesEvidence() {
+  selected = [];
+  datasets = new Map();
+  setEnabled(false);
+  renderSelected();
+  setStatus("");
+  const picker = $("speciesPicker"); if (picker) picker.hidden = true;
+  saveUi(false);
+  render();
+}
+
+function focusStrongestEvidence(month) {
+  if (!activeMap || typeof L === "undefined") return;
+  const cells = new Map();
+  datasets.forEach(data => data.records.filter(record => !month || record.month === +month).forEach(record => {
+    const lat = Math.floor((record.lat + 90) / CELL_SIZE) * CELL_SIZE - 90;
+    const lng = Math.floor((record.lng + 180) / CELL_SIZE) * CELL_SIZE - 180;
+    const key = `${lat}:${lng}`;
+    cells.set(key, { lat, lng, count:(cells.get(key)?.count || 0) + 1 });
+  }));
+  const strongest = [...cells.values()].sort((a, b) => b.count - a.count)[0];
+  if (!strongest) return;
+  activeMap.fitBounds([[strongest.lat, strongest.lng], [strongest.lat + CELL_SIZE, strongest.lng + CELL_SIZE]], {
+    padding:[55, 55], maxZoom:5, animate:true,
+  });
 }
 
 function render() {
@@ -319,9 +359,12 @@ function render() {
     const tooltip = cell.entries.map(entry => `${entry.taxon.icon} ${entry.taxon.common}: ${entry.count.toLocaleString()} observations`).join("<br>");
     cell.entries.forEach((entry, index) => {
       const west = cell.lng + sliceWidth * index, east = index === parts - 1 ? cell.lng + CELL_SIZE : west + sliceWidth;
-      const base = { opacity:1, fillOpacity:.10 + entry.strength * .34, weight:.65 };
+      const satellite = activeMap.getContainer()?.classList.contains("satellite-view");
+      const base = satellite
+        ? { opacity:1, fillOpacity:.22 + entry.strength * .48, weight:1.5 }
+        : { opacity:1, fillOpacity:.10 + entry.strength * .34, weight:.65 };
       const shape = L.rectangle([[cell.lat,west],[cell.lat + CELL_SIZE,east]], {
-        color:entry.taxon.color, fillColor:entry.taxon.color, ...base,
+        color:entry.taxon.color, fillColor:entry.taxon.color, className:"species-evidence-shape", ...base,
       }).bindTooltip(tooltip).addTo(layer);
       const shapes = speciesShapes.get(entry.taxon.scientific) || [];
       shapes.push({ shape, base }); speciesShapes.set(entry.taxon.scientific, shapes);
@@ -369,6 +412,7 @@ export function syncSpeciesLayer(map) {
 export function initSpeciesLayer(getMap) {
   const toggle = $("speciesLayerToggle"), picker = $("speciesPicker"), search = $("speciesSearch"), month = $("speciesMonth");
   if (!toggle || !picker || !search || !month) return;
+  document.addEventListener("livetide:basemap-changed", render);
   month.innerHTML = `<option value="">Select month</option>` + MONTHS.map((name,index) => `<option value="${index}">${name}</option>`).join("");
   const saved = read(UI_LS) || read("tide_obis_species_ui_v1") || {};
   const savedNames = saved.species || [saved.scientific || saved.common || "Whale shark"];

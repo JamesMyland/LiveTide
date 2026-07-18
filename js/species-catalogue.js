@@ -7,16 +7,19 @@ export const GENERATED_SPECIES = [
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 137142
+    "aphiaID": 137142,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Doryteuthis gahi",
+    "common": "Patagonian Longfin Squid",
     "scientific": "Doryteuthis gahi",
     "detail": "Loliginidae",
     "category": "cephalopods",
     "icon": "🦑",
     "color": "#9b5f78",
-    "aphiaID": 574538
+    "aphiaID": 574538,
+    "commonSource": "GBIF",
+    "gbifKey": 5855963
   },
   {
     "common": "Atlantic cod",
@@ -25,7 +28,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 126436
+    "aphiaID": 126436,
+    "commonSource": "WoRMS"
   },
   {
     "common": "European herring gull",
@@ -34,7 +38,8 @@ export const GENERATED_SPECIES = [
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 137138
+    "aphiaID": 137138,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Pacific herring",
@@ -43,7 +48,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 151159
+    "aphiaID": 151159,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Haddock",
@@ -52,7 +58,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 126437
+    "aphiaID": 126437,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Atlantic herring",
@@ -61,7 +68,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 126417
+    "aphiaID": 126417,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Southern elephant seal",
@@ -70,7 +78,8 @@ export const GENERATED_SPECIES = [
     "category": "mammals",
     "icon": "🐋",
     "color": "#718674",
-    "aphiaID": 231413
+    "aphiaID": 231413,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Brown trout",
@@ -79,7 +88,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 127187
+    "aphiaID": 127187,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Eurasian oyster catcher",
@@ -88,7 +98,8 @@ export const GENERATED_SPECIES = [
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 147436
+    "aphiaID": 147436,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Gannet",
@@ -97,7 +108,8 @@ export const GENERATED_SPECIES = [
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 148776
+    "aphiaID": 148776,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Fulmar",
@@ -106,7 +118,8 @@ export const GENERATED_SPECIES = [
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 137195
+    "aphiaID": 137195,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Argentine shortfin squid",
@@ -115,7 +128,8 @@ export const GENERATED_SPECIES = [
     "category": "cephalopods",
     "icon": "🦑",
     "color": "#9b5f78",
-    "aphiaID": 342064
+    "aphiaID": 342064,
+    "commonSource": "WoRMS"
   },
   {
     "common": "American clawed lobster",
@@ -124,7 +138,8 @@ export const GENERATED_SPECIES = [
     "category": "crustaceans",
     "icon": "🦀",
     "color": "#b15f4f",
-    "aphiaID": 156134
+    "aphiaID": 156134,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Bull rout",
@@ -133,7 +148,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 127203
+    "aphiaID": 127203,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Cod icefish",
@@ -142,7 +158,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 234633
+    "aphiaID": 234633,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Atlantic snow crab",
@@ -151,7 +168,8 @@ export const GENERATED_SPECIES = [
     "category": "crustaceans",
     "icon": "🦀",
     "color": "#b15f4f",
-    "aphiaID": 107315
+    "aphiaID": 107315,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Whiting",
@@ -160,7 +178,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 126438
+    "aphiaID": 126438,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Ocean pink shrimp",
@@ -169,7 +188,8 @@ export const GENERATED_SPECIES = [
     "category": "crustaceans",
     "icon": "🦀",
     "color": "#b15f4f",
-    "aphiaID": 515469
+    "aphiaID": 515469,
+    "commonSource": "WoRMS"
   },
   {
     "common": "(southern and northern) guillemot",
@@ -178,7 +198,8 @@ export const GENERATED_SPECIES = [
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 137133
+    "aphiaID": 137133,
+    "commonSource": "WoRMS"
   },
   {
     "common": "American plaice",
@@ -187,7 +208,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 127137
+    "aphiaID": 127137,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Common dab",
@@ -196,7 +218,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 127139
+    "aphiaID": 127139,
+    "commonSource": "WoRMS"
   },
   {
     "common": "European plaice",
@@ -205,7 +228,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 127143
+    "aphiaID": 127143,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Little penguin",
@@ -214,7 +238,8 @@ export const GENERATED_SPECIES = [
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 225932
+    "aphiaID": 225932,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Black-legged kittiwake",
@@ -223,7 +248,8 @@ export const GENERATED_SPECIES = [
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 137156
+    "aphiaID": 137156,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Longhorn sculpin",
@@ -232,7 +258,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 159520
+    "aphiaID": 159520,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Argentine hake",
@@ -241,7 +268,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 272455
+    "aphiaID": 272455,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Atlantic hake",
@@ -250,7 +278,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 158962
+    "aphiaID": 158962,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Snoek",
@@ -259,7 +288,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 219697
+    "aphiaID": 219697,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Weddell seal",
@@ -268,7 +298,8 @@ export const GENERATED_SPECIES = [
     "category": "mammals",
     "icon": "🐋",
     "color": "#718674",
-    "aphiaID": 195932
+    "aphiaID": 195932,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Calanus finmarchicus",
@@ -286,7 +317,8 @@ export const GENERATED_SPECIES = [
     "category": "echinoderms",
     "icon": "★",
     "color": "#aa773f",
-    "aphiaID": 240747
+    "aphiaID": 240747,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Southern blue whiting",
@@ -295,7 +327,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 234781
+    "aphiaID": 234781,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Red sea urchin",
@@ -304,7 +337,8 @@ export const GENERATED_SPECIES = [
     "category": "echinoderms",
     "icon": "★",
     "color": "#aa773f",
-    "aphiaID": 591102
+    "aphiaID": 591102,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Atlantic mackerel",
@@ -313,16 +347,19 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 127023
+    "aphiaID": 127023,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Pandalus dispar",
+    "common": "Giant red shrimp",
     "scientific": "Pandalus dispar",
     "detail": "Pandalidae",
     "category": "crustaceans",
     "icon": "🦀",
     "color": "#b15f4f",
-    "aphiaID": 1337983
+    "aphiaID": 1337983,
+    "commonSource": "GBIF",
+    "gbifKey": 2222443
   },
   {
     "common": "Grey gurnard",
@@ -331,7 +368,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 150637
+    "aphiaID": 150637,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Goliath grouper",
@@ -340,7 +378,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 159353
+    "aphiaID": 159353,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Arctic char",
@@ -349,7 +388,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 127188
+    "aphiaID": 127188,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Cape Hope squid",
@@ -358,7 +398,8 @@ export const GENERATED_SPECIES = [
     "category": "cephalopods",
     "icon": "🦑",
     "color": "#9b5f78",
-    "aphiaID": 220316
+    "aphiaID": 220316,
+    "commonSource": "WoRMS"
   },
   {
     "common": "European sprat",
@@ -367,7 +408,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 126425
+    "aphiaID": 126425,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Patagonian grenadier",
@@ -376,7 +418,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 272449
+    "aphiaID": 272449,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Peruvian booby",
@@ -385,16 +428,19 @@ export const GENERATED_SPECIES = [
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 343960
+    "aphiaID": 343960,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Huso fulvescens",
+    "common": "Beluga",
     "scientific": "Huso fulvescens",
     "detail": "Acipenseridae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 1815703
+    "aphiaID": 1815703,
+    "commonSource": "GBIF",
+    "gbifKey": 2402099
   },
   {
     "common": "Picked dogfish",
@@ -403,7 +449,8 @@ export const GENERATED_SPECIES = [
     "category": "sharks",
     "icon": "🦈",
     "color": "#557582",
-    "aphiaID": 105923
+    "aphiaID": 105923,
+    "commonSource": "WoRMS"
   },
   {
     "common": "European flounder",
@@ -412,7 +459,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 127141
+    "aphiaID": 127141,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Dogfish",
@@ -421,7 +469,8 @@ export const GENERATED_SPECIES = [
     "category": "sharks",
     "icon": "🦈",
     "color": "#557582",
-    "aphiaID": 105814
+    "aphiaID": 105814,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Gray seal",
@@ -430,7 +479,8 @@ export const GENERATED_SPECIES = [
     "category": "mammals",
     "icon": "🐋",
     "color": "#718674",
-    "aphiaID": 137080
+    "aphiaID": 137080,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Red-billed gull",
@@ -439,7 +489,8 @@ export const GENERATED_SPECIES = [
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 343915
+    "aphiaID": 343915,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Allison tuna",
@@ -448,7 +499,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 127027
+    "aphiaID": 127027,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Temora longicornis",
@@ -466,7 +518,8 @@ export const GENERATED_SPECIES = [
     "category": "mammals",
     "icon": "🐋",
     "color": "#718674",
-    "aphiaID": 231404
+    "aphiaID": 231404,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Billet",
@@ -475,7 +528,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 126441
+    "aphiaID": 126441,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Alaskan pink shrimp",
@@ -484,7 +538,8 @@ export const GENERATED_SPECIES = [
     "category": "crustaceans",
     "icon": "🦀",
     "color": "#b15f4f",
-    "aphiaID": 515463
+    "aphiaID": 515463,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Patagonian toothfish",
@@ -493,7 +548,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 234700
+    "aphiaID": 234700,
+    "commonSource": "WoRMS"
   },
   {
     "common": "European hake",
@@ -502,7 +558,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 126484
+    "aphiaID": 126484,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Great black-backed gull",
@@ -511,7 +568,8 @@ export const GENERATED_SPECIES = [
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 137146
+    "aphiaID": 137146,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Starry ray",
@@ -520,16 +578,19 @@ export const GENERATED_SPECIES = [
     "category": "rays",
     "icon": "◆",
     "color": "#4d778d",
-    "aphiaID": 105865
+    "aphiaID": 105865,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Myzopsetta ferruginea",
+    "common": "Yellowtail flounder",
     "scientific": "Myzopsetta ferruginea",
     "detail": "Pleuronectidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 1571969
+    "aphiaID": 1571969,
+    "commonSource": "GBIF",
+    "gbifKey": 12031435
   },
   {
     "common": "Chinook salmon",
@@ -538,7 +599,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 158075
+    "aphiaID": 158075,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Australian rock lobster",
@@ -547,7 +609,8 @@ export const GENERATED_SPECIES = [
     "category": "crustaceans",
     "icon": "🦀",
     "color": "#b15f4f",
-    "aphiaID": 382879
+    "aphiaID": 382879,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Little pied cormorant",
@@ -556,7 +619,8 @@ export const GENERATED_SPECIES = [
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 225983
+    "aphiaID": 225983,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Black-browed albatross",
@@ -565,7 +629,8 @@ export const GENERATED_SPECIES = [
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 343995
+    "aphiaID": 343995,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Flet",
@@ -574,16 +639,19 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 127136
+    "aphiaID": 127136,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Ichthyaetus melanocephalus",
+    "common": "MEGU",
     "scientific": "Ichthyaetus melanocephalus",
     "detail": "Laridae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 1584284
+    "aphiaID": 1584284,
+    "commonSource": "GBIF",
+    "gbifKey": 8151548
   },
   {
     "common": "Sinosturio transmontanus",
@@ -601,16 +669,19 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 126822
+    "aphiaID": 126822,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Patiria miniata",
+    "common": "Bat Star",
     "scientific": "Patiria miniata",
     "detail": "Asterinidae",
     "category": "echinoderms",
     "icon": "★",
     "color": "#aa773f",
-    "aphiaID": 382131
+    "aphiaID": 382131,
+    "commonSource": "GBIF",
+    "gbifKey": 2272172
   },
   {
     "common": "Cepelan",
@@ -619,25 +690,30 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 126446
+    "aphiaID": 126446,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Salilota australis",
+    "common": "Patagonian Cod",
     "scientific": "Salilota australis",
     "detail": "Moridae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 282654
+    "aphiaID": 282654,
+    "commonSource": "GBIF",
+    "gbifKey": 2417051
   },
   {
-    "common": "Mugil incilis",
+    "common": "Common Mullet",
     "scientific": "Mugil incilis",
     "detail": "Mugilidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 273654
+    "aphiaID": 273654,
+    "commonSource": "GBIF",
+    "gbifKey": 2400598
   },
   {
     "common": "Common dragonet",
@@ -646,7 +722,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 126792
+    "aphiaID": 126792,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Adélie penguin",
@@ -655,7 +732,8 @@ export const GENERATED_SPECIES = [
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 225757
+    "aphiaID": 225757,
+    "commonSource": "WoRMS"
   },
   {
     "common": "King penguin",
@@ -664,7 +742,8 @@ export const GENERATED_SPECIES = [
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 212656
+    "aphiaID": 212656,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Patagonian scallop",
@@ -673,7 +752,8 @@ export const GENERATED_SPECIES = [
     "category": "shellfish",
     "icon": "🐚",
     "color": "#9a705c",
-    "aphiaID": 236717
+    "aphiaID": 236717,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Lemon sole",
@@ -682,7 +762,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 127140
+    "aphiaID": 127140,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Arrowtooth flounder",
@@ -691,7 +772,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 279792
+    "aphiaID": 279792,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Rex sole",
@@ -700,7 +782,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 274287
+    "aphiaID": 274287,
+    "commonSource": "WoRMS"
   },
   {
     "common": "American blue crab",
@@ -709,7 +792,8 @@ export const GENERATED_SPECIES = [
     "category": "crustaceans",
     "icon": "🦀",
     "color": "#b15f4f",
-    "aphiaID": 107379
+    "aphiaID": 107379,
+    "commonSource": "WoRMS"
   },
   {
     "common": "English sole",
@@ -718,7 +802,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 254393
+    "aphiaID": 254393,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Oithona similis",
@@ -736,7 +821,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 127160
+    "aphiaID": 127160,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Norway pout",
@@ -745,7 +831,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 126444
+    "aphiaID": 126444,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Bay anchovy",
@@ -754,16 +841,19 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 158699
+    "aphiaID": 158699,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Pachymetopon blochii",
+    "common": "Hottentot Seabream",
     "scientific": "Pachymetopon blochii",
     "detail": "Sparidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 218607
+    "aphiaID": 218607,
+    "commonSource": "GBIF",
+    "gbifKey": 2392589
   },
   {
     "common": "Great crested tern",
@@ -772,16 +862,19 @@ export const GENERATED_SPECIES = [
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 212606
+    "aphiaID": 212606,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Penaeus (Farfantepenaeus) notialis",
+    "common": "Candied shrimp",
     "scientific": "Penaeus (Farfantepenaeus) notialis",
     "detail": "Penaeidae",
     "category": "crustaceans",
     "icon": "🦀",
     "color": "#b15f4f",
-    "aphiaID": 1809222
+    "aphiaID": 1809222,
+    "commonSource": "GBIF",
+    "gbifKey": 2223834
   },
   {
     "common": "Brown booby",
@@ -790,7 +883,8 @@ export const GENERATED_SPECIES = [
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 212597
+    "aphiaID": 212597,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Little black cormorant",
@@ -799,7 +893,8 @@ export const GENERATED_SPECIES = [
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 343955
+    "aphiaID": 343955,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Broadnose skate",
@@ -808,7 +903,8 @@ export const GENERATED_SPECIES = [
     "category": "rays",
     "icon": "◆",
     "color": "#4d778d",
-    "aphiaID": 271509
+    "aphiaID": 271509,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Wandering albatross",
@@ -817,16 +913,19 @@ export const GENERATED_SPECIES = [
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 212583
+    "aphiaID": 212583,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Pisaster giganteus",
+    "common": "Giant Sea Star",
     "scientific": "Pisaster giganteus",
     "detail": "Asteriidae",
     "category": "echinoderms",
     "icon": "★",
     "color": "#aa773f",
-    "aphiaID": 240758
+    "aphiaID": 240758,
+    "commonSource": "GBIF",
+    "gbifKey": 2273740
   },
   {
     "common": "Pink cusk-eel",
@@ -835,7 +934,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 278702
+    "aphiaID": 278702,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Blue whiting",
@@ -844,7 +944,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 126439
+    "aphiaID": 126439,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Ladyfish",
@@ -853,7 +954,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 474894
+    "aphiaID": 474894,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Razorbill",
@@ -862,7 +964,8 @@ export const GENERATED_SPECIES = [
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 137128
+    "aphiaID": 137128,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Calanus helgolandicus",
@@ -874,13 +977,15 @@ export const GENERATED_SPECIES = [
     "aphiaID": 104466
   },
   {
-    "common": "Ariopsis canteri",
+    "common": "New Granada Sea Catfish",
     "scientific": "Ariopsis canteri",
     "detail": "Ariidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 1524450
+    "aphiaID": 1524450,
+    "commonSource": "GBIF",
+    "gbifKey": 9365191
   },
   {
     "common": "Green heads",
@@ -889,7 +994,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 151179
+    "aphiaID": 151179,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Crabeater seal",
@@ -898,7 +1004,8 @@ export const GENERATED_SPECIES = [
     "category": "mammals",
     "icon": "🐋",
     "color": "#718674",
-    "aphiaID": 344008
+    "aphiaID": 344008,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Atlantic puffin",
@@ -907,7 +1014,8 @@ export const GENERATED_SPECIES = [
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 137131
+    "aphiaID": 137131,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Metridia lucens",
@@ -919,13 +1027,15 @@ export const GENERATED_SPECIES = [
     "aphiaID": 104633
   },
   {
-    "common": "Argyrozona argyrozona",
+    "common": "Carpenter",
     "scientific": "Argyrozona argyrozona",
     "detail": "Sparidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 218592
+    "aphiaID": 218592,
+    "commonSource": "GBIF",
+    "gbifKey": 2392607
   },
   {
     "common": "Centropages typicus",
@@ -943,7 +1053,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 159322
+    "aphiaID": 159322,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Common gull",
@@ -952,7 +1063,8 @@ export const GENERATED_SPECIES = [
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 137141
+    "aphiaID": 137141,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Dover sole",
@@ -961,7 +1073,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 274294
+    "aphiaID": 274294,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Bay mussel",
@@ -970,7 +1083,8 @@ export const GENERATED_SPECIES = [
     "category": "shellfish",
     "icon": "🐚",
     "color": "#9a705c",
-    "aphiaID": 140480
+    "aphiaID": 140480,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Orange rough ball horny sponge",
@@ -979,7 +1093,8 @@ export const GENERATED_SPECIES = [
     "category": "invertebrates",
     "icon": "•",
     "color": "#728b6d",
-    "aphiaID": 170942
+    "aphiaID": 170942,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Kokanee",
@@ -988,7 +1103,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 254569
+    "aphiaID": 254569,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Boston ling",
@@ -997,7 +1113,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 126504
+    "aphiaID": 126504,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Common cormorant",
@@ -1006,7 +1123,8 @@ export const GENERATED_SPECIES = [
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 137179
+    "aphiaID": 137179,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Blunt-tooth swimming crab",
@@ -1015,7 +1133,8 @@ export const GENERATED_SPECIES = [
     "category": "crustaceans",
     "icon": "🦀",
     "color": "#b15f4f",
-    "aphiaID": 394860
+    "aphiaID": 394860,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Pseudocalanus elongatus",
@@ -1042,7 +1161,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 127146
+    "aphiaID": 127146,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Emperor penguin",
@@ -1051,7 +1171,8 @@ export const GENERATED_SPECIES = [
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 225773
+    "aphiaID": 225773,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Eulachon",
@@ -1060,7 +1181,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 282959
+    "aphiaID": 282959,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Baltic macoma",
@@ -1069,7 +1191,8 @@ export const GENERATED_SPECIES = [
     "category": "shellfish",
     "icon": "🐚",
     "color": "#9a705c",
-    "aphiaID": 141579
+    "aphiaID": 141579,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Common shore crab",
@@ -1078,7 +1201,8 @@ export const GENERATED_SPECIES = [
     "category": "crustaceans",
     "icon": "🦀",
     "color": "#b15f4f",
-    "aphiaID": 107381
+    "aphiaID": 107381,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Bigeye tuna",
@@ -1087,7 +1211,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 127028
+    "aphiaID": 127028,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Atlantic croaker",
@@ -1096,7 +1221,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 151158
+    "aphiaID": 151158,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Armored bristleworm",
@@ -1105,7 +1231,8 @@ export const GENERATED_SPECIES = [
     "category": "invertebrates",
     "icon": "•",
     "color": "#728b6d",
-    "aphiaID": 130537
+    "aphiaID": 130537,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Pacific spiny dogfish",
@@ -1114,7 +1241,8 @@ export const GENERATED_SPECIES = [
     "category": "sharks",
     "icon": "🦈",
     "color": "#557582",
-    "aphiaID": 299224
+    "aphiaID": 299224,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Alewife",
@@ -1123,7 +1251,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 158669
+    "aphiaID": 158669,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Bluehead",
@@ -1132,16 +1261,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 159786
-  },
-  {
-    "common": "Gadus chalcogrammus",
-    "scientific": "Gadus chalcogrammus",
-    "detail": "Gadidae",
-    "category": "fish",
-    "icon": "🐟",
-    "color": "#3e739a",
-    "aphiaID": 300735
+    "aphiaID": 159786,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Albacore",
@@ -1150,16 +1271,30 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 127026
+    "aphiaID": 127026,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Bathyraja albomaculata",
+    "common": "Alaska pollock",
+    "scientific": "Gadus chalcogrammus",
+    "detail": "Gadidae",
+    "category": "fish",
+    "icon": "🐟",
+    "color": "#3e739a",
+    "aphiaID": 300735,
+    "commonSource": "GBIF",
+    "gbifKey": 2415769
+  },
+  {
+    "common": "Whitedotted Skate",
     "scientific": "Bathyraja albomaculata",
     "detail": "Arhynchobatidae",
     "category": "rays",
     "icon": "◆",
     "color": "#4d778d",
-    "aphiaID": 271505
+    "aphiaID": 271505,
+    "commonSource": "GBIF",
+    "gbifKey": 2420387
   },
   {
     "common": "Roman seabream",
@@ -1168,7 +1303,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 218599
+    "aphiaID": 218599,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Common dolphin",
@@ -1177,7 +1313,8 @@ export const GENERATED_SPECIES = [
     "category": "dolphins",
     "icon": "🐬",
     "color": "#288eb5",
-    "aphiaID": 137094
+    "aphiaID": 137094,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Coho salmon",
@@ -1186,16 +1323,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 127184
-  },
-  {
-    "common": "Ratfish",
-    "scientific": "Hydrolagus colliei",
-    "detail": "Chimaeridae",
-    "category": "invertebrates",
-    "icon": "•",
-    "color": "#728b6d",
-    "aphiaID": 271406
+    "aphiaID": 127184,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Common dolphinfish",
@@ -1204,7 +1333,18 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 126846
+    "aphiaID": 126846,
+    "commonSource": "WoRMS"
+  },
+  {
+    "common": "Ratfish",
+    "scientific": "Hydrolagus colliei",
+    "detail": "Chimaeridae",
+    "category": "invertebrates",
+    "icon": "•",
+    "color": "#728b6d",
+    "aphiaID": 271406,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Blue catfish",
@@ -1213,7 +1353,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 275329
+    "aphiaID": 275329,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Striped parrotfish",
@@ -1222,7 +1363,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 276052
+    "aphiaID": 276052,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Common mudflat snail",
@@ -1231,7 +1373,8 @@ export const GENERATED_SPECIES = [
     "category": "shellfish",
     "icon": "🐚",
     "color": "#9a705c",
-    "aphiaID": 151628
+    "aphiaID": 151628,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Boreal squid",
@@ -1240,16 +1383,19 @@ export const GENERATED_SPECIES = [
     "category": "cephalopods",
     "icon": "🦑",
     "color": "#9b5f78",
-    "aphiaID": 153087
+    "aphiaID": 153087,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Cathorops mapale",
+    "common": "Mapale Sea Catfish",
     "scientific": "Cathorops mapale",
     "detail": "Ariidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 280046
+    "aphiaID": 280046,
+    "commonSource": "GBIF",
+    "gbifKey": 2345171
   },
   {
     "common": "Oceanic bonito",
@@ -1258,7 +1404,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 127018
+    "aphiaID": 127018,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Redband parrotfish",
@@ -1267,7 +1414,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 273772
+    "aphiaID": 273772,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Common seal",
@@ -1276,7 +1424,8 @@ export const GENERATED_SPECIES = [
     "category": "mammals",
     "icon": "🐋",
     "color": "#718674",
-    "aphiaID": 137084
+    "aphiaID": 137084,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Geelbeck croaker",
@@ -1285,34 +1434,41 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 218634
+    "aphiaID": 218634,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Megastraea undosa",
+    "common": "Wavy turban",
     "scientific": "Megastraea undosa",
     "detail": "Turbinidae",
     "category": "shellfish",
     "icon": "🐚",
     "color": "#9a705c",
-    "aphiaID": 528084
+    "aphiaID": 528084,
+    "commonSource": "GBIF",
+    "gbifKey": 2293185
   },
   {
-    "common": "Kelletia kelletii",
+    "common": "Kellet's Whelk",
     "scientific": "Kelletia kelletii",
     "detail": "Austrosiphonidae",
     "category": "shellfish",
     "icon": "🐚",
     "color": "#9a705c",
-    "aphiaID": 491054
+    "aphiaID": 491054,
+    "commonSource": "GBIF",
+    "gbifKey": 2304727
   },
   {
-    "common": "Crassadoma gigantea",
+    "common": "Giant Rock Scallop",
     "scientific": "Crassadoma gigantea",
     "detail": "Pectinidae",
     "category": "shellfish",
     "icon": "🐚",
     "color": "#9a705c",
-    "aphiaID": 240774
+    "aphiaID": 240774,
+    "commonSource": "GBIF",
+    "gbifKey": 2285940
   },
   {
     "common": "Hiramasa kingfish",
@@ -1321,7 +1477,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 218436
+    "aphiaID": 218436,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Eurasian spoonbill",
@@ -1330,7 +1487,8 @@ export const GENERATED_SPECIES = [
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 416678
+    "aphiaID": 416678,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Sun anemone",
@@ -1339,34 +1497,41 @@ export const GENERATED_SPECIES = [
     "category": "jellyfish",
     "icon": "◌",
     "color": "#795da5",
-    "aphiaID": 240753
+    "aphiaID": 240753,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Apostichopus parvimensis",
+    "common": "Warty Sea Cucumber",
     "scientific": "Apostichopus parvimensis",
     "detail": "Stichopodidae",
     "category": "echinoderms",
     "icon": "★",
     "color": "#aa773f",
-    "aphiaID": 529435
+    "aphiaID": 529435,
+    "commonSource": "GBIF",
+    "gbifKey": 5967432
   },
   {
-    "common": "Calonectris borealis",
+    "common": "Cory's Shearwater",
     "scientific": "Calonectris borealis",
     "detail": "Procellariidae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 1348497
+    "aphiaID": 1348497,
+    "commonSource": "GBIF",
+    "gbifKey": 4847282
   },
   {
-    "common": "Pagrus auratus",
+    "common": "Bream",
     "scientific": "Pagrus auratus",
     "detail": "Sparidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 398546
+    "aphiaID": 398546,
+    "commonSource": "GBIF",
+    "gbifKey": 9770885
   },
   {
     "common": "Black backs",
@@ -1375,7 +1540,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 158885
+    "aphiaID": 158885,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Slinger seabream",
@@ -1384,7 +1550,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 218600
+    "aphiaID": 218600,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Catworm",
@@ -1393,7 +1560,8 @@ export const GENERATED_SPECIES = [
     "category": "invertebrates",
     "icon": "•",
     "color": "#728b6d",
-    "aphiaID": 130359
+    "aphiaID": 130359,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Acartia (Acartiura) longiremis",
@@ -1411,7 +1579,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 127144
+    "aphiaID": 127144,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Santer seabream",
@@ -1420,7 +1589,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 218594
+    "aphiaID": 218594,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Rock sole",
@@ -1429,7 +1599,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 281305
+    "aphiaID": 281305,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Argentine",
@@ -1438,7 +1609,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 126716
+    "aphiaID": 126716,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Black bass",
@@ -1447,7 +1619,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 254573
+    "aphiaID": 254573,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Striped mojarra",
@@ -1456,7 +1629,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 280743
+    "aphiaID": 280743,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Eastern curlew",
@@ -1465,7 +1639,8 @@ export const GENERATED_SPECIES = [
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 225934
+    "aphiaID": 225934,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Cape gannet",
@@ -1474,7 +1649,8 @@ export const GENERATED_SPECIES = [
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 221026
+    "aphiaID": 221026,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Two-toothed Montagu shell",
@@ -1483,7 +1659,8 @@ export const GENERATED_SPECIES = [
     "category": "shellfish",
     "icon": "🐚",
     "color": "#9a705c",
-    "aphiaID": 345281
+    "aphiaID": 345281,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Red-necked stint",
@@ -1492,7 +1669,8 @@ export const GENERATED_SPECIES = [
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 212601
+    "aphiaID": 212601,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Cownose ray",
@@ -1501,7 +1679,8 @@ export const GENERATED_SPECIES = [
     "category": "rays",
     "icon": "◆",
     "color": "#4d778d",
-    "aphiaID": 158544
+    "aphiaID": 158544,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Chum salmon",
@@ -1510,7 +1689,18 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 127183
+    "aphiaID": 127183,
+    "commonSource": "WoRMS"
+  },
+  {
+    "common": "Blue tang",
+    "scientific": "Acanthurus coeruleus",
+    "detail": "Acanthuridae",
+    "category": "fish",
+    "icon": "🐟",
+    "color": "#3e739a",
+    "aphiaID": 159581,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Australian sea lion",
@@ -1519,7 +1709,8 @@ export const GENERATED_SPECIES = [
     "category": "mammals",
     "icon": "🐋",
     "color": "#718674",
-    "aphiaID": 255001
+    "aphiaID": 255001,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Antarctic krill",
@@ -1528,7 +1719,8 @@ export const GENERATED_SPECIES = [
     "category": "crustaceans",
     "icon": "🦀",
     "color": "#b15f4f",
-    "aphiaID": 236217
+    "aphiaID": 236217,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Flathead sole",
@@ -1537,7 +1729,8 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 274289
+    "aphiaID": 274289,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Estuarine crocodile",
@@ -1546,7 +1739,8 @@ export const GENERATED_SPECIES = [
     "category": "invertebrates",
     "icon": "•",
     "color": "#728b6d",
-    "aphiaID": 344030
+    "aphiaID": 344030,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Bicolor damselfish",
@@ -1555,16 +1749,30 @@ export const GENERATED_SPECIES = [
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 276677
+    "aphiaID": 276677,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Capitellid thread worm",
+    "common": "Capitellid Thread Worm",
     "scientific": "Heteromastus filiformis",
     "detail": "Capitellidae",
     "category": "invertebrates",
     "icon": "•",
     "color": "#728b6d",
-    "aphiaID": 129884
+    "aphiaID": 129884,
+    "commonSource": "GBIF",
+    "gbifKey": 5197090
+  },
+  {
+    "common": "Barber",
+    "scientific": "Acanthurus bahianus",
+    "detail": "Acanthuridae",
+    "category": "fish",
+    "icon": "🐟",
+    "color": "#3e739a",
+    "aphiaID": 159578,
+    "commonSource": "GBIF",
+    "gbifKey": 5209181
   },
   {
     "common": "Paracalanus parvus",
@@ -1576,67 +1784,92 @@ export const GENERATED_SPECIES = [
     "aphiaID": 104685
   },
   {
-    "common": "Ridge scaled rattail",
+    "common": "Bigeye grenadier, Ridge scaled rattail",
     "scientific": "Macrourus carinatus",
     "detail": "Macrouridae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 217773
+    "aphiaID": 217773,
+    "commonSource": "GBIF",
+    "gbifKey": 5215144
   },
   {
-    "common": "Macaroni penguin",
+    "common": "Macaroni Penguin",
     "scientific": "Eudyptes chrysolophus",
     "detail": "Spheniscidae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 212658
+    "aphiaID": 212658,
+    "commonSource": "GBIF",
+    "gbifKey": 2481643
   },
   {
-    "common": "Red hake",
+    "common": "Hake",
     "scientific": "Urophycis chuss",
     "detail": "Phycidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 126503
+    "aphiaID": 126503,
+    "commonSource": "GBIF",
+    "gbifKey": 2415718
   },
   {
-    "common": "Pacific cod",
+    "common": "Cola",
+    "scientific": "Ocyurus chrysurus",
+    "detail": "Lutjanidae",
+    "category": "fish",
+    "icon": "🐟",
+    "color": "#3e739a",
+    "aphiaID": 159803,
+    "commonSource": "GBIF",
+    "gbifKey": 2385282
+  },
+  {
+    "common": "Greenland cod",
     "scientific": "Gadus macrocephalus",
     "detail": "Gadidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 254538
+    "aphiaID": 254538,
+    "commonSource": "GBIF",
+    "gbifKey": 2415853
   },
   {
-    "common": "Bee spionid",
+    "common": "Bee Spionid",
     "scientific": "Spiophanes bombyx",
     "detail": "Spionidae",
     "category": "invertebrates",
     "icon": "•",
     "color": "#728b6d",
-    "aphiaID": 131187
+    "aphiaID": 131187,
+    "commonSource": "GBIF",
+    "gbifKey": 2321057
   },
   {
-    "common": "Carcharhinus limbatus",
+    "common": "Black-tip shark",
     "scientific": "Carcharhinus limbatus",
     "detail": "Carcharhinidae",
     "category": "sharks",
     "icon": "🦈",
     "color": "#557582",
-    "aphiaID": 105793
+    "aphiaID": 105793,
+    "commonSource": "GBIF",
+    "gbifKey": 2417970
   },
   {
-    "common": "Cribrinopsis albopunctata",
+    "common": "White-spotted Rose Anemone",
     "scientific": "Cribrinopsis albopunctata",
     "detail": "Tealidae",
     "category": "jellyfish",
     "icon": "◌",
     "color": "#795da5",
-    "aphiaID": 240769
+    "aphiaID": 240769,
+    "commonSource": "GBIF",
+    "gbifKey": 4339111
   },
   {
     "common": "Puffinus puffinus",
@@ -1648,166 +1881,169 @@ export const GENERATED_SPECIES = [
     "aphiaID": 137203
   },
   {
-    "common": "Acanthurus coeruleus",
-    "scientific": "Acanthurus coeruleus",
-    "detail": "Acanthuridae",
-    "category": "fish",
-    "icon": "🐟",
-    "color": "#3e739a",
-    "aphiaID": 159581
-  },
-  {
-    "common": "Anchovia clupeoides",
+    "common": "Zabaleta anchovy",
     "scientific": "Anchovia clupeoides",
     "detail": "Engraulidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 279607
+    "aphiaID": 279607,
+    "commonSource": "GBIF",
+    "gbifKey": 2413788
   },
   {
-    "common": "Asterias rubens",
+    "common": "Atlantic Common Sea Star",
     "scientific": "Asterias rubens",
     "detail": "Asteriidae",
     "category": "echinoderms",
     "icon": "★",
     "color": "#aa773f",
-    "aphiaID": 123776
+    "aphiaID": 123776,
+    "commonSource": "GBIF",
+    "gbifKey": 7765831
   },
   {
-    "common": "Styela montereyensis",
+    "common": "Long-stalked Sea Squirt",
     "scientific": "Styela montereyensis",
     "detail": "Styelidae",
     "category": "invertebrates",
     "icon": "•",
     "color": "#728b6d",
-    "aphiaID": 240756
+    "aphiaID": 240756,
+    "commonSource": "GBIF",
+    "gbifKey": 2331991
   },
   {
-    "common": "Ocyurus chrysurus",
-    "scientific": "Ocyurus chrysurus",
-    "detail": "Lutjanidae",
-    "category": "fish",
-    "icon": "🐟",
-    "color": "#3e739a",
-    "aphiaID": 159803
-  },
-  {
-    "common": "Somateria mollissima",
+    "common": "American Eider",
     "scientific": "Somateria mollissima",
     "detail": "Anatidae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 137074
+    "aphiaID": 137074,
+    "commonSource": "GBIF",
+    "gbifKey": 2498352
   },
   {
-    "common": "Leucoraja ocellata",
+    "common": "Big Skate",
     "scientific": "Leucoraja ocellata",
     "detail": "Rajidae",
     "category": "rays",
     "icon": "◆",
     "color": "#4d778d",
-    "aphiaID": 158553
+    "aphiaID": 158553,
+    "commonSource": "GBIF",
+    "gbifKey": 2419886
   },
   {
-    "common": "Fregata magnificens",
+    "common": "American Frigate-bird",
     "scientific": "Fregata magnificens",
     "detail": "Fregatidae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 343999
+    "aphiaID": 343999,
+    "commonSource": "GBIF",
+    "gbifKey": 2480189
   },
   {
-    "common": "Puffinus tenuirostris",
+    "common": "Short-Tailed Shearwater",
     "scientific": "Puffinus tenuirostris",
     "detail": "Procellariidae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 225770
+    "aphiaID": 225770,
+    "commonSource": "GBIF",
+    "gbifKey": 5229359
   },
   {
-    "common": "Oreochromis niloticus",
+    "common": "Nile mouthbreeder",
     "scientific": "Oreochromis niloticus",
     "detail": "Cichlidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 293639
+    "aphiaID": 293639,
+    "commonSource": "GBIF",
+    "gbifKey": 4285694
   },
   {
-    "common": "Puffinus pacificus",
+    "common": "Wedge-tailed Shearwater",
     "scientific": "Puffinus pacificus",
     "detail": "Procellariidae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 212634
+    "aphiaID": 212634,
+    "commonSource": "GBIF",
+    "gbifKey": 5229344
   },
   {
-    "common": "Puffinus gravis",
+    "common": "Great Shearwater",
     "scientific": "Puffinus gravis",
     "detail": "Procellariidae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 137201
+    "aphiaID": 137201,
+    "commonSource": "GBIF",
+    "gbifKey": 5229343
   },
   {
-    "common": "Acanthurus bahianus",
-    "scientific": "Acanthurus bahianus",
-    "detail": "Acanthuridae",
-    "category": "fish",
-    "icon": "🐟",
-    "color": "#3e739a",
-    "aphiaID": 159578
-  },
-  {
-    "common": "Haliotis rufescens",
+    "common": "Red abalone",
     "scientific": "Haliotis rufescens",
     "detail": "Haliotidae",
     "category": "shellfish",
     "icon": "🐚",
     "color": "#9a705c",
-    "aphiaID": 445357
+    "aphiaID": 445357,
+    "commonSource": "GBIF",
+    "gbifKey": 2293078
   },
   {
-    "common": "Helicolenus dactylopterus",
+    "common": "Blackbelly rosefish, Blue-mouth",
     "scientific": "Helicolenus dactylopterus",
     "detail": "Sebastidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 127251
+    "aphiaID": 127251,
+    "commonSource": "GBIF",
+    "gbifKey": 4286361
   },
   {
-    "common": "Dipturus lamillai",
+    "common": "Warrah Skate",
     "scientific": "Dipturus lamillai",
     "detail": "Rajidae",
     "category": "rays",
     "icon": "◆",
     "color": "#4d778d",
-    "aphiaID": 1523924
+    "aphiaID": 1523924,
+    "commonSource": "GBIF",
+    "gbifKey": 10501064
   },
   {
-    "common": "Pterogymnus laniarius",
+    "common": "Panga",
     "scientific": "Pterogymnus laniarius",
     "detail": "Sparidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 218619
+    "aphiaID": 218619,
+    "commonSource": "GBIF",
+    "gbifKey": 5210988
   },
   {
-    "common": "Abra alba",
+    "common": "White abra",
     "scientific": "Abra alba",
     "detail": "Semelidae",
     "category": "shellfish",
     "icon": "🐚",
     "color": "#9a705c",
-    "aphiaID": 141433
+    "aphiaID": 141433,
+    "commonSource": "GBIF",
+    "gbifKey": 5189061
   },
   {
     "common": "Acartia (Acartiura) clausii",
@@ -1819,13 +2055,15 @@ export const GENERATED_SPECIES = [
     "aphiaID": 149755
   },
   {
-    "common": "Sebastes mystinus",
+    "common": "Blue rockfish",
     "scientific": "Sebastes mystinus",
     "detail": "Sebastidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 274823
+    "aphiaID": 274823,
+    "commonSource": "GBIF",
+    "gbifKey": 2335366
   },
   {
     "common": "Amperima rosea",
@@ -1837,67 +2075,92 @@ export const GENERATED_SPECIES = [
     "aphiaID": 124723
   },
   {
-    "common": "Oligoplites saurus",
+    "common": "Leatherjack",
     "scientific": "Oligoplites saurus",
     "detail": "Carangidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 159645
+    "aphiaID": 159645,
+    "commonSource": "GBIF",
+    "gbifKey": 2390622
   },
   {
-    "common": "Chelidonichthys cuculus",
+    "common": "East Atlantic Red Gurnard",
     "scientific": "Chelidonichthys cuculus",
     "detail": "Triglidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 127259
+    "aphiaID": 127259,
+    "commonSource": "GBIF",
+    "gbifKey": 2336745
   },
   {
-    "common": "Halichoeres garnoti",
+    "common": "Yellowhead Wrasse",
     "scientific": "Halichoeres garnoti",
     "detail": "Labridae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 275764
+    "aphiaID": 275764,
+    "commonSource": "GBIF",
+    "gbifKey": 2384162
   },
   {
-    "common": "Halichoeres bivittatus",
-    "scientific": "Halichoeres bivittatus",
-    "detail": "Labridae",
-    "category": "fish",
-    "icon": "🐟",
-    "color": "#3e739a",
-    "aphiaID": 158815
-  },
-  {
-    "common": "Dermasterias imbricata",
-    "scientific": "Dermasterias imbricata",
-    "detail": "Asteropseidae",
-    "category": "echinoderms",
-    "icon": "★",
-    "color": "#aa773f",
-    "aphiaID": 240771
-  },
-  {
-    "common": "Pygospio elegans",
-    "scientific": "Pygospio elegans",
-    "detail": "Spionidae",
-    "category": "invertebrates",
-    "icon": "•",
-    "color": "#728b6d",
-    "aphiaID": 131170
-  },
-  {
-    "common": "Micropogonias furnieri",
+    "common": "Bashaw",
     "scientific": "Micropogonias furnieri",
     "detail": "Sciaenidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 275307
+    "aphiaID": 275307,
+    "commonSource": "GBIF",
+    "gbifKey": 2399855
+  },
+  {
+    "common": "Slippery Dick",
+    "scientific": "Halichoeres bivittatus",
+    "detail": "Labridae",
+    "category": "fish",
+    "icon": "🐟",
+    "color": "#3e739a",
+    "aphiaID": 158815,
+    "commonSource": "GBIF",
+    "gbifKey": 2384268
+  },
+  {
+    "common": "Leather star",
+    "scientific": "Dermasterias imbricata",
+    "detail": "Asteropseidae",
+    "category": "echinoderms",
+    "icon": "★",
+    "color": "#aa773f",
+    "aphiaID": 240771,
+    "commonSource": "GBIF",
+    "gbifKey": 2271961
+  },
+  {
+    "common": "Pygospio worm",
+    "scientific": "Pygospio elegans",
+    "detail": "Spionidae",
+    "category": "invertebrates",
+    "icon": "•",
+    "color": "#728b6d",
+    "aphiaID": 131170,
+    "commonSource": "GBIF",
+    "gbifKey": 2321271
+  },
+  {
+    "common": "Boar Grunt",
+    "scientific": "Haemulon plumierii",
+    "detail": "Haemulidae",
+    "category": "fish",
+    "icon": "🐟",
+    "color": "#3e739a",
+    "aphiaID": 158808,
+    "commonSource": "GBIF",
+    "gbifKey": 2382537
   },
   {
     "common": "Arnoglossus laterna",
@@ -1909,49 +2172,59 @@ export const GENERATED_SPECIES = [
     "aphiaID": 127126
   },
   {
-    "common": "Hediste diversicolor",
+    "common": "Clam worm",
     "scientific": "Hediste diversicolor",
     "detail": "Nereididae",
     "category": "invertebrates",
     "icon": "•",
     "color": "#728b6d",
-    "aphiaID": 152302
+    "aphiaID": 152302,
+    "commonSource": "GBIF",
+    "gbifKey": 2316416
   },
   {
-    "common": "Melanitta nigra",
+    "common": "Black Scoter",
     "scientific": "Melanitta nigra",
     "detail": "Anatidae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 137073
+    "aphiaID": 137073,
+    "commonSource": "GBIF",
+    "gbifKey": 2498247
   },
   {
-    "common": "Dipturus intermedius",
+    "common": "Intermediate skate",
     "scientific": "Dipturus intermedius",
     "detail": "Rajidae",
     "category": "rays",
     "icon": "◆",
     "color": "#4d778d",
-    "aphiaID": 711846
+    "aphiaID": 711846,
+    "commonSource": "GBIF",
+    "gbifKey": 7589509
   },
   {
-    "common": "Hoplostethus atlanticus",
+    "common": "Atlantic slimehead",
     "scientific": "Hoplostethus atlanticus",
     "detail": "Trachichthyidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 126402
+    "aphiaID": 126402,
+    "commonSource": "GBIF",
+    "gbifKey": 2357093
   },
   {
-    "common": "Phalacrocorax varius",
+    "common": "Australian Pied Cormorant",
     "scientific": "Phalacrocorax varius",
     "detail": "Phalacrocoracidae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 225940
+    "aphiaID": 225940,
+    "commonSource": "GBIF",
+    "gbifKey": 2481860
   },
   {
     "common": "Buglossidium luteum",
@@ -1963,31 +2236,26 @@ export const GENERATED_SPECIES = [
     "aphiaID": 127153
   },
   {
-    "common": "Haemulon plumierii",
-    "scientific": "Haemulon plumierii",
-    "detail": "Haemulidae",
-    "category": "fish",
-    "icon": "🐟",
-    "color": "#3e739a",
-    "aphiaID": 158808
-  },
-  {
-    "common": "Cancer pagurus",
+    "common": "Brown Crab",
     "scientific": "Cancer pagurus",
     "detail": "Cancridae",
     "category": "crustaceans",
     "icon": "🦀",
     "color": "#b15f4f",
-    "aphiaID": 107276
+    "aphiaID": 107276,
+    "commonSource": "GBIF",
+    "gbifKey": 2222085
   },
   {
-    "common": "Merluccius productus",
+    "common": "North Pacific hake",
     "scientific": "Merluccius productus",
     "detail": "Merlucciidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 272458
+    "aphiaID": 272458,
+    "commonSource": "GBIF",
+    "gbifKey": 2415676
   },
   {
     "common": "Clangula hyemalis",
@@ -1999,76 +2267,26 @@ export const GENERATED_SPECIES = [
     "aphiaID": 137071
   },
   {
-    "common": "Lagodon rhomboides",
+    "common": "Bream",
     "scientific": "Lagodon rhomboides",
     "detail": "Sparidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 159249
+    "aphiaID": 159249,
+    "commonSource": "GBIF",
+    "gbifKey": 2392516
   },
   {
-    "common": "Varicorbula gibba",
+    "common": "Basket Shell",
     "scientific": "Varicorbula gibba",
     "detail": "Corbulidae",
     "category": "shellfish",
     "icon": "🐚",
     "color": "#9a705c",
-    "aphiaID": 378492
-  },
-  {
-    "common": "Numenius arquata",
-    "scientific": "Numenius arquata",
-    "detail": "Scolopacidae",
-    "category": "seabirds",
-    "icon": "●",
-    "color": "#607b8b",
-    "aphiaID": 159037
-  },
-  {
-    "common": "Megathura crenulata",
-    "scientific": "Megathura crenulata",
-    "detail": "Fissurellidae",
-    "category": "shellfish",
-    "icon": "🐚",
-    "color": "#9a705c",
-    "aphiaID": 527885
-  },
-  {
-    "common": "Sterna hirundo",
-    "scientific": "Sterna hirundo",
-    "detail": "Laridae",
-    "category": "seabirds",
-    "icon": "●",
-    "color": "#607b8b",
-    "aphiaID": 137162
-  },
-  {
-    "common": "Enchelyopus cimbrius",
-    "scientific": "Enchelyopus cimbrius",
-    "detail": "Lotidae",
-    "category": "fish",
-    "icon": "🐟",
-    "color": "#3e739a",
-    "aphiaID": 126450
-  },
-  {
-    "common": "Sebastolobus alascanus",
-    "scientific": "Sebastolobus alascanus",
-    "detail": "Sebastidae",
-    "category": "fish",
-    "icon": "🐟",
-    "color": "#3e739a",
-    "aphiaID": 282740
-  },
-  {
-    "common": "Neobernaya spadicea",
-    "scientific": "Neobernaya spadicea",
-    "detail": "Cypraeidae",
-    "category": "shellfish",
-    "icon": "🐚",
-    "color": "#9a705c",
-    "aphiaID": 580674
+    "aphiaID": 378492,
+    "commonSource": "GBIF",
+    "gbifKey": 2288891
   },
   {
     "common": "Metridia longa",
@@ -2080,211 +2298,310 @@ export const GENERATED_SPECIES = [
     "aphiaID": 104632
   },
   {
-    "common": "Paralabrax clathratus",
+    "common": "Common Curlew",
+    "scientific": "Numenius arquata",
+    "detail": "Scolopacidae",
+    "category": "seabirds",
+    "icon": "●",
+    "color": "#607b8b",
+    "aphiaID": 159037,
+    "commonSource": "GBIF",
+    "gbifKey": 2481792
+  },
+  {
+    "common": "Great Keyhole Limpet",
+    "scientific": "Megathura crenulata",
+    "detail": "Fissurellidae",
+    "category": "shellfish",
+    "icon": "🐚",
+    "color": "#9a705c",
+    "aphiaID": 527885,
+    "commonSource": "GBIF",
+    "gbifKey": 2293441
+  },
+  {
+    "common": "Booby",
+    "scientific": "Sterna hirundo",
+    "detail": "Laridae",
+    "category": "seabirds",
+    "icon": "●",
+    "color": "#607b8b",
+    "aphiaID": 137162,
+    "commonSource": "GBIF",
+    "gbifKey": 9367409
+  },
+  {
+    "common": "Four-bearded Rockling",
+    "scientific": "Enchelyopus cimbrius",
+    "detail": "Lotidae",
+    "category": "fish",
+    "icon": "🐟",
+    "color": "#3e739a",
+    "aphiaID": 126450,
+    "commonSource": "GBIF",
+    "gbifKey": 5214892
+  },
+  {
+    "common": "Shortspine Thornyhead",
+    "scientific": "Sebastolobus alascanus",
+    "detail": "Sebastidae",
+    "category": "fish",
+    "icon": "🐟",
+    "color": "#3e739a",
+    "aphiaID": 282740,
+    "commonSource": "GBIF",
+    "gbifKey": 2335323
+  },
+  {
+    "common": "Chestnut Cowry",
+    "scientific": "Neobernaya spadicea",
+    "detail": "Cypraeidae",
+    "category": "shellfish",
+    "icon": "🐚",
+    "color": "#9a705c",
+    "aphiaID": 580674,
+    "commonSource": "GBIF",
+    "gbifKey": 5856681
+  },
+  {
+    "common": "Calico Bass",
     "scientific": "Paralabrax clathratus",
     "detail": "Serranidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 282054
+    "aphiaID": 282054,
+    "commonSource": "GBIF",
+    "gbifKey": 2387731
   },
   {
-    "common": "Haematopus longirostris",
+    "common": "Australian Pied Oystercatcher",
     "scientific": "Haematopus longirostris",
     "detail": "Charadriidae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 366772
+    "aphiaID": 366772,
+    "commonSource": "GBIF",
+    "gbifKey": 2480261
   },
   {
-    "common": "Bucephala albeola",
+    "common": "Bufflehead",
     "scientific": "Bucephala albeola",
     "detail": "Anatidae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 159179
+    "aphiaID": 159179,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Mallotus villosus",
+    "common": "Atlantic Capelin",
     "scientific": "Mallotus villosus",
     "detail": "Osmeridae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 126735
+    "aphiaID": 126735,
+    "commonSource": "GBIF",
+    "gbifKey": 5214420
   },
   {
-    "common": "Mugil liza",
+    "common": "Blueback Mullet",
     "scientific": "Mugil liza",
     "detail": "Mugilidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 273655
+    "aphiaID": 273655,
+    "commonSource": "GBIF",
+    "gbifKey": 2400654
   },
   {
-    "common": "Argentina silus",
+    "common": "Argentine silver smelt",
     "scientific": "Argentina silus",
     "detail": "Argentinidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 126715
+    "aphiaID": 126715,
+    "commonSource": "GBIF",
+    "gbifKey": 5214450
   },
   {
-    "common": "Nephrops norvegicus",
+    "common": "Dublin Bay lobster",
     "scientific": "Nephrops norvegicus",
     "detail": "Nephropidae",
     "category": "crustaceans",
     "icon": "🦀",
     "color": "#b15f4f",
-    "aphiaID": 107254
+    "aphiaID": 107254,
+    "commonSource": "GBIF",
+    "gbifKey": 2226962
   },
   {
-    "common": "Anoplopoma fimbria",
+    "common": "Alaskan Black Cod",
     "scientific": "Anoplopoma fimbria",
     "detail": "Anoplopomatidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 159463
+    "aphiaID": 159463,
+    "commonSource": "GBIF",
+    "gbifKey": 2335062
   },
   {
-    "common": "Pachyptila turtur",
+    "common": "Fairy Prion",
     "scientific": "Pachyptila turtur",
     "detail": "Procellariidae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 212648
+    "aphiaID": 212648,
+    "commonSource": "GBIF",
+    "gbifKey": 5229332
   },
   {
-    "common": "Leucoraja erinaceus",
+    "common": "Common Skate",
     "scientific": "Leucoraja erinaceus",
     "detail": "Rajidae",
     "category": "rays",
     "icon": "◆",
     "color": "#4d778d",
-    "aphiaID": 1577339
+    "aphiaID": 1577339,
+    "commonSource": "GBIF",
+    "gbifKey": 2419879
   },
   {
-    "common": "Platycephalus richardsoni",
+    "common": "Deep-sea Flathead",
     "scientific": "Platycephalus richardsoni",
     "detail": "Platycephalidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 274663
+    "aphiaID": 274663,
+    "commonSource": "GBIF",
+    "gbifKey": 5201392
   },
   {
-    "common": "Lanice conchilega",
+    "common": "Sand mason",
     "scientific": "Lanice conchilega",
     "detail": "Terebellidae",
     "category": "invertebrates",
     "icon": "•",
     "color": "#728b6d",
-    "aphiaID": 131495
+    "aphiaID": 131495,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Anguilla rostrata",
+    "common": "American eel",
     "scientific": "Anguilla rostrata",
     "detail": "Anguillidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 158562
+    "aphiaID": 158562,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Thalassarche chrysostoma",
+    "common": "Grey-headed albatross",
     "scientific": "Thalassarche chrysostoma",
     "detail": "Diomedeidae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 225760
+    "aphiaID": 225760,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Bathyraja griseocauda",
+    "common": "Graytale stake",
     "scientific": "Bathyraja griseocauda",
     "detail": "Arhynchobatidae",
     "category": "rays",
     "icon": "◆",
     "color": "#4d778d",
-    "aphiaID": 234586
+    "aphiaID": 234586,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Trisopterus luscus",
+    "common": "Bib",
     "scientific": "Trisopterus luscus",
     "detail": "Gadidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 126445
+    "aphiaID": 126445,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Henricia leviuscula",
+    "common": "Pacific blood star",
     "scientific": "Henricia leviuscula",
     "detail": "Echinasteridae",
     "category": "echinoderms",
     "icon": "★",
     "color": "#aa773f",
-    "aphiaID": 369117
+    "aphiaID": 369117,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Sparisoma viride",
+    "common": "Stoplight parrotfish",
     "scientific": "Sparisoma viride",
     "detail": "Scaridae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 273780
+    "aphiaID": 273780,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Panulirus interruptus",
+    "common": "California lobster",
     "scientific": "Panulirus interruptus",
     "detail": "Palinuridae",
     "category": "crustaceans",
     "icon": "🦀",
     "color": "#b15f4f",
-    "aphiaID": 382898
+    "aphiaID": 382898,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Mya arenaria",
+    "common": "Large-neck clam",
     "scientific": "Mya arenaria",
     "detail": "Myidae",
     "category": "shellfish",
     "icon": "🐚",
     "color": "#9a705c",
-    "aphiaID": 140430
+    "aphiaID": 140430,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Raja clavata",
+    "common": "Roker",
     "scientific": "Raja clavata",
     "detail": "Rajidae",
     "category": "rays",
     "icon": "◆",
     "color": "#4d778d",
-    "aphiaID": 105883
+    "aphiaID": 105883,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Placopecten magellanicus",
+    "common": "American sea scallop",
     "scientific": "Placopecten magellanicus",
     "detail": "Pectinidae",
     "category": "shellfish",
     "icon": "🐚",
     "color": "#9a705c",
-    "aphiaID": 156972
+    "aphiaID": 156972,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Poliocephalus poliocephalus",
+    "common": "Hoary-headed grebe",
     "scientific": "Poliocephalus poliocephalus",
     "detail": "Podicipedidae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 366619
+    "aphiaID": 366619,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Sebastes capensis",
@@ -2296,103 +2613,116 @@ export const GENERATED_SPECIES = [
     "aphiaID": 221446
   },
   {
-    "common": "Procellaria aequinoctialis",
+    "common": "Cape hen",
     "scientific": "Procellaria aequinoctialis",
     "detail": "Procellariidae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 212651
+    "aphiaID": 212651,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Citharichthys sordidus",
+    "common": "Pacific sanddab",
     "scientific": "Citharichthys sordidus",
     "detail": "Paralichthyidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 275694
+    "aphiaID": 275694,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Cryptochiton stelleri",
+    "common": "Giant Pacific chiton",
     "scientific": "Cryptochiton stelleri",
     "detail": "Acanthochitonidae",
     "category": "shellfish",
     "icon": "🐚",
     "color": "#9a705c",
-    "aphiaID": 240776
+    "aphiaID": 240776,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Hydroprogne caspia",
+    "common": "Caspian tern",
     "scientific": "Hydroprogne caspia",
     "detail": "Laridae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 567825
+    "aphiaID": 567825,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Lophius piscatorius",
+    "common": "Angler",
     "scientific": "Lophius piscatorius",
     "detail": "Lophiidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 126555
+    "aphiaID": 126555,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Puffinus griseus",
+    "common": "Sooty shear water",
     "scientific": "Puffinus griseus",
     "detail": "Procellariidae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 137202
+    "aphiaID": 137202,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Agonus cataphractus",
+    "common": "Armed bullhead",
     "scientific": "Agonus cataphractus",
     "detail": "Agonidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 127190
+    "aphiaID": 127190,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Megalops atlanticus",
+    "common": "Tarpon",
     "scientific": "Megalops atlanticus",
     "detail": "Megalopidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 126430
+    "aphiaID": 126430,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Rhabdosargus globiceps",
+    "common": "Go-home-fish",
     "scientific": "Rhabdosargus globiceps",
     "detail": "Sparidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 218624
+    "aphiaID": 218624,
+    "commonSource": "GBIF",
+    "gbifKey": 2392338
   },
   {
-    "common": "Larus michahellis",
+    "common": "Yellow-legged gull",
     "scientific": "Larus michahellis",
     "detail": "Laridae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 232052
+    "aphiaID": 232052,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Hemitripterus americanus",
+    "common": "Atlantic Sea Raven",
     "scientific": "Hemitripterus americanus",
     "detail": "Hemitripteridae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 159518
+    "aphiaID": 159518,
+    "commonSource": "GBIF",
+    "gbifKey": 7938309
   },
   {
     "common": "Galathowenia oculata",
@@ -2404,13 +2734,14 @@ export const GENERATED_SPECIES = [
     "aphiaID": 146950
   },
   {
-    "common": "Oxyjulis californica",
+    "common": "Señorita",
     "scientific": "Oxyjulis californica",
     "detail": "Labridae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 240727
+    "aphiaID": 240727,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Eurytemora affinis",
@@ -2422,40 +2753,45 @@ export const GENERATED_SPECIES = [
     "aphiaID": 104872
   },
   {
-    "common": "Amphiura filiformis",
+    "common": "Brittlestar",
     "scientific": "Amphiura filiformis",
     "detail": "Amphiuridae",
     "category": "echinoderms",
     "icon": "★",
     "color": "#aa773f",
-    "aphiaID": 125080
+    "aphiaID": 125080,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Nemadactylus macropterus",
+    "common": "Deep Sea Perch",
     "scientific": "Nemadactylus macropterus",
     "detail": "Cheilodactylidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 281653
+    "aphiaID": 281653,
+    "commonSource": "GBIF",
+    "gbifKey": 2392139
   },
   {
-    "common": "Pisaster ochraceus",
+    "common": "Ochre stars",
     "scientific": "Pisaster ochraceus",
     "detail": "Asteriidae",
     "category": "echinoderms",
     "icon": "★",
     "color": "#aa773f",
-    "aphiaID": 240755
+    "aphiaID": 240755,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Ariopsis felis",
+    "common": "Hardhead catfish",
     "scientific": "Ariopsis felis",
     "detail": "Ariidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 158709
+    "aphiaID": 158709,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Paraeuchaeta norvegica",
@@ -2467,13 +2803,15 @@ export const GENERATED_SPECIES = [
     "aphiaID": 104566
   },
   {
-    "common": "Pomaulax gibberosus",
+    "common": "Red Turban",
     "scientific": "Pomaulax gibberosus",
     "detail": "Turbinidae",
     "category": "shellfish",
     "icon": "🐚",
     "color": "#9a705c",
-    "aphiaID": 581670
+    "aphiaID": 581670,
+    "commonSource": "GBIF",
+    "gbifKey": 6514733
   },
   {
     "common": "Sinosturio medirostris",
@@ -2485,49 +2823,75 @@ export const GENERATED_SPECIES = [
     "aphiaID": 1815696
   },
   {
-    "common": "Ammodytes marinus",
+    "common": "Lesser sandeel",
     "scientific": "Ammodytes marinus",
     "detail": "Ammodytidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 126751
+    "aphiaID": 126751,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Pycnopodia helianthoides",
+    "common": "Rag Mop",
     "scientific": "Pycnopodia helianthoides",
     "detail": "Asteriidae",
     "category": "echinoderms",
     "icon": "★",
     "color": "#aa773f",
-    "aphiaID": 240764
+    "aphiaID": 240764,
+    "commonSource": "GBIF",
+    "gbifKey": 2274565
   },
   {
-    "common": "Loligo forbesii",
+    "common": "Veined squid",
     "scientific": "Loligo forbesii",
     "detail": "Loliginidae",
     "category": "cephalopods",
     "icon": "🦑",
     "color": "#9b5f78",
-    "aphiaID": 140270
+    "aphiaID": 140270,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Gavia stellata",
+    "common": "Red-throated diver",
     "scientific": "Gavia stellata",
     "detail": "Gaviidae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 137188
+    "aphiaID": 137188,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Oceanites oceanicus",
+    "common": "Doctorfish",
+    "scientific": "Acanthurus chirurgus",
+    "detail": "Acanthuridae",
+    "category": "fish",
+    "icon": "🐟",
+    "color": "#3e739a",
+    "aphiaID": 159580,
+    "commonSource": "WoRMS"
+  },
+  {
+    "common": "Wilson's petrel",
     "scientific": "Oceanites oceanicus",
     "detail": "Hydrobatidae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 137190
+    "aphiaID": 137190,
+    "commonSource": "WoRMS"
+  },
+  {
+    "common": "Sweet william",
+    "scientific": "Galeorhinus galeus",
+    "detail": "Triakidae",
+    "category": "sharks",
+    "icon": "🦈",
+    "color": "#557582",
+    "aphiaID": 105820,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Calanus simillimus",
@@ -2548,31 +2912,25 @@ export const GENERATED_SPECIES = [
     "aphiaID": 131188
   },
   {
-    "common": "Mesoplodon densirostris",
+    "common": "Blainville's beaked whale",
     "scientific": "Mesoplodon densirostris",
     "detail": "Ziphiidae",
     "category": "mammals",
     "icon": "🐋",
     "color": "#718674",
-    "aphiaID": 137122
+    "aphiaID": 137122,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Pachycerianthus fimbriatus",
+    "common": "Frilly Tube Anemone",
     "scientific": "Pachycerianthus fimbriatus",
     "detail": "Cerianthidae",
     "category": "jellyfish",
     "icon": "◌",
     "color": "#795da5",
-    "aphiaID": 283820
-  },
-  {
-    "common": "Galeorhinus galeus",
-    "scientific": "Galeorhinus galeus",
-    "detail": "Triakidae",
-    "category": "sharks",
-    "icon": "🦈",
-    "color": "#557582",
-    "aphiaID": 105820
+    "aphiaID": 283820,
+    "commonSource": "GBIF",
+    "gbifKey": 2258602
   },
   {
     "common": "Terebellides stroemii",
@@ -2584,42 +2942,6 @@ export const GENERATED_SPECIES = [
     "aphiaID": 131573
   },
   {
-    "common": "Osmerus mordax",
-    "scientific": "Osmerus mordax",
-    "detail": "Osmeridae",
-    "category": "fish",
-    "icon": "🐟",
-    "color": "#3e739a",
-    "aphiaID": 126737
-  },
-  {
-    "common": "Acanthocybium solandri",
-    "scientific": "Acanthocybium solandri",
-    "detail": "Scombridae",
-    "category": "fish",
-    "icon": "🐟",
-    "color": "#3e739a",
-    "aphiaID": 127014
-  },
-  {
-    "common": "Phalaropus fulicarius",
-    "scientific": "Phalaropus fulicarius",
-    "detail": "Phalaropodidae",
-    "category": "seabirds",
-    "icon": "●",
-    "color": "#607b8b",
-    "aphiaID": 137168
-  },
-  {
-    "common": "Penaeus (Farfantepenaeus) aztecus",
-    "scientific": "Penaeus (Farfantepenaeus) aztecus",
-    "detail": "Penaeidae",
-    "category": "crustaceans",
-    "icon": "🦀",
-    "color": "#b15f4f",
-    "aphiaID": 1809216
-  },
-  {
     "common": "Calanus glacialis",
     "scientific": "Calanus glacialis",
     "detail": "Calanidae",
@@ -2629,22 +2951,66 @@ export const GENERATED_SPECIES = [
     "aphiaID": 104465
   },
   {
-    "common": "Larus philadelphia",
+    "common": "Wahoo",
+    "scientific": "Acanthocybium solandri",
+    "detail": "Scombridae",
+    "category": "fish",
+    "icon": "🐟",
+    "color": "#3e739a",
+    "aphiaID": 127014,
+    "commonSource": "WoRMS"
+  },
+  {
+    "common": "Rainbow smelt",
+    "scientific": "Osmerus mordax",
+    "detail": "Osmeridae",
+    "category": "fish",
+    "icon": "🐟",
+    "color": "#3e739a",
+    "aphiaID": 126737,
+    "commonSource": "WoRMS"
+  },
+  {
+    "common": "Grey phalarope",
+    "scientific": "Phalaropus fulicarius",
+    "detail": "Phalaropodidae",
+    "category": "seabirds",
+    "icon": "●",
+    "color": "#607b8b",
+    "aphiaID": 137168,
+    "commonSource": "WoRMS"
+  },
+  {
+    "common": "Brown Shrimp",
+    "scientific": "Penaeus (Farfantepenaeus) aztecus",
+    "detail": "Penaeidae",
+    "category": "crustaceans",
+    "icon": "🦀",
+    "color": "#b15f4f",
+    "aphiaID": 1809216,
+    "commonSource": "GBIF",
+    "gbifKey": 2223840
+  },
+  {
+    "common": "Bonaparte's gull",
     "scientific": "Larus philadelphia",
     "detail": "Laridae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 159076
+    "aphiaID": 159076,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Centrostephanus coronatus",
+    "common": "Crowned sea urchin",
     "scientific": "Centrostephanus coronatus",
     "detail": "Diadematidae",
     "category": "echinoderms",
     "icon": "★",
     "color": "#aa773f",
-    "aphiaID": 513165
+    "aphiaID": 513165,
+    "commonSource": "GBIF",
+    "gbifKey": 2279028
   },
   {
     "common": "Acartia (Acanthacartia) bifilosa",
@@ -2656,67 +3022,76 @@ export const GENERATED_SPECIES = [
     "aphiaID": 345919
   },
   {
-    "common": "Penaeus (Litopenaeus) schmitti",
+    "common": "Southern white shrimp",
     "scientific": "Penaeus (Litopenaeus) schmitti",
     "detail": "Penaeidae",
     "category": "crustaceans",
     "icon": "🦀",
     "color": "#b15f4f",
-    "aphiaID": 1809209
+    "aphiaID": 1809209,
+    "commonSource": "GBIF",
+    "gbifKey": 2223877
   },
   {
-    "common": "Polybius holsatus",
+    "common": "Common swimming crab",
     "scientific": "Polybius holsatus",
     "detail": "Polybiidae",
     "category": "crustaceans",
     "icon": "🦀",
     "color": "#b15f4f",
-    "aphiaID": 1748246
+    "aphiaID": 1748246,
+    "commonSource": "GBIF",
+    "gbifKey": 2225595
   },
   {
-    "common": "Mugil cephalus",
+    "common": "Flathead grey mullet",
     "scientific": "Mugil cephalus",
     "detail": "Mugilidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 126983
+    "aphiaID": 126983,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Alle alle",
+    "common": "Dovekie",
     "scientific": "Alle alle",
     "detail": "Alcidae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 137129
+    "aphiaID": 137129,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Larus ridibundus",
+    "common": "Black-headed gull",
     "scientific": "Larus ridibundus",
     "detail": "Laridae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 137149
+    "aphiaID": 137149,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Microchirus variegatus",
+    "common": "Thickback sole",
     "scientific": "Microchirus variegatus",
     "detail": "Soleidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 274304
+    "aphiaID": 274304,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Sebastes ruberrimus",
+    "common": "Yelloweye rockfish",
     "scientific": "Sebastes ruberrimus",
     "detail": "Sebastidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 274844
+    "aphiaID": 274844,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Pseudocalanus minutus",
@@ -2728,184 +3103,217 @@ export const GENERATED_SPECIES = [
     "aphiaID": 104517
   },
   {
-    "common": "Anarhichas lupus",
+    "common": "Atlantic wolffish",
     "scientific": "Anarhichas lupus",
     "detail": "Anarhichadidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 126758
+    "aphiaID": 126758,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Porites lobata",
+    "common": "Hump coral",
     "scientific": "Porites lobata",
     "detail": "Poritidae",
     "category": "jellyfish",
     "icon": "◌",
     "color": "#795da5",
-    "aphiaID": 207225
+    "aphiaID": 207225,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Ammodytes dubius",
+    "common": "Northern sand lance",
     "scientific": "Ammodytes dubius",
     "detail": "Ammodytidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 151520
+    "aphiaID": 151520,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Negaprion acutidens",
+    "common": "Sicklefin lemon shark",
     "scientific": "Negaprion acutidens",
     "detail": "Carcharhinidae",
     "category": "sharks",
     "icon": "🦈",
     "color": "#557582",
-    "aphiaID": 217356
+    "aphiaID": 217356,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Bodianus pulcher",
+    "common": "California sheephead",
     "scientific": "Bodianus pulcher",
     "detail": "Labridae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 1702292
+    "aphiaID": 1702292,
+    "commonSource": "GBIF",
+    "gbifKey": 12111957
   },
   {
-    "common": "Morus serrator",
+    "common": "Australasian gannet",
     "scientific": "Morus serrator",
     "detail": "Sulidae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 343991
+    "aphiaID": 343991,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Notomastus latericeus",
+    "common": "Club Worm",
     "scientific": "Notomastus latericeus",
     "detail": "Capitellidae",
     "category": "invertebrates",
     "icon": "•",
     "color": "#728b6d",
-    "aphiaID": 129898
+    "aphiaID": 129898,
+    "commonSource": "GBIF",
+    "gbifKey": 2318104
   },
   {
-    "common": "Chrysoblephus anglicus",
+    "common": "Cow pilot",
+    "scientific": "Abudefduf saxatilis",
+    "detail": "Pomacentridae",
+    "category": "fish",
+    "icon": "🐟",
+    "color": "#3e739a",
+    "aphiaID": 159288,
+    "commonSource": "WoRMS"
+  },
+  {
+    "common": "Englishman seabream",
     "scientific": "Chrysoblephus anglicus",
     "detail": "Sparidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 218595
+    "aphiaID": 218595,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Balanus nubilus",
+    "common": "Giant acorn barnacle",
     "scientific": "Balanus nubilus",
     "detail": "Balanidae",
     "category": "crustaceans",
     "icon": "🦀",
     "color": "#b15f4f",
-    "aphiaID": 594745
+    "aphiaID": 594745,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Alcyonium digitatum",
+    "common": "Dead man's fingers",
     "scientific": "Alcyonium digitatum",
     "detail": "Alcyoniidae",
     "category": "jellyfish",
     "icon": "◌",
     "color": "#795da5",
-    "aphiaID": 125333
+    "aphiaID": 125333,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Lagis koreni",
+    "common": "Trumpet worm",
     "scientific": "Lagis koreni",
     "detail": "Pectinariidae",
     "category": "invertebrates",
     "icon": "•",
     "color": "#728b6d",
-    "aphiaID": 152367
+    "aphiaID": 152367,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Engraulis mordax",
+    "common": "Californian anchovy",
     "scientific": "Engraulis mordax",
     "detail": "Engraulidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 272286
+    "aphiaID": 272286,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Owenia fusiformis",
+    "common": "Tubeworm",
     "scientific": "Owenia fusiformis",
     "detail": "Oweniidae",
     "category": "invertebrates",
     "icon": "•",
     "color": "#728b6d",
-    "aphiaID": 130544
+    "aphiaID": 130544,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Lyopsetta exilis",
+    "common": "Slender sole",
     "scientific": "Lyopsetta exilis",
     "detail": "Pleuronectidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 281452
+    "aphiaID": 281452,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Macrourus holotrachys",
+    "common": "Bigeye grenadier",
     "scientific": "Macrourus holotrachys",
     "detail": "Macrouridae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 234831
+    "aphiaID": 234831,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Ophiura albida",
+    "common": "Brittlestar",
     "scientific": "Ophiura albida",
     "detail": "Ophiuridae",
     "category": "echinoderms",
     "icon": "★",
     "color": "#aa773f",
-    "aphiaID": 124913
+    "aphiaID": 124913,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Decapterus russelli",
+    "common": "Indian scad",
     "scientific": "Decapterus russelli",
     "detail": "Carangidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 218427
+    "aphiaID": 218427,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Plectropomus leopardus",
+    "common": "Blue-spot Trout",
     "scientific": "Plectropomus leopardus",
     "detail": "Epinephelidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 218261
+    "aphiaID": 218261,
+    "commonSource": "GBIF",
+    "gbifKey": 5210114
   },
   {
-    "common": "Melanitta fusca",
+    "common": "Velvet scoter",
     "scientific": "Melanitta fusca",
     "detail": "Anatidae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 137072
+    "aphiaID": 137072,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Limacina retroversa",
+    "common": "Retrovert pteropod",
     "scientific": "Limacina retroversa",
     "detail": "Limacinidae",
     "category": "shellfish",
     "icon": "🐚",
     "color": "#9a705c",
-    "aphiaID": 140227
+    "aphiaID": 140227,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Goniada maculata",
@@ -2917,139 +3325,154 @@ export const GENERATED_SPECIES = [
     "aphiaID": 130140
   },
   {
-    "common": "Raja montagui",
+    "common": "Homelyn ray",
     "scientific": "Raja montagui",
     "detail": "Rajidae",
     "category": "rays",
     "icon": "◆",
     "color": "#4d778d",
-    "aphiaID": 105887
+    "aphiaID": 105887,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Larus pacificus",
+    "common": "Pacific gull",
     "scientific": "Larus pacificus",
     "detail": "Laridae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 343917
+    "aphiaID": 343917,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Caranx hippos",
+    "common": "Cevalle jack",
     "scientific": "Caranx hippos",
     "detail": "Carangidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 126803
+    "aphiaID": 126803,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Lates calcarifer",
+    "common": "Barramundi",
     "scientific": "Lates calcarifer",
     "detail": "Latidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 278957
+    "aphiaID": 278957,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Galeus melastomus",
+    "common": "Blackmouth catshark",
     "scientific": "Galeus melastomus",
     "detail": "Pentanchidae",
     "category": "sharks",
     "icon": "🦈",
     "color": "#557582",
-    "aphiaID": 105812
+    "aphiaID": 105812,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Metacarcinus magister",
+    "common": "Californian crab",
     "scientific": "Metacarcinus magister",
     "detail": "Cancridae",
     "category": "crustaceans",
     "icon": "🦀",
     "color": "#b15f4f",
-    "aphiaID": 440388
+    "aphiaID": 440388,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Lepidorhombus boscii",
+    "common": "Fourspot meagrim",
     "scientific": "Lepidorhombus boscii",
     "detail": "Scophthalmidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 127145
+    "aphiaID": 127145,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Saurida undosquamis",
+    "common": "Brushtooth lizardfish",
     "scientific": "Saurida undosquamis",
     "detail": "Synodontidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 126371
+    "aphiaID": 126371,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Halichoeres maculipinna",
+    "common": "Clown wrasse",
     "scientific": "Halichoeres maculipinna",
     "detail": "Labridae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 275772
+    "aphiaID": 275772,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Stercorarius skua",
+    "common": "Great skua",
     "scientific": "Stercorarius skua",
     "detail": "Stercorariidae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 137174
+    "aphiaID": 137174,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Illex coindetii",
+    "common": "Broadtail shortfin squid",
     "scientific": "Illex coindetii",
     "detail": "Ommastrephidae",
     "category": "cephalopods",
     "icon": "🦑",
     "color": "#9b5f78",
-    "aphiaID": 140621
+    "aphiaID": 140621,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Capros aper",
+    "common": "Boarfish",
     "scientific": "Capros aper",
     "detail": "Caproidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 127419
+    "aphiaID": 127419,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Heterodontus portusjacksoni",
+    "common": "Bullhead",
     "scientific": "Heterodontus portusjacksoni",
     "detail": "Heterodontidae",
     "category": "sharks",
     "icon": "🦈",
     "color": "#557582",
-    "aphiaID": 276699
+    "aphiaID": 276699,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Chromis punctipinnis",
+    "common": "Blacksmith",
     "scientific": "Chromis punctipinnis",
     "detail": "Pomacentridae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 273751
+    "aphiaID": 273751,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Lutjanus lutjanus",
+    "common": "Bigeye snapper",
     "scientific": "Lutjanus lutjanus",
     "detail": "Lutjanidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 218495
+    "aphiaID": 218495,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Neocalanus plumchrus",
@@ -3061,40 +3484,54 @@ export const GENERATED_SPECIES = [
     "aphiaID": 196772
   },
   {
-    "common": "Sebastes maliger",
+    "common": "Quillback rockfish",
     "scientific": "Sebastes maliger",
     "detail": "Sebastidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 274815
+    "aphiaID": 274815,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Calidris acuminata",
+    "common": "Sharp-tailed sandpiper",
     "scientific": "Calidris acuminata",
     "detail": "Scolopacidae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 225955
+    "aphiaID": 225955,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Thalassoica antarctica",
+    "common": "Antarctic petrel",
     "scientific": "Thalassoica antarctica",
     "detail": "Procellariidae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 212639
+    "aphiaID": 212639,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Hippoglossus hippoglossus",
+    "common": "Atlantic halibut",
     "scientific": "Hippoglossus hippoglossus",
     "detail": "Pleuronectidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 127138
+    "aphiaID": 127138,
+    "commonSource": "WoRMS"
+  },
+  {
+    "common": "Cocoa damselfish",
+    "scientific": "Stegastes variabilis",
+    "detail": "Pomacentridae",
+    "category": "fish",
+    "icon": "🐟",
+    "color": "#3e739a",
+    "aphiaID": 276688,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Paramphinome jeffreysii",
@@ -3106,148 +3543,128 @@ export const GENERATED_SPECIES = [
     "aphiaID": 129837
   },
   {
-    "common": "Chlidonias hybrida",
+    "common": "Whiskered tern",
     "scientific": "Chlidonias hybrida",
     "detail": "Laridae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 137135
+    "aphiaID": 137135,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Boreogadus saida",
+    "common": "Arctic cod",
     "scientific": "Boreogadus saida",
     "detail": "Gadidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 126433
+    "aphiaID": 126433,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Coelorinchus fasciatus",
+    "common": "Banded Whip-tail",
     "scientific": "Coelorinchus fasciatus",
     "detail": "Macrouridae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 280277
+    "aphiaID": 280277,
+    "commonSource": "GBIF",
+    "gbifKey": 2416044
   },
   {
-    "common": "Echiichthys vipera",
+    "common": "Lesser weever",
     "scientific": "Echiichthys vipera",
     "detail": "Trachinidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 150630
+    "aphiaID": 150630,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Acanthurus chirurgus",
-    "scientific": "Acanthurus chirurgus",
-    "detail": "Acanthuridae",
-    "category": "fish",
-    "icon": "🐟",
-    "color": "#3e739a",
-    "aphiaID": 159580
-  },
-  {
-    "common": "Leptogorgia chilensis",
+    "common": "Carmine sea spray",
     "scientific": "Leptogorgia chilensis",
     "detail": "Gorgoniidae",
     "category": "jellyfish",
     "icon": "◌",
     "color": "#795da5",
-    "aphiaID": 286222
+    "aphiaID": 286222,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Crangon crangon",
+    "common": "Brown shrimp",
     "scientific": "Crangon crangon",
     "detail": "Crangonidae",
     "category": "crustaceans",
     "icon": "🦀",
     "color": "#b15f4f",
-    "aphiaID": 107552
+    "aphiaID": 107552,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Oncorhynchus gorbuscha",
+    "common": "Humpback salmon",
     "scientific": "Oncorhynchus gorbuscha",
     "detail": "Salmonidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 127182
+    "aphiaID": 127182,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Hydrobates pelagicus",
+    "common": "British storm-petrel",
     "scientific": "Hydrobates pelagicus",
     "detail": "Hydrobatidae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 137189
+    "aphiaID": 137189,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Bathyraja macloviana",
+    "common": "Patagonian Skate",
     "scientific": "Bathyraja macloviana",
     "detail": "Arhynchobatidae",
     "category": "rays",
     "icon": "◆",
     "color": "#4d778d",
-    "aphiaID": 271519
+    "aphiaID": 271519,
+    "commonSource": "GBIF",
+    "gbifKey": 2420354
   },
   {
-    "common": "Achoerodus viridis",
+    "common": "Tomtate",
+    "scientific": "Haemulon aurolineatum",
+    "detail": "Haemulidae",
+    "category": "fish",
+    "icon": "🐟",
+    "color": "#3e739a",
+    "aphiaID": 158807,
+    "commonSource": "WoRMS"
+  },
+  {
+    "common": "Blue Groper",
     "scientific": "Achoerodus viridis",
     "detail": "Labridae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 279498
+    "aphiaID": 279498,
+    "commonSource": "GBIF",
+    "gbifKey": 2383154
   },
   {
-    "common": "Stegastes variabilis",
-    "scientific": "Stegastes variabilis",
-    "detail": "Pomacentridae",
-    "category": "fish",
-    "icon": "🐟",
-    "color": "#3e739a",
-    "aphiaID": 276688
-  },
-  {
-    "common": "Evadne nordmanni",
+    "common": "Water flea",
     "scientific": "Evadne nordmanni",
     "detail": "Podonidae",
     "category": "crustaceans",
     "icon": "🦀",
     "color": "#b15f4f",
-    "aphiaID": 106273
-  },
-  {
-    "common": "Histrio histrio",
-    "scientific": "Histrio histrio",
-    "detail": "Antennariidae",
-    "category": "fish",
-    "icon": "🐟",
-    "color": "#3e739a",
-    "aphiaID": 126533
-  },
-  {
-    "common": "Spisula subtruncata",
-    "scientific": "Spisula subtruncata",
-    "detail": "Mactridae",
-    "category": "shellfish",
-    "icon": "🐚",
-    "color": "#9a705c",
-    "aphiaID": 140302
-  },
-  {
-    "common": "Pelecanus conspicillatus",
-    "scientific": "Pelecanus conspicillatus",
-    "detail": "Pelecanidae",
-    "category": "seabirds",
-    "icon": "●",
-    "color": "#607b8b",
-    "aphiaID": 343934
+    "aphiaID": 106273,
+    "commonSource": "GBIF",
+    "gbifKey": 5179973
   },
   {
     "common": "Calanus hyperboreus",
@@ -3259,49 +3676,84 @@ export const GENERATED_SPECIES = [
     "aphiaID": 104467
   },
   {
-    "common": "Scophthalmus aquosus",
+    "common": "Sargassumfish",
+    "scientific": "Histrio histrio",
+    "detail": "Antennariidae",
+    "category": "fish",
+    "icon": "🐟",
+    "color": "#3e739a",
+    "aphiaID": 126533,
+    "commonSource": "WoRMS"
+  },
+  {
+    "common": "Cut surfclam",
+    "scientific": "Spisula subtruncata",
+    "detail": "Mactridae",
+    "category": "shellfish",
+    "icon": "🐚",
+    "color": "#9a705c",
+    "aphiaID": 140302,
+    "commonSource": "WoRMS"
+  },
+  {
+    "common": "Australian pelican",
+    "scientific": "Pelecanus conspicillatus",
+    "detail": "Pelecanidae",
+    "category": "seabirds",
+    "icon": "●",
+    "color": "#607b8b",
+    "aphiaID": 343934,
+    "commonSource": "WoRMS"
+  },
+  {
+    "common": "Sand flounder",
     "scientific": "Scophthalmus aquosus",
     "detail": "Scophthalmidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 158907
+    "aphiaID": 158907,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Lepidocybium flavobrunneum",
+    "common": "Escolar",
     "scientific": "Lepidocybium flavobrunneum",
     "detail": "Gempylidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 126863
+    "aphiaID": 126863,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Hippoglossus stenolepis",
+    "common": "Pacific halibut",
     "scientific": "Hippoglossus stenolepis",
     "detail": "Pleuronectidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 274290
+    "aphiaID": 274290,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Malacoraja senta",
+    "common": "Smooth skate",
     "scientific": "Malacoraja senta",
     "detail": "Rajidae",
     "category": "rays",
     "icon": "◆",
     "color": "#4d778d",
-    "aphiaID": 158554
+    "aphiaID": 158554,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Tubificoides benedii",
-    "scientific": "Tubificoides benedii",
-    "detail": "Naididae",
-    "category": "invertebrates",
-    "icon": "•",
-    "color": "#728b6d",
-    "aphiaID": 137571
+    "common": "Rhombic mojarra",
+    "scientific": "Diapterus rhombeus",
+    "detail": "Gerreidae",
+    "category": "fish",
+    "icon": "🐟",
+    "color": "#3e739a",
+    "aphiaID": 276415,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Glycera lapidum",
@@ -3313,193 +3765,221 @@ export const GENERATED_SPECIES = [
     "aphiaID": 130123
   },
   {
-    "common": "Penaeus (Litopenaeus) setiferus",
+    "common": "Tubificoides benedii",
+    "scientific": "Tubificoides benedii",
+    "detail": "Naididae",
+    "category": "invertebrates",
+    "icon": "•",
+    "color": "#728b6d",
+    "aphiaID": 137571
+  },
+  {
+    "common": "Atlantic White Shrimp",
     "scientific": "Penaeus (Litopenaeus) setiferus",
     "detail": "Penaeidae",
     "category": "crustaceans",
     "icon": "🦀",
     "color": "#b15f4f",
-    "aphiaID": 1809210
+    "aphiaID": 1809210,
+    "commonSource": "GBIF",
+    "gbifKey": 2223875
   },
   {
-    "common": "Diapterus rhombeus",
-    "scientific": "Diapterus rhombeus",
-    "detail": "Gerreidae",
-    "category": "fish",
-    "icon": "🐟",
-    "color": "#3e739a",
-    "aphiaID": 276415
-  },
-  {
-    "common": "Sebastes brevispinis",
+    "common": "Silvergray rockfish",
     "scientific": "Sebastes brevispinis",
     "detail": "Sebastidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 274778
+    "aphiaID": 274778,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Cynoscion arenarius",
+    "common": "Sand Trout",
     "scientific": "Cynoscion arenarius",
     "detail": "Sciaenidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 276077
+    "aphiaID": 276077,
+    "commonSource": "GBIF",
+    "gbifKey": 2400040
   },
   {
-    "common": "Podiceps cristatus",
+    "common": "Crested Grebe",
     "scientific": "Podiceps cristatus",
     "detail": "Podicipedidae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 137182
+    "aphiaID": 137182,
+    "commonSource": "GBIF",
+    "gbifKey": 2482054
   },
   {
-    "common": "Centropomus ensiferus",
+    "common": "Swordspine snook",
     "scientific": "Centropomus ensiferus",
     "detail": "Centropomidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 280060
+    "aphiaID": 280060,
+    "commonSource": "GBIF",
+    "gbifKey": 2369651
   },
   {
-    "common": "Ceratostoma foliatum",
-    "scientific": "Ceratostoma foliatum",
-    "detail": "Muricidae",
-    "category": "shellfish",
-    "icon": "🐚",
-    "color": "#9a705c",
-    "aphiaID": 240767
-  },
-  {
-    "common": "Urticina piscivora",
-    "scientific": "Urticina piscivora",
-    "detail": "Tealidae",
-    "category": "jellyfish",
-    "icon": "◌",
-    "color": "#795da5",
-    "aphiaID": 283445
-  },
-  {
-    "common": "Capitella capitata",
+    "common": "Gallery Worm",
     "scientific": "Capitella capitata",
     "detail": "Capitellidae",
     "category": "invertebrates",
     "icon": "•",
     "color": "#728b6d",
-    "aphiaID": 129876
+    "aphiaID": 129876,
+    "commonSource": "GBIF",
+    "gbifKey": 2318015
   },
   {
-    "common": "Ctenochaetus striatus",
+    "common": "Foliate thorn purpura",
+    "scientific": "Ceratostoma foliatum",
+    "detail": "Muricidae",
+    "category": "shellfish",
+    "icon": "🐚",
+    "color": "#9a705c",
+    "aphiaID": 240767,
+    "commonSource": "GBIF",
+    "gbifKey": 5193418
+  },
+  {
+    "common": "Fish-eating anemone",
+    "scientific": "Urticina piscivora",
+    "detail": "Tealidae",
+    "category": "jellyfish",
+    "icon": "◌",
+    "color": "#795da5",
+    "aphiaID": 283445,
+    "commonSource": "GBIF",
+    "gbifKey": 4283467
+  },
+  {
+    "common": "Lined bristletooth",
     "scientific": "Ctenochaetus striatus",
     "detail": "Acanthuridae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 219659
+    "aphiaID": 219659,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Larus glaucescens",
+    "common": "Glaucous-winged gull",
     "scientific": "Larus glaucescens",
     "detail": "Laridae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 343911
+    "aphiaID": 343911,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Haemulon flavolineatum",
+    "common": "French grunt",
     "scientific": "Haemulon flavolineatum",
     "detail": "Haemulidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 275727
+    "aphiaID": 275727,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Gadiculus argenteus",
+    "common": "Silvery pout",
     "scientific": "Gadiculus argenteus",
     "detail": "Gadidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 126435
+    "aphiaID": 126435,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Cucumaria miniata",
+    "common": "Orange sea cucumber",
     "scientific": "Cucumaria miniata",
     "detail": "Cucumariidae",
     "category": "echinoderms",
     "icon": "★",
     "color": "#aa773f",
-    "aphiaID": 225807
+    "aphiaID": 225807,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Muricea californica",
+    "common": "California Golden Gorgonian",
     "scientific": "Muricea californica",
     "detail": "Plexauridae",
     "category": "jellyfish",
     "icon": "◌",
     "color": "#795da5",
-    "aphiaID": 287556
+    "aphiaID": 287556,
+    "commonSource": "GBIF",
+    "gbifKey": 2260962
   },
   {
-    "common": "Zeus faber",
+    "common": "Dory",
     "scientific": "Zeus faber",
     "detail": "Zeidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 127427
+    "aphiaID": 127427,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Scomber japonicus",
+    "common": "Atlantic chub mackerel",
     "scientific": "Scomber japonicus",
     "detail": "Scombridae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 127022
+    "aphiaID": 127022,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Lophius americanus",
+    "common": "American angler",
     "scientific": "Lophius americanus",
     "detail": "Lophiidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 159184
+    "aphiaID": 159184,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Pomatomus saltatrix",
+    "common": "Blue fish",
     "scientific": "Pomatomus saltatrix",
     "detail": "Pomatomidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 151482
+    "aphiaID": 151482,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Numenius phaeopus",
+    "common": "European whimbrel",
     "scientific": "Numenius phaeopus",
     "detail": "Scolopacidae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 159040
+    "aphiaID": 159040,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Acipenser oxyrinchus",
+    "common": "Atlantic sturgeon",
     "scientific": "Acipenser oxyrinchus",
     "detail": "Acipenseridae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 151802
+    "aphiaID": 151802,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Scalibregma inflatum",
@@ -3511,112 +3991,134 @@ export const GENERATED_SPECIES = [
     "aphiaID": 130980
   },
   {
-    "common": "Eteone longa",
+    "common": "Paddleworm",
     "scientific": "Eteone longa",
     "detail": "Phyllodocidae",
     "category": "invertebrates",
     "icon": "•",
     "color": "#728b6d",
-    "aphiaID": 130616
+    "aphiaID": 130616,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Thyasira flexuosa",
+    "common": "Flexuose cleftclam",
     "scientific": "Thyasira flexuosa",
     "detail": "Thyasiridae",
     "category": "shellfish",
     "icon": "🐚",
     "color": "#9a705c",
-    "aphiaID": 141662
+    "aphiaID": 141662,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Fabulina fabula",
+    "common": "Bean-like tellin",
     "scientific": "Fabulina fabula",
     "detail": "Tellinidae",
     "category": "shellfish",
     "icon": "🐚",
     "color": "#9a705c",
-    "aphiaID": 146907
+    "aphiaID": 146907,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Pagurus bernhardus",
+    "common": "Bernhard's hermit crab",
     "scientific": "Pagurus bernhardus",
     "detail": "Paguridae",
     "category": "crustaceans",
     "icon": "🦀",
     "color": "#b15f4f",
-    "aphiaID": 107232
+    "aphiaID": 107232,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Bosmina (Eubosmina) coregoni",
+    "common": "Baltic long-nosed waterflea",
     "scientific": "Bosmina (Eubosmina) coregoni",
     "detail": "Bosminidae",
     "category": "crustaceans",
     "icon": "🦀",
     "color": "#b15f4f",
-    "aphiaID": 106271
+    "aphiaID": 106271,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Argyrosomus japonicus",
+    "common": "Japanese meagre",
     "scientific": "Argyrosomus japonicus",
     "detail": "Sciaenidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 218633
+    "aphiaID": 218633,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Gavia immer",
+    "common": "Common loon",
     "scientific": "Gavia immer",
     "detail": "Gaviidae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 137187
+    "aphiaID": 137187,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Cerastoderma edule",
+    "common": "Common cockle",
     "scientific": "Cerastoderma edule",
     "detail": "Cardiidae",
     "category": "shellfish",
     "icon": "🐚",
     "color": "#9a705c",
-    "aphiaID": 138998
+    "aphiaID": 138998,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Phycis chesteri",
+    "common": "Longfin hake",
     "scientific": "Phycis chesteri",
     "detail": "Phycidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 158988
+    "aphiaID": 158988,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Brevoortia patronus",
+    "common": "Gulf menhaden",
     "scientific": "Brevoortia patronus",
     "detail": "Alosidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 275500
+    "aphiaID": 275500,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Phycis blennoides",
+    "common": "Forkbeard",
     "scientific": "Phycis blennoides",
     "detail": "Phycidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 126501
+    "aphiaID": 126501,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Bairdiella ronchus",
+    "common": "Bridled goby",
+    "scientific": "Coryphopterus glaucofraenum",
+    "detail": "Gobiidae",
+    "category": "fish",
+    "icon": "🐟",
+    "color": "#3e739a",
+    "aphiaID": 159736,
+    "commonSource": "WoRMS"
+  },
+  {
+    "common": "Ground croaker",
     "scientific": "Bairdiella ronchus",
     "detail": "Sciaenidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 276072
+    "aphiaID": 276072,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Rhincalanus gigas",
@@ -3628,22 +4130,24 @@ export const GENERATED_SPECIES = [
     "aphiaID": 220837
   },
   {
-    "common": "Arctica islandica",
+    "common": "Iceland cyprina",
     "scientific": "Arctica islandica",
     "detail": "Arcticidae",
     "category": "shellfish",
     "icon": "🐚",
     "color": "#9a705c",
-    "aphiaID": 138802
+    "aphiaID": 138802,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Calidris ferruginea",
+    "common": "Curlew sandpiper",
     "scientific": "Calidris ferruginea",
     "detail": "Scolopacidae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 159049
+    "aphiaID": 159049,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Nannocalanus minor",
@@ -3655,103 +4159,125 @@ export const GENERATED_SPECIES = [
     "aphiaID": 104469
   },
   {
-    "common": "Callionymus maculatus",
-    "scientific": "Callionymus maculatus",
-    "detail": "Callionymidae",
-    "category": "fish",
-    "icon": "🐟",
-    "color": "#3e739a",
-    "aphiaID": 126793
-  },
-  {
-    "common": "Sterna sandvicensis",
-    "scientific": "Sterna sandvicensis",
-    "detail": "Laridae",
-    "category": "seabirds",
-    "icon": "●",
-    "color": "#607b8b",
-    "aphiaID": 137166
-  },
-  {
-    "common": "Heteropolypus ritteri",
-    "scientific": "Heteropolypus ritteri",
-    "detail": "Coralliidae",
-    "category": "jellyfish",
-    "icon": "◌",
-    "color": "#795da5",
-    "aphiaID": 724715
-  },
-  {
-    "common": "Cyclopterus lumpus",
-    "scientific": "Cyclopterus lumpus",
-    "detail": "Cyclopteridae",
-    "category": "fish",
-    "icon": "🐟",
-    "color": "#3e739a",
-    "aphiaID": 127214
-  },
-  {
-    "common": "Larus dominicanus",
-    "scientific": "Larus dominicanus",
-    "detail": "Laridae",
-    "category": "seabirds",
-    "icon": "●",
-    "color": "#607b8b",
-    "aphiaID": 212624
-  },
-  {
-    "common": "Cottoperca gobio",
-    "scientific": "Cottoperca gobio",
-    "detail": "Bovichtidae",
-    "category": "fish",
-    "icon": "🐟",
-    "color": "#3e739a",
-    "aphiaID": 280409
-  },
-  {
-    "common": "Pocillopora damicornis",
-    "scientific": "Pocillopora damicornis",
-    "detail": "Pocilloporidae",
-    "category": "jellyfish",
-    "icon": "◌",
-    "color": "#795da5",
-    "aphiaID": 206953
-  },
-  {
-    "common": "Amphibalanus improvisus",
-    "scientific": "Amphibalanus improvisus",
-    "detail": "Balanidae",
-    "category": "crustaceans",
-    "icon": "🦀",
-    "color": "#b15f4f",
-    "aphiaID": 421139
-  },
-  {
-    "common": "Sebastes zacentrus",
-    "scientific": "Sebastes zacentrus",
-    "detail": "Sebastidae",
-    "category": "fish",
-    "icon": "🐟",
-    "color": "#3e739a",
-    "aphiaID": 274869
-  },
-  {
-    "common": "Metanephrops challengeri",
-    "scientific": "Metanephrops challengeri",
-    "detail": "Nephropidae",
-    "category": "crustaceans",
-    "icon": "🦀",
-    "color": "#b15f4f",
-    "aphiaID": 382850
-  },
-  {
-    "common": "Porites astreoides",
+    "common": "Knobby porous coral",
     "scientific": "Porites astreoides",
     "detail": "Poritidae",
     "category": "jellyfish",
     "icon": "◌",
     "color": "#795da5",
-    "aphiaID": 288889
+    "aphiaID": 288889,
+    "commonSource": "WoRMS"
+  },
+  {
+    "common": "Spotted dragonet",
+    "scientific": "Callionymus maculatus",
+    "detail": "Callionymidae",
+    "category": "fish",
+    "icon": "🐟",
+    "color": "#3e739a",
+    "aphiaID": 126793,
+    "commonSource": "WoRMS"
+  },
+  {
+    "common": "Dominican gull",
+    "scientific": "Larus dominicanus",
+    "detail": "Laridae",
+    "category": "seabirds",
+    "icon": "●",
+    "color": "#607b8b",
+    "aphiaID": 212624,
+    "commonSource": "WoRMS"
+  },
+  {
+    "common": "Sandwich tern",
+    "scientific": "Sterna sandvicensis",
+    "detail": "Laridae",
+    "category": "seabirds",
+    "icon": "●",
+    "color": "#607b8b",
+    "aphiaID": 137166,
+    "commonSource": "WoRMS"
+  },
+  {
+    "common": "Ritter's soft coral",
+    "scientific": "Heteropolypus ritteri",
+    "detail": "Coralliidae",
+    "category": "jellyfish",
+    "icon": "◌",
+    "color": "#795da5",
+    "aphiaID": 724715,
+    "commonSource": "WoRMS"
+  },
+  {
+    "common": "Henfish",
+    "scientific": "Cyclopterus lumpus",
+    "detail": "Cyclopteridae",
+    "category": "fish",
+    "icon": "🐟",
+    "color": "#3e739a",
+    "aphiaID": 127214,
+    "commonSource": "WoRMS"
+  },
+  {
+    "common": "Channel Bull Blenny",
+    "scientific": "Cottoperca gobio",
+    "detail": "Bovichtidae",
+    "category": "fish",
+    "icon": "🐟",
+    "color": "#3e739a",
+    "aphiaID": 280409,
+    "commonSource": "GBIF",
+    "gbifKey": 2398040
+  },
+  {
+    "common": "Bay barnacle",
+    "scientific": "Amphibalanus improvisus",
+    "detail": "Balanidae",
+    "category": "crustaceans",
+    "icon": "🦀",
+    "color": "#b15f4f",
+    "aphiaID": 421139,
+    "commonSource": "WoRMS"
+  },
+  {
+    "common": "Cauliflower coral",
+    "scientific": "Pocillopora damicornis",
+    "detail": "Pocilloporidae",
+    "category": "jellyfish",
+    "icon": "◌",
+    "color": "#795da5",
+    "aphiaID": 206953,
+    "commonSource": "WoRMS"
+  },
+  {
+    "common": "Sharpchin rockfish",
+    "scientific": "Sebastes zacentrus",
+    "detail": "Sebastidae",
+    "category": "fish",
+    "icon": "🐟",
+    "color": "#3e739a",
+    "aphiaID": 274869,
+    "commonSource": "WoRMS"
+  },
+  {
+    "common": "Deep water scampi",
+    "scientific": "Metanephrops challengeri",
+    "detail": "Nephropidae",
+    "category": "crustaceans",
+    "icon": "🦀",
+    "color": "#b15f4f",
+    "aphiaID": 382850,
+    "commonSource": "WoRMS"
+  },
+  {
+    "common": "European mud scud",
+    "scientific": "Corophium volutator",
+    "detail": "Corophiidae",
+    "category": "crustaceans",
+    "icon": "🦀",
+    "color": "#b15f4f",
+    "aphiaID": 102101,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Synarachnactis lloydii",
@@ -3763,40 +4289,34 @@ export const GENERATED_SPECIES = [
     "aphiaID": 1674631
   },
   {
-    "common": "Corophium volutator",
-    "scientific": "Corophium volutator",
-    "detail": "Corophiidae",
-    "category": "crustaceans",
-    "icon": "🦀",
-    "color": "#b15f4f",
-    "aphiaID": 102101
-  },
-  {
-    "common": "Chelidonichthys lucerna",
+    "common": "Tub gurnard",
     "scientific": "Chelidonichthys lucerna",
     "detail": "Triglidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 127262
+    "aphiaID": 127262,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Melanitta perspicillata",
+    "common": "Surf scoter",
     "scientific": "Melanitta perspicillata",
     "detail": "Anatidae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 159095
+    "aphiaID": 159095,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Siganus rivulatus",
+    "common": "Marbled spinefoot",
     "scientific": "Siganus rivulatus",
     "detail": "Siganidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 127045
+    "aphiaID": 127045,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Pholoe inornata",
@@ -3808,49 +4328,65 @@ export const GENERATED_SPECIES = [
     "aphiaID": 130601
   },
   {
-    "common": "Acanthopagrus australis",
+    "common": "Australian Sea Bream",
     "scientific": "Acanthopagrus australis",
     "detail": "Sparidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 279070
+    "aphiaID": 279070,
+    "commonSource": "GBIF",
+    "gbifKey": 2392280
   },
   {
-    "common": "Phocarctos hookeri",
+    "common": "New Zealand sea lion",
     "scientific": "Phocarctos hookeri",
     "detail": "Otariidae",
     "category": "mammals",
     "icon": "🐋",
     "color": "#718674",
-    "aphiaID": 231422
+    "aphiaID": 231422,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Cancer irroratus",
+    "common": "Atlantic rock crab",
     "scientific": "Cancer irroratus",
     "detail": "Cancridae",
     "category": "crustaceans",
     "icon": "🦀",
     "color": "#b15f4f",
-    "aphiaID": 158057
+    "aphiaID": 158057,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Echinocardium cordatum",
+    "common": "Heart-urchin",
     "scientific": "Echinocardium cordatum",
     "detail": "Loveniidae",
     "category": "echinoderms",
     "icon": "★",
     "color": "#aa773f",
-    "aphiaID": 124392
+    "aphiaID": 124392,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Phoebetria palpebrata",
+    "common": "Light-mantled albatross",
     "scientific": "Phoebetria palpebrata",
     "detail": "Diomedeidae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 212631
+    "aphiaID": 212631,
+    "commonSource": "WoRMS"
+  },
+  {
+    "common": "Porkfish",
+    "scientific": "Anisotremus virginicus",
+    "detail": "Haemulidae",
+    "category": "fish",
+    "icon": "🐟",
+    "color": "#3e739a",
+    "aphiaID": 279625,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Aonides paucibranchiata",
@@ -3862,22 +4398,14 @@ export const GENERATED_SPECIES = [
     "aphiaID": 131107
   },
   {
-    "common": "Acanthurus nigrofuscus",
+    "common": "Brown surgeonfish",
     "scientific": "Acanthurus nigrofuscus",
     "detail": "Acanthuridae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 219640
-  },
-  {
-    "common": "Abudefduf saxatilis",
-    "scientific": "Abudefduf saxatilis",
-    "detail": "Pomacentridae",
-    "category": "fish",
-    "icon": "🐟",
-    "color": "#3e739a",
-    "aphiaID": 159288
+    "aphiaID": 219640,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Levinsenia gracilis",
@@ -3889,76 +4417,65 @@ export const GENERATED_SPECIES = [
     "aphiaID": 130578
   },
   {
-    "common": "Hypsypops rubicundus",
+    "common": "Garibaldi",
     "scientific": "Hypsypops rubicundus",
     "detail": "Pomacentridae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 281130
+    "aphiaID": 281130,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Limosa lapponica",
+    "common": "Bar-tailed godwit",
     "scientific": "Limosa lapponica",
     "detail": "Scolopacidae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 159034
+    "aphiaID": 159034,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Zoarces americanus",
+    "common": "Ocean pout",
     "scientific": "Zoarces americanus",
     "detail": "Zoarcidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 159267
+    "aphiaID": 159267,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Peprilus triacanthus",
+    "common": "Butterfish",
     "scientific": "Peprilus triacanthus",
     "detail": "Stromateidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 159828
+    "aphiaID": 159828,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Coryphopterus glaucofraenum",
-    "scientific": "Coryphopterus glaucofraenum",
-    "detail": "Gobiidae",
-    "category": "fish",
-    "icon": "🐟",
-    "color": "#3e739a",
-    "aphiaID": 159736
-  },
-  {
-    "common": "Embiotoca jacksoni",
+    "common": "Black perch",
     "scientific": "Embiotoca jacksoni",
     "detail": "Embiotocidae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 240746
+    "aphiaID": 240746,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Haemulon aurolineatum",
-    "scientific": "Haemulon aurolineatum",
-    "detail": "Haemulidae",
-    "category": "fish",
-    "icon": "🐟",
-    "color": "#3e739a",
-    "aphiaID": 158807
-  },
-  {
-    "common": "Thalassoma duperrey",
+    "common": "Saddle-back wrasse",
     "scientific": "Thalassoma duperrey",
     "detail": "Labridae",
     "category": "fish",
     "icon": "🐟",
     "color": "#3e739a",
-    "aphiaID": 273579
+    "aphiaID": 273579,
+    "commonSource": "GBIF",
+    "gbifKey": 2384558
   },
   {
     "common": "Pholoe baltica",
@@ -3970,13 +4487,14 @@ export const GENERATED_SPECIES = [
     "aphiaID": 130599
   },
   {
-    "common": "Necora puber",
+    "common": "Devil crab",
     "scientific": "Necora puber",
     "detail": "Polybiidae",
     "category": "crustaceans",
     "icon": "🦀",
     "color": "#b15f4f",
-    "aphiaID": 107398
+    "aphiaID": 107398,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Diplocirrus glaucus",
@@ -3988,13 +4506,14 @@ export const GENERATED_SPECIES = [
     "aphiaID": 130100
   },
   {
-    "common": "Phoebastria immutabilis",
+    "common": "Laysan albatross",
     "scientific": "Phoebastria immutabilis",
     "detail": "Diomedeidae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 344104
+    "aphiaID": 344104,
+    "commonSource": "WoRMS"
   },
   {
     "common": "Pleuromamma robusta",
@@ -4006,31 +4525,35 @@ export const GENERATED_SPECIES = [
     "aphiaID": 104642
   },
   {
-    "common": "Pandalus hypsinotus",
-    "scientific": "Pandalus hypsinotus",
-    "detail": "Pandalidae",
-    "category": "crustaceans",
-    "icon": "🦀",
-    "color": "#b15f4f",
-    "aphiaID": 515467
-  },
-  {
-    "common": "Amphipholis squamata",
+    "common": "Brooding snake star",
     "scientific": "Amphipholis squamata",
     "detail": "Amphiuridae",
     "category": "echinoderms",
     "icon": "★",
     "color": "#aa773f",
-    "aphiaID": 125064
+    "aphiaID": 125064,
+    "commonSource": "WoRMS"
   },
   {
-    "common": "Oceanodroma leucorhoa",
+    "common": "Coonstripe shrimp",
+    "scientific": "Pandalus hypsinotus",
+    "detail": "Pandalidae",
+    "category": "crustaceans",
+    "icon": "🦀",
+    "color": "#b15f4f",
+    "aphiaID": 515467,
+    "commonSource": "WoRMS"
+  },
+  {
+    "common": "Leach's Petrel",
     "scientific": "Oceanodroma leucorhoa",
     "detail": "Hydrobatidae",
     "category": "seabirds",
     "icon": "●",
     "color": "#607b8b",
-    "aphiaID": 137192
+    "aphiaID": 137192,
+    "commonSource": "GBIF",
+    "gbifKey": 2482012
   },
   {
     "common": "Thysanoessa macrura",
@@ -4040,14 +4563,5 @@ export const GENERATED_SPECIES = [
     "icon": "🦀",
     "color": "#b15f4f",
     "aphiaID": 236219
-  },
-  {
-    "common": "Hydrocoloeus minutus",
-    "scientific": "Hydrocoloeus minutus",
-    "detail": "Laridae",
-    "category": "seabirds",
-    "icon": "●",
-    "color": "#607b8b",
-    "aphiaID": 567449
   }
 ];

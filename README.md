@@ -21,7 +21,7 @@ Eventually intended for mobile / app-store distribution.
 
 - **[OBIS](https://obis.org/)** - dated global marine-species observations used by the seasonal distribution map layer.
 
-The marine-life selector includes 500 species: 50 curated entries plus 450 accepted species generated from the OBIS Animalia checklist. The generator resolves English common names from WoRMS where available and retains the scientific name and family as fallback, with taxonomy-derived categories, icons, and map colours. Observation coverage varies by species and contributing dataset.
+The marine-life selector includes 500 species: 50 curated entries plus 450 accepted species generated from the OBIS Animalia checklist. The generator resolves English common names from WoRMS first and GBIF second, recording the provider and taxon identifier as provenance. It retains the scientific name and family when neither source provides a documented English vernacular, with taxonomy-derived categories, icons, and map colours. Observation coverage varies by species and contributing dataset.
 
 - **[Open-Meteo](https://open-meteo.com/)** — marine tide model (sea level), weather forecast, and place-name geocoding. Free, no key, non-commercial.
 - **[Stormglass](https://stormglass.io/)** — station-based tide sea-level and high/low extremes (requires a free API key).
@@ -41,6 +41,20 @@ The marine-life selector includes 500 species: 50 curated entries plus 450 accep
 Tide data is cached per location and provider in `localStorage`: LiveTide fetches a **whole week** in one request and reuses it until nearly spent, so reopening the page makes **no** further calls. This matters most for **Stormglass**, whose free tier allows only **10 requests/day**; Open-Meteo and NOAA are effectively unlimited for personal use. Weather is cached separately and refreshed about every 2 hours. With no provider data available the app falls back to cached data, or to a synthetic demo curve.
 
 Marine-life observation datasets are cached in IndexedDB for 30 days per species. Existing localStorage entries are still read as a migration fallback, and stale saved observations remain available when OBIS cannot be reached.
+
+The encounter planner also queries OpenStreetMap dive spots across North, Central and South America through Overpass. Results are cached for 30 days, operator/shop records are excluded, and stale cached sites remain available when the public Overpass service is busy.
+
+### Enriched dive-site catalogue
+
+Run `node scripts/ingest-dive-sites.mjs` to build `data/enriched-divesites.json` and its provenance manifest. The adapters ingest OpenDiveMap, verified government ArcGIS sources (including named Coastal British Columbia scuba sites), and a manually classified subset of Taiwan's official daily tourism feed; local GeoJSON files can also be passed on the command line. The generated catalogue is merged with Divemap at runtime, retaining upstream IDs, attribution, licence and source-specific metadata.
+
+Pass `--osm` to add bounded OpenStreetMap pilot regions through a failover-enabled server-side ingestion stage. OSM failures are recorded in the manifest and do not block or remove successful sources. Bulk production coverage should still move to Geofabrik PBF extracts.
+
+Run `node scripts/ingest-dive-evidence.mjs` to refresh the separate IMOS/Reef Life Survey station dataset. Survey stations are used only as nearby evidence on dive-site cards; they are never added to the recreational catalogue or recommendation candidates.
+
+Run `node scripts/ingest-dive-features.mjs` to refresh separately classified underwater-feature evidence. The current adapters store 12,660 NOAA AWOIS wreck/obstruction features, 7,073 EMODnet heritage wrecks, 4,548 Florida FWC artificial-reef deployments, 305 positioned Western Australian Museum wreck/aircraft records, 94 named NAMRIA Philippine navigational wrecks and 30 Vicmap Hydro charted wreck points. The versioned artifact stores provenance in a source registry and links every compact record by `sourceKey`. Nearby records enrich site cards with material, depth, relief, position quality, protection, chart and source details, but are never treated as recreational dive sites or recommendation candidates.
+
+The complete API research backlog is maintained in [`docs/DIVE_DATA_APIS_README.md`](docs/DIVE_DATA_APIS_README.md). Add endpoint, licence, caching and redistribution findings there before integrating another source.
 
 ## Hosting
 

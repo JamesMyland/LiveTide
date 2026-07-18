@@ -9,11 +9,11 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.min.css"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.min.css"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js"></script>
-<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/base.css?v=20260717-page-scroll1">
 <link rel="stylesheet" href="css/scene.css">
 <link rel="stylesheet" href="css/picker.css?v=20260715-favourites4">
 <link rel="stylesheet" href="css/status.css?v=20260715-location1">
-<link rel="stylesheet" href="css/chart.css?v=20260716-planner-tidy1">
+<link rel="stylesheet" href="css/chart.css?v=20260718-americas-modal1">
 </head>
 <body>
 <div id="app">
@@ -105,6 +105,7 @@
           </span>
           <span class="head-right">
             <span class="clock" id="diveSrc"></span>
+            <button type="button" class="map-fullscreen-btn" id="mapBasemapToggle" title="Satellite view" aria-label="Switch to satellite view" aria-pressed="false">▧</button>
             <button type="button" class="map-fullscreen-btn" id="diveFullscreen" title="Open map fullscreen" aria-label="Open map fullscreen" aria-pressed="false">⛶</button>
             <button type="button" class="collapse-btn" data-card="diveCard" title="Collapse / expand">▾</button>
           </span>
@@ -119,6 +120,7 @@
               <label class="wreck-toggle" title="Tide stations"><input type="checkbox" data-map-layer="tide-station" aria-label="Show tide stations"><span class="layer-symbol tide">∿</span></label>
               <label class="wreck-toggle" title="Lighthouses"><input type="checkbox" data-map-layer="lighthouse" aria-label="Show lighthouses"><span class="layer-symbol light">✦</span></label>
               <label class="wreck-toggle" title="UK dive sites"><input type="checkbox" data-map-layer="sites" aria-label="Show UK dive sites"><span class="layer-symbol site">▽</span></label>
+              <button type="button" class="americas-layer-toggle" id="americasLayerToggle" title="Choose Americas dive-site layers" aria-label="Choose Americas dive-site layers" aria-haspopup="dialog" aria-expanded="false"><span class="layer-symbol osm-americas">◈</span></button>
               <label class="wreck-toggle" title="Marine life"><input type="checkbox" id="speciesLayerToggle" aria-label="Show marine life controls" aria-expanded="false" aria-controls="speciesPicker"><span class="layer-symbol species" aria-hidden="true">◉</span></label>
             </div>
             <div class="species-layer-controls" id="speciesLayerControls">
@@ -142,12 +144,17 @@
               <input id="encounterPrompt" type="search" autocomplete="off" placeholder="Search for a species" aria-label="Species to find" role="combobox" aria-autocomplete="list" aria-controls="encounterSuggestions" aria-expanded="false">
               <div class="encounter-suggestions" id="encounterSuggestions" role="listbox" hidden></div>
             </div>
-            <button type="button" id="encounterFind" disabled>Choose month</button>
+            <button type="button" id="encounterFind" hidden disabled tabindex="-1" aria-hidden="true">Choose month</button>
           </div>
           <div class="encounter-months" id="encounterMonths" hidden aria-label="Relative historical sighting likelihood by month"></div>
           <div class="encounter-results" id="encounterResults" hidden aria-live="polite"></div>
         </div>
-        <div id="diveMap"></div>
+        <div id="diveMap">
+          <div class="map-species-loading" id="mapSpeciesLoading" hidden role="status">
+            <span class="encounter-diver" aria-hidden="true"><i>🤿</i><b></b><b></b><b></b></span>
+            <span id="mapSpeciesLoadingText">Loading marine data...</span>
+          </div>
+        </div>
         <div class="dive-results-head" id="diveResultsHead" hidden>
           <span class="chartTitle" id="diveResultsTitle">Dive sites nearby</span>
         </div>
@@ -188,6 +195,20 @@
     </div>
   </div>
 
+  <div id="americasLayerModal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="americasLayerTitle">
+    <div class="modal-box americas-layer-modal-box">
+      <button type="button" class="modal-close" id="americasLayerClose" aria-label="Close Americas layer chooser">✕</button>
+      <h2 class="modal-title" id="americasLayerTitle">Americas map data</h2>
+      <p class="americas-layer-intro">Choose only the regions you want to load. Each successful dataset is cached on this device for future visits.</p>
+      <div class="americas-region-options">
+        <label><input type="checkbox" data-map-layer="osm-north-america"><span><b>North America</b><small>Canada, United States and Mexico</small></span><i>N</i></label>
+        <label><input type="checkbox" data-map-layer="osm-central-america"><span><b>Central America &amp; Caribbean</b><small>Central America and Caribbean islands</small></span><i>C</i></label>
+        <label><input type="checkbox" data-map-layer="osm-south-america"><span><b>South America</b><small>Continental South America</small></span><i>S</i></label>
+      </div>
+      <div class="modal-foot"><button type="button" class="pinbtn" id="americasLayerDone">Done</button></div>
+    </div>
+  </div>
+
   <div id="diveModal" class="modal" hidden>
     <div class="modal-box">
       <button type="button" class="modal-favourite" id="modalFavourite" aria-label="Add dive site to favourites" title="Add to favourites" hidden>☆</button>
@@ -217,6 +238,6 @@
   </div>
 </div>
 
-<script type="module" src="js/main.js?v=20260716-planner-tidy1"></script>
+<script type="module" src="js/main.js?v=20260718-americas-recommendations1"></script>
 </body>
 </html>
