@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { mkdir, writeFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
 
 const OUTPUT = new URL("../data/dive-feature-evidence.json", import.meta.url);
 const MANIFEST = new URL("../data/dive-feature-evidence.manifest.json", import.meta.url);
@@ -115,6 +116,37 @@ const SOURCES = [{
     };
   },
 }, {
+  id:"ie-infomar-shipwrecks",
+  layer:"https://maps.marine.ie/arcgis/rest/services/Infomar/Shipwrecks/MapServer/0",
+  name:"INFOMAR surveyed shipwrecks",
+  attribution:"Contains Irish Public Sector Data (Geological Survey Ireland & Marine Institute) licensed under CC BY 4.0",
+  licence:"CC BY 4.0",
+  licenceUrl:"https://creativecommons.org/licenses/by/4.0/",
+  evidenceClass:"surveyed_shipwreck",
+  sourceUrl:"https://data.gov.ie/dataset/infomar-shipwrecks",
+  expectedRecords:542,
+  featureSha256:"ae6e0ae2e27c675052e020c93ad6e52f943e23dcdb7bf8d7bdc574e635dc0026",
+  normalise(feature, source) {
+    const p = feature.properties || {}, coordinates = feature.geometry?.coordinates || [];
+    const longitude = number(coordinates[0]), latitude = number(coordinates[1]);
+    const sourceId = clean(p.OBJECTID), gsiReference = clean(p.GSI_REF), wreckIdentifier = known(p.WRECK);
+    const vesselName = known(p.VESSEL_NAM), sourceDepthMeters = number(p.WATER_DEPT);
+    if (!sourceId || latitude == null || longitude == null || (!latitude && !longitude)) return null;
+    const dateLost = p.DATE_LOSS != null && Number.isFinite(+p.DATE_LOSS) ? new Date(+p.DATE_LOSS).toISOString().slice(0, 10) : "";
+    const reportUrl = known(p.PDF), modelUrl = known(p.LINK3DMODE), imageUrl = known(p.IMAGE);
+    return {
+      id:`${source.id}:${sourceId}`, sourceId, wreckIdentifier, gsiReference, nationalMonumentsReference:known(p.NMS_REF),
+      name:vesselName || `INFOMAR surveyed wreck ${gsiReference || sourceId}`, latitude, longitude, country:"Ireland",
+      featureType:known(p.VESSEL_TYP) || "Surveyed shipwreck", whenLost:dateLost,
+      depthLabel:sourceDepthMeters == null ? "" : `${sourceDepthMeters} m`, sourceDepthMeters,
+      wreckLengthMeters:number(p.WRECK_LENG), wreckWidthMeters:number(p.WRECK_WIDT), surveyCruise:known(p.CRUISE),
+      comments:known(p.COMMENTS), imageUrl, reportUrl, modelUrl, referenceUrl:reportUrl || modelUrl || imageUrl,
+      protection:"High-resolution seabed survey evidence; verify current charts, heritage protection, access and diving safety",
+      dataSource:source.name, attribution:source.attribution, licence:source.licence, licenceUrl:source.licenceUrl,
+      evidenceClass:source.evidenceClass, sourceUrl:source.sourceUrl,
+    };
+  },
+}, {
   id:"ph-namria-wrecks",
   kind:"wms-kml",
   url:"https://geoserver.geoportal.gov.ph/geoserver/geoportal/wms?service=WMS&version=1.1.1&request=GetMap&layers=geoportal%3Ahd_wreck&styles=&bbox=116.7,4.5,125.7,21.7&width=2048&height=2048&srs=EPSG%3A4326&format=application%2Fvnd.google-earth.kml%2Bxml&transparent=true",
@@ -183,6 +215,12 @@ async function ingestArcGis(source) {
     features.push(...page); offset += page.length;
     if (!page.length || !(collection.exceededTransferLimit || page.length === pageSize)) break;
   }
+  const sourceHash = createHash("sha256").update(JSON.stringify(features)).digest("hex");
+  if (source.expectedRecords != null && features.length !== source.expectedRecords) {
+    throw new Error(`expected ${source.expectedRecords} records, received ${features.length}`);
+  }
+  if (source.featureSha256 && sourceHash !== source.featureSha256) throw new Error(`source hash changed: ${sourceHash}`);
+  source.sourceHash = sourceHash;
   return features.map(feature => source.normalise ? source.normalise(feature, source) : (() => {
     const p = feature.properties || {}, coordinates = feature.geometry?.coordinates || [];
     const longitude = number(coordinates[0]), latitude = number(coordinates[1]);
@@ -227,16 +265,17 @@ for (const source of SOURCES) try {
     : source.kind === "wfs" ? await ingestWfs(source) : await ingestArcGis(source);
   records.push(...list.map(record => ({ ...record, sourceKey:source.id })));
   sources.push({ id:source.id, records:list.length, url:source.layer || source.url, sourceUrl:source.sourceUrl,
-    licence:source.licence, attribution:source.attribution, evidenceClass:source.evidenceClass });
+    licence:source.licence, licenceUrl:source.licenceUrl, attribution:source.attribution, evidenceClass:source.evidenceClass,
+    expectedRecords:source.expectedRecords, sourceHash:source.sourceHash });
 } catch (error) { failures.push({ id:source.id, error:String(error.message || error) }); }
 if (!records.length) throw new Error(`No feature evidence ingested. ${failures.map(item => item.error).join("; ")}`);
 await mkdir(new URL("../data/", import.meta.url), { recursive:true });
 const sourceRegistry = Object.fromEntries(sources.map(source => [source.id, {
   dataSource:SOURCES.find(item => item.id === source.id)?.name || source.id,
-  attribution:source.attribution, licence:source.licence, sourceUrl:source.sourceUrl,
+  attribution:source.attribution, licence:source.licence, licenceUrl:source.licenceUrl, sourceUrl:source.sourceUrl,
 }]));
 const compactRecords = records.map(record => {
-  const { dataSource, attribution, licence, sourceUrl, ...compact } = record;
+  const { dataSource, attribution, licence, licenceUrl, sourceUrl, ...compact } = record;
   return compact;
 });
 await writeFile(OUTPUT, JSON.stringify({ version:2, sources:sourceRegistry, records:compactRecords }));

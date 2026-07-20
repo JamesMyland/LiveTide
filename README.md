@@ -13,7 +13,9 @@ Eventually intended for mobile / app-store distribution.
 - **Live sea-level background** — the sea fills to the current tide height as a fraction of the week's peak (e.g. 2 m of a 10 m peak fills 20%), moving continuously as time passes.
 - **Ebb and flow** — a faint directional current drifts inward when the tide is flooding and outward when it's ebbing.
 - **Tide chart** — a curve for **Today** or the **Next 7 days**, with high/low markers, highest/lowest height ticks, am/pm quarter labels, a live "now" marker, and hover tooltips showing the time of each high and low.
-- **Weather layer** — temperature, wind speed and wind direction for the same coordinate (Open-Meteo Forecast API, no key), with a **Today / 7-day** toggle.
+- **Weather layer** — temperature, wind, gusts, wave height and wave direction for the same coordinate using the no-key Open-Meteo Forecast and Marine APIs, with **Today / 7-day** and hourly drill-down views.
+- **Scuba training centres** — a separately switchable map layer currently containing 1,892 SSI locator records across 78 countries, with address, contact, programme and source details retained where supplied.
+- **Species profiles** — the `?` action on a selected species opens taxonomy, vernacular names, licensed imagery, global OBIS record coverage and structured IUCN-category data where available.
 - **Appearance controls** — customisable sea and sand gradient colours, adjustable tide opacity ("fade"), flip (fill from top or base), and 90° rotation (‹ / ›) that rotates the whole UI for a physically turned monitor, plus an **Auto** mode that follows the screen's orientation.
 - **Ambient mode** — the UI auto-hides after a few seconds of inactivity and reappears on mouse movement, leaving just the tide.
 
@@ -23,7 +25,8 @@ Eventually intended for mobile / app-store distribution.
 
 The marine-life selector includes 500 species: 50 curated entries plus 450 accepted species generated from the OBIS Animalia checklist. The generator resolves English common names from WoRMS first and GBIF second, recording the provider and taxon identifier as provenance. It retains the scientific name and family when neither source provides a documented English vernacular, with taxonomy-derived categories, icons, and map colours. Observation coverage varies by species and contributing dataset.
 
-- **[Open-Meteo](https://open-meteo.com/)** — marine tide model (sea level), weather forecast, and place-name geocoding. Free, no key, non-commercial.
+- **[Open-Meteo](https://open-meteo.com/)** — marine tide model, wave forecast, atmospheric forecast and place-name geocoding. Free/no-key access is used subject to Open-Meteo's attribution and usage terms.
+- **SSI training-centre locator snapshot** — user-supplied centre records rendered as a separate layer. Redistribution remains blocked pending confirmation of reuse rights; see [`docs/SCUBA_TRAINING_CENTRE_SOURCES.md`](docs/SCUBA_TRAINING_CENTRE_SOURCES.md).
 - **[Stormglass](https://stormglass.io/)** — station-based tide sea-level and high/low extremes (requires a free API key).
 - **[NOAA CO-OPS](https://api.tidesandcurrents.noaa.gov/api/prod/)** — official US tide-station predictions (no key, US coasts only).
 - **[BigDataCloud](https://www.bigdatacloud.com/)** — reverse geocoding for map pins (no key).

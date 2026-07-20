@@ -5,7 +5,7 @@ import { S } from "./state.js";
 import { $ } from "./dom.js";
 import { levelAt } from "./tide.js";
 import { hexA, dayWindow, ampm, chartTheme } from "./format.js";
-import { renderWeather } from "./weather.js";
+import { renderWeather } from "./weather.js?v=20260720-marine-centres2";
 
 function chartWindow() {
   const [d0] = dayWindow();

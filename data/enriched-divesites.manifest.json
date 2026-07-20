@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-07-18T00:16:41.986Z",
-  "records": 3416,
+  "generatedAt": "2026-07-20T11:56:57.767Z",
+  "records": 8735,
   "sources": [
     {
       "id": "opendivemap",
@@ -15,8 +15,107 @@
       "catalogueUrl": "https://data.gov.tw/dataset/7777",
       "licence": "Taiwan Open Government Data License 1.0",
       "attribution": "Taiwan Tourism Administration, Ministry of Transportation and Communications",
-      "sourceUpdatedAt": "2026-07-18T02:30:47+08:00",
+      "sourceUpdatedAt": "2026-07-20T14:30:56+08:00",
       "classification": "Manually reviewed public attractions explicitly described as recreational diving locations"
+    },
+    {
+      "id": "bco-dmo-leyte-scuba-sites",
+      "records": 2,
+      "url": "https://datadocs.bco-dmo.org/dataset/642957/file/R88Xy43Ug4qlyK/Dive_Sites.csv",
+      "catalogueUrl": "https://www.bco-dmo.org/dataset/642957",
+      "licence": "CC BY 4.0",
+      "attribution": "Pinsky, M. and Stuart, M. (2016), Biological and Chemical Oceanography Data Management Office",
+      "classification": "Historical research SCUBA sampling locations; access is not asserted"
+    },
+    {
+      "id": "bco-dmo-caribbean-sponge-scuba-sites",
+      "records": 14,
+      "url": "https://datadocs.bco-dmo.org/dataset/954346/file/WWEOp3XtGQW05/954346_v1_genetics.csv",
+      "catalogueUrl": "https://www.bco-dmo.org/dataset/954346",
+      "licence": "CC BY 4.0",
+      "attribution": "Freeman, C. J., Easson, C. G., Thacker, R. W., Matterson, K., Paul, V. J. and Baker, D. M. (2025), BCO-DMO",
+      "classification": "Historical research SCUBA sampling locations; access is not asserted"
+    },
+    {
+      "id": "bco-dmo-iceland-strytan-scuba-sites",
+      "records": 3,
+      "url": "https://datadocs.bco-dmo.org/dataset/685418/file/3YY3glLcmxA7n0/Strytan_elements.csv",
+      "catalogueUrl": "https://www.bco-dmo.org/dataset/685418",
+      "licence": "CC BY 4.0",
+      "attribution": "Price, R. and Amend, J. (2017), Biological and Chemical Oceanography Data Management Office",
+      "classification": "Historical research SCUBA sampling locations; access is not asserted"
+    },
+    {
+      "id": "us-hi-dlnr-day-use-moorings",
+      "records": 234,
+      "url": "https://dlnr.hawaii.gov/dobor/dmb/locations/",
+      "wfsUrl": "http://geo.pacioos.hawaii.edu/geoserver/PACIOOS/ows?service=WFS&version=2.0.0&request=GetFeature&typeNames=PACIOOS%3Ahi_mk_all_day_use_moorings&outputFormat=application%2Fjson&srsName=EPSG%3A4326",
+      "catalogueUrl": "https://www.pacioos.hawaii.edu/metadata/hi_mk_all_day_use_moorings.html",
+      "licence": "State of Hawaii website informational-use terms; PacIOOS free-use and redistribution limitation",
+      "termsUrl": "https://ets.hawaii.gov/soh-terms-of-use/",
+      "attribution": "State of Hawaii DLNR DOBOR; Malama Kai Foundation; PacIOOS",
+      "rowSha256": "2ec31a77d934673535957f57f07d33f8194bc675ccd680fb4740b53af08b3320",
+      "wfsFeatureSha256": "c4f44eea78fd6b8670490a2780d81850091e899f1fd7efc9a23e3000153753f4",
+      "metadataUrl": "https://www.pacioos.hawaii.edu/metadata/iso/hi_mk_all_day_use_moorings.xml",
+      "metadataFile": "data/source-metadata/pacioos-hawaii-day-use-moorings.xml",
+      "sourceUpdatedAt": "2026-06-23",
+      "upstreamHeadlineMoorings": 236,
+      "classification": "recreational_mooring"
+    },
+    {
+      "id": "pw-palaris-palau-dive-sites",
+      "records": 37,
+      "url": "http://geo.pacioos.hawaii.edu/geoserver/PACIOOS/ows?service=WFS&version=2.0.0&request=GetFeature&typeNames=PACIOOS%3Apw_plrs_all_divesites&outputFormat=application%2Fjson&srsName=EPSG%3A4326",
+      "catalogueUrl": "https://www.pacioos.hawaii.edu/metadata/pw_plrs_all_divesites.html",
+      "licence": "CC0 1.0; PacIOOS metadata permits free use and redistribution",
+      "attribution": "Palau Automated Land and Resources Information System (PALARIS); distributed by PacIOOS",
+      "featureSha256": "8abd7b5cb3937debbe47fd4145e86e2eb154b116a86868f016bc90cd1e25daf1",
+      "metadataUrl": "https://www.pacioos.hawaii.edu/metadata/iso/pw_plrs_all_divesites.xml",
+      "metadataFile": "data/source-metadata/palaris-palau-dive-sites.xml",
+      "classification": "recreational_site"
+    },
+    {
+      "id": "gu-gcmp-guam-dive-sites",
+      "records": 34,
+      "url": "http://geo.pacioos.hawaii.edu/geoserver/PACIOOS/ows?service=WFS&version=2.0.0&request=GetFeature&typeNames=PACIOOS%3Agu_db_all_divesites&outputFormat=application%2Fjson&srsName=EPSG%3A4326",
+      "catalogueUrl": "https://www.pacioos.hawaii.edu/metadata/gu_db_all_divesites.html",
+      "licence": "PacIOOS metadata permits free use and redistribution; not intended for legal use",
+      "attribution": "Guam Coastal Management Program (GCMP); distributed by PacIOOS",
+      "featureSha256": "3625dbdb5d1a1dd04f188da7049c5b152a251f33bad43f30e3df834976062411",
+      "metadataUrl": "https://www.pacioos.hawaii.edu/metadata/iso/gu_db_all_divesites.xml",
+      "metadataFile": "data/source-metadata/pacioos-guam-dive-sites.xml",
+      "classification": "recreational_site"
+    },
+    {
+      "id": "ca-pca-minnewanka-scuba",
+      "records": 1,
+      "url": "https://services2.arcgis.com/wCOMu5IS7YdSyPNx/arcgis/rest/services/Interest_Point_Interet_APCA_OpenOuvert/FeatureServer/0",
+      "licence": "Open Government Licence - Canada",
+      "catalogueUrl": "https://www.arcgis.com/home/item.html?id=ed9ba960823e427ab730b3ee1c577c7f",
+      "attribution": "Parks Canada Agency",
+      "description": "This point layer shows the locations of places of interest to Parks Canada, visitors, employees, or local residents. These are points that are not already mapped as Parks Canada facilities of components of facilties. It will be used to add symbols to maps for visitors, planning purposes, or search and rescue (e.g. understanding the intended destination of a lost person). CanVec points of interest layers will be used in addition to this layer. The CanVec points will indicate points of interest that lie outside of the CARTO_Cache_Res_5k polygons while this layer will show points of interest that lie WITHIN the CARTO_Cache... polygons. (The CARTO_Cache polygons indicate areas where the mapping system will go into greater detail for Parks Canada business reasons). Local data stewards can import CanVec points to this layer, then edit them to augment the attributes, improve locational accuracy, remove points that are of no business value to the Parks Canada mapping system. Local data stewards will also control whether the points will be accessible by public-facing applications or data services, and the internal map cache. They will also control at which map-scales each point should appear.Examples:1. A visitor centre in a national park: This would not be mapped in this layer. Instead it would appear in the Facilties_Installations layers2. A visitor centre in a nearby provincial park (that is included in the CARTO_Cache...areas): This would appear in this layer.3. A lookout within a national park that is not already described as a Facility or Facility Component: This would appear in this layer.4. An abandoned gold mine outside of the Park that is popular with local residents: This would appear in the layer provided it falls within the CARTO_Cache... area. The Supress_Public attribute may be turned on so that the point is not shared with the public.Cette couche de points indique l’emplacement des lieux d’intérêt à Parcs Canada, les visiteurs, les employés, ou les résidents locaux. Ce sont des points qui ne sont pas déjà cartographiés comme des installations ou des composantes d’installations de Parcs Canada. Elle sera utilisée pour ajouter des symboles des cartes pour les visiteurs, des fins de planification, ou de recherche et sauvetage (par exemple, la compréhension de la destination d’une personne perdue). Des points d’intérêt des couches CanVec seront utilisés en plus de cette couche. Les points CanVec indiqueront les points d’intérêt qui se trouvent en dehors des polygones CARTO_Cache_Res_5k tandis que cette couche montrer les points d’intérêt qui se trouvent dans les CARTO_Cache... polygones. (Les polygones CARTO_Cache indiquent les zones où le système de cartographie va être plus en détail pour les raisons des affaires de Parcs Canada). Les gestionnaires de données locales peuvent importer des points de CanVec à cette couche, puis les modifier pour augmenter les attributs, améliorer la précision de localisation, supprimer des points qui ne sont d’aucune valeur pour le système de cartographie de Parcs Canada. Les gestionnaires de données locales contôleront quels points seront accessibles par les applications orientées public ou des services de données publics, et le cache cartographique interne. Ils contrôleront à quelles échelles chaque point doit apparaître.Exemples: 1. Un centre d'accueil dans un parc national : Il ne serait pas cartoraphié dans cette couche. Au lieu de cela, il serait dans les couches de Facilties_Installations 2. Un centre d'accueil dans un parc provincial à proximité (qui est inclus dans les zones CARTO_Cache ...). Cela apparaît dans cette couche. 3. Une belvédère dans un parc national qui n'est pas déjà décrit comme une installation ou une composante d’une installation: Cela apparaît dans cette couche. 4. Une mine d'or abandonnée à l'extérieur du parc qui est populaire avec les résidents locaux : Cela apparaît dans la couche à condition qu'elle se situe dans les zones CARTO_Cache… L'attribut Supress_Public peut être activé pour que le point ne soit pas partagé avec le public.",
+      "serviceVersion": 12,
+      "licenceUrl": "https://open.canada.ca/en/open-government-licence-canada",
+      "termsUrl": "https://open.canada.ca/en/open-government-licence-canada",
+      "expectedFeatures": 1,
+      "expectedRecords": 1,
+      "featureSha256": "a093a7c0f2a793324f268202e60d0c35bfa694186dd31d017a4bcdfbfd064672",
+      "classification": "recreational_site"
+    },
+    {
+      "id": "au-qld-qpws-public-moorings",
+      "records": 162,
+      "url": "https://spatial-gis.information.qld.gov.au/arcgis/rest/services/Environment/ParksMarineProtectedAreas/MapServer/16",
+      "licence": "CC BY 4.0",
+      "attribution": "© State of Queensland (Department of Environment and Science) 2024",
+      "description": "<DIV STYLE=\"text-align:Left;\"><DIV><DIV><P><SPAN>This dataset is the spatial representation of the Pubic Moorings managed by QPWS areas (Queensland Parks and Wildlife Service) within </SPAN><SPAN>the marine </SPAN><SPAN>areas managed under the Nature Conservation Act 1992.</SPAN><SPAN> Public moorings are available to all Reef users. Blue double cone shaped buoys attached to the moorings have a colour coded band explaining the class (vessel length), time limits and maximum wind strength limits applicable to the mooring. </SPAN></P></DIV></DIV></DIV>",
+      "serviceVersion": 11.5,
+      "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "termsUrl": "https://www.qld.gov.au/legal/copyright",
+      "expectedFeatures": 386,
+      "expectedRecords": 162,
+      "featureSha256": "75789e22eef44aa75fc2c4cb7c5bcf2562bbf45fdc038cc50ec8d54d2c2f8946",
+      "classification": "recreational_mooring"
     },
     {
       "id": "nz-doc-hauraki-dive-sites",
@@ -26,7 +125,8 @@
       "attribution": "Department of Conservation (NZ), Waikato Regional Council, and Dive New Zealand",
       "rightsReview": true,
       "description": "Locations of known Diving locations in the Hauraki Gulf Marine Park. Site locations merged from DOC and Waikato Regional Council databases and Dive New Zealand.",
-      "serviceVersion": 10.71
+      "serviceVersion": 10.71,
+      "classification": "recreational_site"
     },
     {
       "id": "noaa-nccos-caribbean-scuba-spots",
@@ -36,7 +136,8 @@
       "attribution": "NOAA NCCOS; Puerto Rico source: caribdiveguide.com; USVI source: wannadive.net",
       "rightsReview": true,
       "description": "Known SCUBA diving spots in Puerto Rico and US Virgin Islands.",
-      "serviceVersion": 11.5
+      "serviceVersion": 11.5,
+      "classification": "recreational_site"
     },
     {
       "id": "bc-coastal-diving-sites",
@@ -46,7 +147,8 @@
       "catalogueUrl": "https://catalogue.data.gov.bc.ca/dataset/6f344ab9-279f-4782-b53a-fa15ffbfa3f7",
       "attribution": "Province of British Columbia",
       "description": "Feature class name is 'WHSE_ENVIRONMENTAL_MONITORING.CHRA_DIVING_SITES_POINT'. See metadata: https://catalogue.data.gov.bc.ca/dataset/6f344ab9-279f-4782-b53a-fa15ffbfa3f7",
-      "serviceVersion": 10.91
+      "serviceVersion": 10.91,
+      "classification": "recreational_site"
     },
     {
       "id": "wa-dpird-abrolhos-dive-trails",
@@ -55,7 +157,43 @@
       "licence": "CC BY 4.0",
       "attribution": "© State of Western Australia, Department of Primary Industries and Regional Development",
       "description": "This dataset represents the dive trails located at the Houtman Abrolhos Islands.\n\nLicense: Creative Commons Attribution 4.0 \n\nTags: abrolhos, cultural-society-and-demography, dive trail, diving, marine, recreation, scuba, snorkelling\n\nContact: gis.support@dpird.wa.gov.au",
-      "serviceVersion": 12.1
+      "serviceVersion": 12.1,
+      "classification": "recreational_site"
+    },
+    {
+      "id": "reef-ne-dive-sites",
+      "records": 288,
+      "url": "https://services.northeastoceandata.org/arcgis1/rest/services/RecreationAndCulture/MapServer/32",
+      "licence": "Public portal data; cite REEF database; distribute with source caveats and limitations",
+      "catalogueUrl": "https://www.northeastoceandata.org/files/metadata/Themes/Recreation/REEFDiveSitesAndReports.pdf",
+      "attribution": "REEF. 2026. Reef Environmental Education Foundation Volunteer Fish Survey Project Database (source snapshot April 2020)",
+      "description": "This layer shows the full list of sites in the REEF Geographic Zone Code listing for REEF's NE region (Newfoundland - Virginia) from the <a href=\"https://www.reef.org/programs/volunteer-fish-survey-project\" target=\"_blank\">Voluntary Fish Survey Project</a>. Through this project, REEF surveyors record presence and relative abundance of all fish species encountered during their dives using a non-point roving method. In 2020, the database surpassed 250,000 surveys from over 16,000 locations world-wide in ten regions. The REEF program has been active in the Northeast US & Canada (NE) since 2001 and as of April 2020, 4,600 REEF surveys have been conducted at 254 sites in the NE region. In 2014, REEF launched a companion monitoring program in the NE region for a select list of invertebrates and algae (see <a href=\"https://www.reef.org/northeast-us-eastern-canada-invertebrates-and-algae\" target=\"_blank\">https://www.REEF.org/northeast-us-eastern-canada-invertebrates-and-algae</a>).\n<br/>\n<br/>\nDive reports can be accessed by hovering or clicking on a dive site and clicking on the URL associated with that point. The full database of REEF reports can be accessed here: <a href=\"https://www.reef.org/database-reports\"target=\"_blank\">https://www.reef.org/database-reports</a>.",
+      "serviceVersion": 10.41,
+      "classification": "recreational_site"
+    },
+    {
+      "id": "on-leeds-grenville-dive-sites",
+      "records": 15,
+      "url": "https://services3.arcgis.com/KQcdsE7S72bcD7R8/arcgis/rest/services/Recreation/FeatureServer/14",
+      "licence": "Official GeoHub open data; no special restrictions or limitations stated on the item",
+      "catalogueUrl": "https://www.arcgis.com/home/item.html?id=4afffa41d6e34650931490f4610b19b9&sublayer=14",
+      "attribution": "United Counties of Leeds and Grenville",
+      "description": "",
+      "serviceVersion": 12,
+      "classification": "recreational_site"
+    },
+    {
+      "id": "us-fl-fwc-artificial-reef-deployments",
+      "records": 4548,
+      "url": "https://gis.myfwc.com/mapping/rest/services/Open_Data/Artificial_Reef_Locations_in_Florida/MapServer/12",
+      "licence": "Attributed derivative use permitted by FWC item metadata; original metadata must accompany the dataset",
+      "catalogueUrl": "https://geodata.myfwc.com/datasets/artificial-reefs-in-florida",
+      "attribution": "FWC-FWRI and FWC Division of Marine Fisheries Management",
+      "description": "Encompassing 34 of 35 different coastal counties spread along 1,357 miles of ocean fronting coastline, Florida manages one of the most diverse, and most active artificial reef programs in the United States. As of May 2025, the FWC Artificial Reef Program reports over 4,442 artificial reef deployment locations state-wide. Artificial Reefs are about evenly divided between state and federal waters and range from 1 feet in depth to 511 feet (average depth 68 feet). Each point in this GIS data set represents a single deployment event (either a uniquely located artificial reef or deployments of the same reef on different days). Division of Marine Fisheries Management maintains and updates the source database. This data set represents deployments through May 1, 2025.",
+      "serviceVersion": 11.5,
+      "metadataUrl": "https://www.arcgis.com/sharing/rest/content/items/eb2bfd225149405bba23604f20159f56/info/metadata/metadata.xml",
+      "metadataFile": "data/source-metadata/fwc-artificial-reefs.xml",
+      "classification": "artificial_reef_deployment"
     }
   ],
   "failures": []

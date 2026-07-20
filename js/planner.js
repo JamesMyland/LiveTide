@@ -2,8 +2,8 @@
 // nearby historical OBIS observations; it does not predict individual animals.
 
 import { $ } from "./dom.js";
-import { browseSpeciesCatalogue, clearSpeciesEvidence, findPromptSpecies, getSpeciesCategories, getSpeciesObservations, searchSpeciesCatalogue, showSpeciesEvidence } from "./species.js?v=20260717-common-names1";
-import { focusRecommendedDiveObservations, getDiveCatalogue, highlightRecommendedDiveSite, openRecommendedDiveSite, showRecommendedDiveSites } from "./dive.js?v=20260718-americas-recommendations1";
+import { browseSpeciesCatalogue, clearSpeciesEvidence, findPromptSpecies, getSpeciesCategories, getSpeciesObservations, openSpeciesInfo, searchSpeciesCatalogue, showSpeciesEvidence } from "./species.js?v=20260720-marine-centres2";
+import { focusRecommendedDiveObservations, getDiveCatalogue, highlightRecommendedDiveSite, openRecommendedDiveSite, showRecommendedDiveSites } from "./dive.js?v=20260720-marine-centres2";
 
 const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 const MAX_WISHLIST = 8;
@@ -68,6 +68,8 @@ function evidenceNear(site, evidence) {
 function place(site) { return [site.region, site.country].filter(Boolean).join(", ") || `${(+site.latitude).toFixed(2)}, ${(+site.longitude).toFixed(2)}`; }
 function sourceName(site) {
   const source = String(site.dataSource || "");
+  if (source.includes("BCO-DMO")) return "BCO-DMO research site";
+  if (source.includes("REEF")) return "REEF Volunteer Fish Survey Project";
   if (source.includes("OpenDiveMap")) return "OpenDiveMap";
   if (source.includes("WA DPIRD")) return "WA DPIRD";
   if (source.includes("Taiwan Tourism")) return "Taiwan Tourism Administration";
@@ -75,6 +77,13 @@ function sourceName(site) {
   if (site.mapKind === "sites" || source.includes("divemap.uk")) return "Divemap UK";
   if (site._osm || source.includes("OpenStreetMap")) return "OpenStreetMap";
   return source || "Divemap GR";
+}
+function siteEvidencePriority(site) {
+  if (site.evidenceClass === "recreational_site") return 2;
+  if (site.evidenceClass === "recreational_mooring") return 1;
+  if (site.evidenceClass === "artificial_reef_deployment") return 1;
+  if (site.evidenceClass === "research_scuba_site") return 0;
+  return 0;
 }
 
 function renderResults(month, taxa) {
@@ -139,7 +148,7 @@ async function findEncounters(monthOverride, evidenceReady = false) {
     const ranked = candidates.map(item => ({ ...item,
       score:item.matches.reduce((total, match) => total + match.sightings / speciesPeaks.get(match.taxon.scientific), 0),
       coverage:item.matches.length,
-    })).sort((a, b) => b.score - a.score || a.distance - b.distance);
+    })).sort((a, b) => b.score - a.score || siteEvidencePriority(b.site) - siteEvidencePriority(a.site) || a.distance - b.distance);
     const peakScore = Math.max(1, ranked[0]?.score || 1);
     ranked.forEach(item => { item.likelihood = Math.max(1, Math.round(item.score / peakScore * 100)); });
     recommendations = [];
@@ -183,7 +192,7 @@ function setSuggestionIndex(next) {
 
 function renderWishlist() {
   const selected = $("encounterSelected"), input = $("encounterPrompt");
-  selected.innerHTML = selectedTaxa.map(taxon => `<button type="button" data-remove-encounter-species="${esc(taxon.scientific)}" title="Remove ${esc(taxon.common)}" aria-label="Remove ${esc(taxon.common)}"><span>${taxon.icon}</span><b>${esc(taxon.common)}</b><i aria-hidden="true">×</i></button>`).join("");
+  selected.innerHTML = selectedTaxa.map(taxon => `<span class="encounter-selected-item" style="--species-color:${taxon.color}"><span class="species-chip-label"><span>${taxon.icon}</span><b>${esc(taxon.common)}</b></span><button type="button" class="species-chip-action species-info-button" data-encounter-species-info="${esc(taxon.scientific)}" title="About ${esc(taxon.common)}" aria-label="About ${esc(taxon.common)}">?</button><button type="button" class="species-chip-action species-remove-button" data-remove-encounter-species="${esc(taxon.scientific)}" title="Remove ${esc(taxon.common)}" aria-label="Remove ${esc(taxon.common)}">&times;</button></span>`).join("");
   input.placeholder = selectedTaxa.length >= MAX_WISHLIST ? "Maximum selected" : selectedTaxa.length ? "Add another species" : "Search for a species";
   input.disabled = selectedTaxa.length >= MAX_WISHLIST;
   try { localStorage.setItem(PLANNER_UI_LS, JSON.stringify({ species:selectedTaxa.map(taxon => taxon.scientific) })); } catch (error) {}
@@ -277,7 +286,12 @@ export function initEncounterPlanner() {
     const choice = event.target.closest("[data-encounter-species]"); if (!choice) return;
     const taxon = searchSpeciesCatalogue(choice.dataset.encounterSpecies, 1)[0]; if (taxon) selectPlannerSpecies(taxon);
   };
-  selected.onclick = event => { const choice = event.target.closest("[data-remove-encounter-species]"); if (!choice) return; selectedTaxa = selectedTaxa.filter(taxon => taxon.scientific !== choice.dataset.removeEncounterSpecies); renderWishlist(); refreshPlannerMonths(); input.focus(); };
+  selected.onclick = event => {
+    const info = event.target.closest("[data-encounter-species-info]");
+    if (info) { openSpeciesInfo(selectedTaxa.find(taxon => taxon.scientific === info.dataset.encounterSpeciesInfo)); return; }
+    const choice = event.target.closest("[data-remove-encounter-species]"); if (!choice) return;
+    selectedTaxa = selectedTaxa.filter(taxon => taxon.scientific !== choice.dataset.removeEncounterSpecies); renderWishlist(); refreshPlannerMonths(); input.focus();
+  };
   months.onclick = event => { const choice = event.target.closest("[data-encounter-month]"); if (!choice) return; selectedMonth = +choice.dataset.encounterMonth; months.querySelectorAll("[data-encounter-month]").forEach(item => item.classList.toggle("selected", item === choice)); button.disabled = false; button.textContent = findButtonLabel(selectedMonth); findEncounters(selectedMonth); };
   const previewMonth = month => {
     clearTimeout(monthPreviewTimer);

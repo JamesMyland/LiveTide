@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-18T01:23:34.760Z",
+  "generatedAt": "2026-07-20T12:40:42.038Z",
   "formatVersion": 2,
-  "records": 24710,
+  "records": 25252,
   "sources": [
     {
       "id": "fl-fwc-artificial-reefs",
@@ -10,7 +10,8 @@
       "sourceUrl": "https://myfwc.com/fishing/saltwater/artificial-reefs/locate/",
       "licence": "Available without restriction; attribution expected",
       "attribution": "Florida Fish and Wildlife Conservation Commission, Division of Marine Fisheries Management",
-      "evidenceClass": "artificial_reef_deployment"
+      "evidenceClass": "artificial_reef_deployment",
+      "sourceHash": "4e770e0b6897d2e88c95592a0b4b14c899ec16bea5bd78759e86e27289fdcc91"
     },
     {
       "id": "us-noaa-awois-wrecks",
@@ -19,7 +20,8 @@
       "sourceUrl": "https://www.fisheries.noaa.gov/inport/item/70439",
       "licence": "Public free informational use; source citation required; not for navigation",
       "attribution": "NOAA Office of Coast Survey; public service mirror provided by New York Department of State",
-      "evidenceClass": "charted_wreck_or_obstruction"
+      "evidenceClass": "charted_wreck_or_obstruction",
+      "sourceHash": "74b2ae032f1769576bed63d63da9a622d0c96bbcd4ebdd80d895ce4e896649ba"
     },
     {
       "id": "wa-museum-shipwrecks",
@@ -28,7 +30,8 @@
       "sourceUrl": "https://catalogue.data.wa.gov.au/dataset/shipwrecks",
       "licence": "CC BY 4.0",
       "attribution": "© Western Australian Museum",
-      "evidenceClass": "recorded_wreck"
+      "evidenceClass": "recorded_wreck",
+      "sourceHash": "936171f685f9aa12e15971e2cce92c7a54b528acb25ce7cf8b0a10e9218f0cf0"
     },
     {
       "id": "vicmap-hydro-wrecks",
@@ -47,6 +50,18 @@
       "licence": "CC BY 4.0",
       "attribution": "EMODnet Human Activities; original authority retained per record",
       "evidenceClass": "heritage_wreck"
+    },
+    {
+      "id": "ie-infomar-shipwrecks",
+      "records": 542,
+      "url": "https://maps.marine.ie/arcgis/rest/services/Infomar/Shipwrecks/MapServer/0",
+      "sourceUrl": "https://data.gov.ie/dataset/infomar-shipwrecks",
+      "licence": "CC BY 4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "Contains Irish Public Sector Data (Geological Survey Ireland & Marine Institute) licensed under CC BY 4.0",
+      "evidenceClass": "surveyed_shipwreck",
+      "expectedRecords": 542,
+      "sourceHash": "ae6e0ae2e27c675052e020c93ad6e52f943e23dcdb7bf8d7bdc574e635dc0026"
     },
     {
       "id": "ph-namria-wrecks",

@@ -9,7 +9,7 @@ import { S } from "./state.js";
 import { $ } from "./dom.js";
 import { fetchOpenMeteo } from "./providers/openmeteo.js";
 import { normaliseToLow } from "./tide.js";
-import { initSpeciesLayer, syncSpeciesLayer } from "./species.js?v=20260717-common-names1";
+import { initSpeciesLayer, syncSpeciesLayer } from "./species.js?v=20260720-marine-centres2";
 
 // Optional: paste your deployed Google Apps Script /exec URL here to load
 // divemap.gr live via the CORS-enabled proxy (see scripts/apps-script/Code.gs).
@@ -17,6 +17,7 @@ import { initSpeciesLayer, syncSpeciesLayer } from "./species.js?v=20260717-comm
 const PROXY_URL  = "https://script.google.com/macros/s/AKfycbzbMceHEbQyN1dNAJnPLb9edL3SIAPLleitz0WdKjAC0dxDdfJCbt245XE8v_haGmyYIg/exec";
 
 const DATA_LS    = "dive_gr_dataset_v1";    // cached full catalogue
+const DATA_CACHE_VERSION = "20260720-infomar2";
 const OSM_LS     = "dive_osm_cache_v1";     // per-location Overpass fallback
 const OSM_AMERICAS_LS = "dive_osm_americas_v7"; // resumable per-tile Americas caches
 const OSM_CACHE_DB = "livetide_dive_cache_v1";
@@ -27,8 +28,8 @@ const BASEMAP_LS = "dive_basemap_v1";
 const FEATURE_LS = "dive_feature_enrichment_v2";
 const BATHYMETRY_LS = "dive_emodnet_bathymetry_v1";
 const MARINE_REGIONS_LS = "dive_marine_regions_v1";
-const SITE_WEATHER_LS = "dive_site_weather_v3";
-const SITE_WEATHER_DAY_LS = "dive_site_weather_day_v1";
+const SITE_WEATHER_LS = "dive_site_weather_v4";
+const SITE_WEATHER_DAY_LS = "dive_site_weather_day_v2";
 const COUNTRY_GEO_LS = "dive_country_geocode_v1";
 const FEATURE_SEARCH_LS = "dive_feature_search_v1";
 const FEATURE_HISTORY_LS = "dive_feature_history_v1";
@@ -77,6 +78,7 @@ const MAP_LAYERS = {
   "osm-north-america": { label: "North American dive site", color: "#087f8c", icon: "N" },
   "osm-central-america": { label: "Central American and Caribbean dive site", color: "#b26a24", icon: "C" },
   "osm-south-america": { label: "South American dive site", color: "#7b4ca0", icon: "S" },
+  "training-centres": { label: "SSI training centre", color: "#006d77", icon: "T" },
 };
 const mapLayerState = Object.fromEntries(Object.keys(MAP_LAYERS).map(k => [k, { cluster: null, data: null, incomplete: false, loading: null, markers: new Map() }]));
 let wreckCluster = null, wreckData = [], wrecksLoaded = false; // retained for old cached wreck loader
@@ -94,7 +96,7 @@ const readDiveCache = key => new Promise(resolve => {
   };
 });
 const writeDiveCache = (key, value) => new Promise(resolve => {
-  writeLS(key, value);
+  if (key !== DATA_LS) writeLS(key, value);
   if (!window.indexedDB) { resolve(); return; }
   const request = indexedDB.open(OSM_CACHE_DB, 1);
   request.onupgradeneeded = () => request.result.createObjectStore("catalogues");
@@ -235,21 +237,37 @@ function useDataset(list) {
   dataset = list; S.diveData = list;
   if (S.current && $("status").style.display === "block") loadDives();  // refresh if already live
 }
-function cacheAndUse(list) { writeLS(DATA_LS, { list: list, fetchedAt: Date.now() }); useDataset(list); }
+async function cacheAndUse(list) {
+  const value = { list, fetchedAt:Date.now(), version:DATA_CACHE_VERSION };
+  useDataset(list);
+  await writeDiveCache(DATA_LS, value);
+}
 
 function catalogueKey(site) {
   const name = String(site?.name || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
   return `${name}:${(+site?.latitude).toFixed(3)}:${(+site?.longitude).toFixed(3)}`;
 }
 function mergeCatalogues(...lists) {
-  const merged = [], seenIds = new Set(), seenLocations = new Set();
+  const merged = [], seenIds = new Set(), seenLocations = new Map();
+  const sourceRecord = site => ({
+    id:site.id, sourceId:site.sourceId, dataSource:site.dataSource, sourceUrl:site.sourceUrl,
+    referenceUrl:site.referenceUrl, attribution:site.attribution, licence:site.licence, licenceUrl:site.licenceUrl,
+    sourceUpdatedAt:site.sourceUpdatedAt, rightsReview:!!site.rightsReview,
+  });
   lists.flat().filter(Boolean).forEach(site => {
     const sourceId = site.sourceId || site.id;
     const id = sourceId ? `${site.dataSource || "unknown"}:${sourceId}` : "";
-    const location = catalogueKey(site);
-    if ((id && seenIds.has(id)) || seenLocations.has(location)) return;
+    const location = site.evidenceClass === "artificial_reef_deployment" && id ? `deployment:${id}` : catalogueKey(site);
+    if (id && seenIds.has(id)) return;
+    const duplicate = seenLocations.get(location);
+    if (duplicate) {
+      duplicate.sourceRecords = [...(duplicate.sourceRecords || [sourceRecord(duplicate)]), ...(site.sourceRecords || [sourceRecord(site)])]
+        .filter((source, index, all) => source?.id && all.findIndex(item => item.id === source.id) === index);
+      if (id) seenIds.add(id);
+      return;
+    }
     if (id) seenIds.add(id);
-    seenLocations.add(location);
+    seenLocations.set(location, site);
     merged.push(site);
   });
   return merged;
@@ -265,22 +283,26 @@ async function loadEnrichedDiveData() {
 
 /* ---- Catalogue: cached in localStorage and only re-pulled weekly (TTL) ---- */
 async function loadInitialDiveData() {
-  const enrichedPromise = loadEnrichedDiveData();
-  // 1) fresh cache (< TTL) — no network at all
-  const cached = readLS(DATA_LS);
-  if (cached && cached.list && cached.list.length && Date.now() - cached.fetchedAt < TTL) { useDataset(mergeCatalogues(cached.list, await enrichedPromise)); return; }
+  let enrichedPromise;
+  const enrichedData = () => enrichedPromise ||= loadEnrichedDiveData();
+  // 1) fresh versioned IndexedDB cache (< TTL) - no catalogue fetch at all
+  const cached = await readDiveCache(DATA_LS) || readLS(DATA_LS);
+  if (cached?.version === DATA_CACHE_VERSION && cached.list?.length && Date.now() - cached.fetchedAt < TTL) {
+    useDataset(cached.list);
+    return;
+  }
 
   // 2) CORS-enabled proxy (Google Apps Script), if configured — live data
   if (PROXY_URL) {
     try {
       const r = await fetch(PROXY_URL + "?set=divesites", { cache: "no-cache" });
-      if (r.ok) { const list = await r.json(); if (Array.isArray(list) && list.length) { cacheAndUse(mergeCatalogues(list, await enrichedPromise)); return; } }
+      if (r.ok) { const list = await r.json(); if (Array.isArray(list) && list.length) { await cacheAndUse(mergeCatalogues(list, await enrichedData())); return; } }
     } catch (e) {}
   }
   // 3) same-origin snapshot from scripts/fetch_data.py — avoids browser CORS entirely
   try {
     const r = await fetch("data/divesites.json", { cache: "no-cache" });
-    if (r.ok) { const list = await r.json(); if (Array.isArray(list) && list.length) { cacheAndUse(mergeCatalogues(list, await enrichedPromise)); return; } }
+    if (r.ok) { const list = await r.json(); if (Array.isArray(list) && list.length) { await cacheAndUse(mergeCatalogues(list, await enrichedData())); return; } }
   } catch (e) {}
   // 4) direct live poll — only works if the API sends CORS headers; else OSM fallback
   const out = [];
@@ -288,15 +310,15 @@ async function loadInitialDiveData() {
   do {
     let r;
     try { r = await fetch(`${BASE}/dive-sites/?page=${page}&page_size=100`); }
-    catch (e) { return; }
-    if (!r.ok) return;
-    let j; try { j = await r.json(); } catch (e) { return; }
+    catch (e) { break; }
+    if (!r.ok) break;
+    let j; try { j = await r.json(); } catch (e) { break; }
     (j.items || []).forEach(s => out.push(s));
     totalPages = j.total_pages || 1;
     page++;
   } while (page <= totalPages && page <= MAX_PAGES);
-  const enriched = await enrichedPromise;
-  if (out.length || enriched.length) cacheAndUse(mergeCatalogues(out, enriched));
+  const enriched = await enrichedData();
+  if (out.length || enriched.length) await cacheAndUse(mergeCatalogues(out, enriched));
 }
 
 export function initDiveData() {
@@ -610,11 +632,29 @@ function renderFeatureHistory() {
   };
 }
 
+function resetStaleMapContainer(el) {
+  if (!el || (!el._leaflet_id && !el.classList.contains("leaflet-container"))) return el;
+  const replacement = el.cloneNode(false);
+  replacement.removeAttribute("class");
+  replacement.removeAttribute("style");
+  replacement.removeAttribute("tabindex");
+  replacement.removeAttribute("role");
+  const loader = $("mapSpeciesLoading");
+  if (loader) replacement.appendChild(loader);
+  el.replaceWith(replacement);
+  return replacement;
+}
+
 function renderDiveMap(all, near, preserveView = false) {
   all = all || []; near = near || [];
-  const el = $("diveMap"); if (!el || typeof L === "undefined") return;
+  let el = $("diveMap"); if (!el || typeof L === "undefined") return;
   const c = S.current; if (!c) return;
+  if (diveMap && diveMap.getContainer && diveMap.getContainer() !== el) {
+    try { diveMap.remove(); } catch (e) {}
+    diveMap = null; diveCluster = null; streetBaseLayer = null; satelliteBaseLayer = null;
+  }
   if (!diveMap) {
+    el = resetStaleMapContainer(el);
     diveMap = L.map(el, { zoomControl: true, attributionControl: false });
     // MarkerCluster requires a valid map view before asynchronously loaded
     // proxy layers can be added.
@@ -748,6 +788,27 @@ async function loadMapLayer(kind) {
   if (state.loading) return state.loading;
   state.loading = (async () => {
     if (overpassDataset(kind)) return loadOsmAmericasDataset(kind);
+    if (kind === "training-centres") {
+      try {
+        const response = await fetch("data/ssi_dive_centres.json", { cache:"no-cache" });
+        if (!response.ok) return [];
+        const payload = await response.json();
+        return (payload?.result?.elements || []).map(entry => entry?.data?.properties || {}).map(p => {
+          const latitude = +p.lat, longitude = +p.lng;
+          const referenceUrl = p.descriptive_url ? new URL(p.descriptive_url, "https://www.divessi.com").toString() : "https://www.divessi.com/en/locator/trainingcenters";
+          return {
+            id:`ssi-training-centre:${p.id}`, sourceId:String(p.id || ""), mapKind:kind,
+            name:p.displayname1 || p.name || "SSI training centre", latitude, longitude,
+            country:p.country || "", region:[p.city, p.state].filter(Boolean).join(", "), thumbnail:p.logo || "",
+            dataSource:"SSI training centre locator (user-supplied snapshot)",
+            sourceUrl:"https://www.divessi.com/en/locator/trainingcenters", referenceUrl,
+            attribution:"Scuba Schools International (SSI) training centre locator",
+            licence:"Public locator snapshot; bulk redistribution rights not verified", rightsReview:true,
+            mapProperties:{ ...p, address:[p.street, p.zip, p.city, p.state, p.country].filter(Boolean).join(", ") },
+          };
+        }).filter(item => Number.isFinite(item.latitude) && Number.isFinite(item.longitude));
+      } catch (e) { return []; }
+    }
     // Keep the checked-in UKHO data as the preferred wreck source.
     if (kind === "wrecks") {
       try {
@@ -856,6 +917,11 @@ async function applyMapLayerSelection(input) {
   try {
     await toggleMapLayer(kind, input.checked);
     const count = mapLayerState[kind]?.data?.length || 0;
+    if (kind === "training-centres" && count) {
+      const layerLabel = input.closest("label");
+      layerLabel.title = `${count.toLocaleString()} SSI training centres`;
+      input.setAttribute("aria-label", `Show ${count.toLocaleString()} SSI training centres`);
+    }
     if (source && input.checked && !count) source.textContent = `${label}: no data returned · toggle to retry`;
   }
   catch (e) {}
@@ -962,19 +1028,49 @@ function sourceBlock(source, label = "Data source") {
 }
 function sourceMetadataBlock(site) {
   const attribution = String(site?.attribution || "").trim(), licence = String(site?.licence || "").trim();
+  const hasNumber = value => value != null && String(value).trim() !== "" && Number.isFinite(Number(value));
   if (!attribution && !licence && !site?.sourceUrl) return "";
   const link = site.sourceUrl ? `<a href="${esc(site.sourceUrl)}" target="_blank" rel="noopener">Open source record ↗</a>` : "";
   const reference = site.referenceUrl ? `<a href="${esc(site.referenceUrl)}" target="_blank" rel="noopener">Open site reference ↗</a>` : "";
   const review = site.rightsReview ? `<small>Reuse includes third-party material and remains flagged for rights confirmation.</small>` : "";
+  const corroborating = (Array.isArray(site.sourceRecords) ? site.sourceRecords : []).filter(source => source?.id && source.id !== site.id);
+  const corroboratingHtml = corroborating.length ? `<details class="corroborating-sources"><summary>Also catalogued by ${corroborating.length} source${corroborating.length === 1 ? "" : "s"}</summary>${corroborating.map(source => {
+    const sourceLink = /^https?:\/\//i.test(String(source.sourceUrl || "")) ? `<a href="${esc(source.sourceUrl)}" target="_blank" rel="noopener">Source &nearr;</a>` : "";
+    const recordLink = /^https?:\/\//i.test(String(source.referenceUrl || "")) ? `<a href="${esc(source.referenceUrl)}" target="_blank" rel="noopener">Record &nearr;</a>` : "";
+    return `<div><b>${esc(source.attribution || source.dataSource || "Additional source")}</b>${source.licence ? `<small>${esc(source.licence)}</small>` : ""}<span>${sourceLink}${recordLink}</span></div>`;
+  }).join("")}</details>` : "";
   return `<div class="enrichment-section source-record-metadata"><h3>Dataset provenance</h3><div class="feature-details">` +
     (attribution ? `<div><span>Attribution</span><b>${esc(attribution)}</b></div>` : "") +
-    (licence ? `<div><span>Licence</span><b>${esc(licence)}</b></div>` : "") +
+    (licence ? `<div><span>Licence</span>${/^https?:\/\//i.test(String(site.licenceUrl || "")) ? `<a href="${esc(site.licenceUrl)}" target="_blank" rel="noopener"><b>${esc(licence)}</b> &nearr;</a>` : `<b>${esc(licence)}</b>`}</div>` : "") +
+    (site.evidenceClass === "research_scuba_site" ? `<div><span>Record class</span><b>Historical research SCUBA site</b></div>` : "") +
+    (site.evidenceClass === "artificial_reef_deployment" ? `<div><span>Record class</span><b>Artificial reef deployment record</b></div>` : "") +
+    (site.evidenceClass === "recreational_mooring" ? `<div><span>Record class</span><b>${esc(site.recordClassLabel || "Public recreational-access mooring")}</b></div>` : "") +
+    (hasNumber(site.mooringCount) ? `<div><span>Public moorings</span><b>${Number(site.mooringCount).toLocaleString()}</b></div>` : "") +
+    (site.mooringClasses ? `<div><span>Mooring classes</span><b>${esc(site.mooringClasses)}</b></div>` : "") +
+    (hasNumber(site.maximumVesselSizeMetres) ? `<div><span>Largest listed vessel</span><b>${Number(site.maximumVesselSizeMetres).toLocaleString()} m</b></div>` : "") +
+    (hasNumber(site.mooringNumber) ? `<div><span>Mooring number</span><b>${Number(site.mooringNumber)}</b></div>` : "") +
+    (site.deploymentId ? `<div><span>Deployment ID</span><b>${esc(site.deploymentId)}</b></div>` : "") +
+    (site.deploymentDate ? `<div><span>Deployed</span><b>${esc(site.deploymentDate)}</b></div>` : "") +
+    (hasNumber(site.maximumDepthFeet) ? `<div><span>Source depth</span><b>${Number(site.maximumDepthFeet).toLocaleString()} ft</b></div>` : "") +
+    (hasNumber(site.reliefFeet) ? `<div><span>Source relief</span><b>${Number(site.reliefFeet).toLocaleString()} ft</b></div>` : "") +
+    (hasNumber(site.tonnage) ? `<div><span>Deployed tonnage</span><b>${Number(site.tonnage).toLocaleString()}</b></div>` : "") +
+    (site.materialCategory ? `<div><span>Material category</span><b>${esc(site.materialCategory)}</b></div>` : "") +
+    (site.materialDescription ? `<div><span>Material</span><b>${esc(site.materialDescription)}</b></div>` : "") +
+    (site.jurisdiction ? `<div><span>Jurisdiction</span><b>${esc(site.jurisdiction)}</b></div>` : "") +
+    (site.county ? `<div><span>County</span><b>${esc(site.county)}</b></div>` : "") +
+    (hasNumber(site.locationAccuracyCode) ? `<div><span>Location accuracy</span><b>FWC code ${Number(site.locationAccuracyCode)}</b></div>` : "") +
+    (site.observationPeriod ? `<div><span>Study period</span><b>${esc(site.observationPeriod)}</b></div>` : "") +
+    (site.sourceVintage ? `<div><span>Dataset vintage</span><b>${esc(site.sourceVintage)}</b></div>` : "") +
+    (hasNumber(site.researchSampleRows) ? `<div><span>Source sample rows</span><b>${Number(site.researchSampleRows).toLocaleString()}</b></div>` : "") +
+    (hasNumber(site.maximumVentTemperatureC) ? `<div><span>Highest sampled vent temperature</span><b>${Number(site.maximumVentTemperatureC).toFixed(1)}&deg;C</b></div>` : "") +
+    (site.positionQuality ? `<div><span>Position quality</span><b>${esc(site.positionQuality)}</b></div>` : "") +
+    (site.sourceDataWarning ? `<div><span>Source warning</span><b>${esc(site.sourceDataWarning)}</b></div>` : "") +
     (site.sourceUpdatedAt ? `<div><span>Source updated</span><b>${esc(new Date(site.sourceUpdatedAt).toLocaleDateString())}</b></div>` : "") +
     (site.publicAccess === true ? `<div><span>Source access status</span><b>Public access listed</b></div>` : "") +
     (site.sourceProject ? `<div><span>Source project</span><b>${esc(site.sourceProject)}</b></div>` : "") +
     (site.upstreamDataSource ? `<div><span>Upstream compilation</span><b>${esc(site.upstreamDataSource)}</b></div>` : "") +
-    (Number.isFinite(Number(site.relativeImportance)) ? `<div><span>Source importance</span><b>${esc(site.relativeImportance)}</b></div>` : "") +
-    `</div>${review}${link}${reference}</div>`;
+    (hasNumber(site.relativeImportance) ? `<div><span>Source importance</span><b>${esc(site.relativeImportance)}</b></div>` : "") +
+    `</div>${review}${link}${reference}${corroboratingHtml}</div>`;
 }
 function organiseCardSources() {
   const body = $("modalBody"); if (!body) return;
@@ -1208,9 +1304,13 @@ async function loadOpenDiveMapEnrichment(id) {
 }
 
 function loadSurveyEvidence() {
-  if (!surveyEvidencePromise) surveyEvidencePromise = fetch("data/dive-survey-evidence.json")
+  if (!surveyEvidencePromise) surveyEvidencePromise = fetch(`data/dive-survey-evidence.json?v=${DATA_CACHE_VERSION}`)
     .then(response => response.ok ? response.json() : [])
-    .then(list => Array.isArray(list) ? list : [])
+    .then(payload => {
+      if (Array.isArray(payload)) return payload;
+      const sources = payload?.sources || {}, records = Array.isArray(payload?.records) ? payload.records : [];
+      return records.map(record => ({ ...(sources[record.sourceKey] || {}), ...record }));
+    })
     .catch(() => []);
   return surveyEvidencePromise;
 }
@@ -1220,17 +1320,32 @@ async function startSurveyEvidenceEnrichment(site) {
   if (!target || !Number.isFinite(latitude) || !Number.isFinite(longitude)) return;
   const evidence = await loadSurveyEvidence(), current = $("surveyEvidenceEnrichment");
   if (!current) return;
-  const nearby = evidence.map(record => ({ record, distance:km(latitude, longitude, +record.latitude, +record.longitude) }))
+  const latitudeRange = 50 / 111.32;
+  const longitudeRange = 50 / Math.max(20, 111.32 * Math.cos(latitude * Math.PI / 180));
+  const nearby = evidence
+    .filter(record => Math.abs(+record.latitude - latitude) <= latitudeRange && Math.abs(+record.longitude - longitude) <= longitudeRange)
+    .map(record => ({ record, distance:km(latitude, longitude, +record.latitude, +record.longitude) }))
     .filter(item => item.distance <= 50).sort((a, b) => a.distance - b.distance).slice(0, 5);
   if (!nearby.length) { current.remove(); return; }
-  current.innerHTML = `<div class="enrichment-head"><span>Nearby reef survey evidence</span><b>${nearby.length} station${nearby.length === 1 ? "" : "s"} within 50 km</b></div>` +
-    `<div class="related-list">${nearby.map(({ record, distance }) => `<div><b>${esc(record.name)}</b><span>${distance < 1 ? `${Math.round(distance * 1000)} m` : `${distance.toFixed(1)} km`} · ${esc([record.area, record.ecoregion, record.programs].filter(Boolean).join(" · "))}</span></div>`).join("")}</div>` +
-    `<div class="enrichment-sources"><span>Survey evidence only, not proof of public dive access</span><a href="https://www.data.gov.au/data/dataset/imos-national-reef-monitoring-network-sub-facility-site-information" target="_blank" rel="noopener">IMOS National Reef Monitoring Network ↗</a><small>Formal dataset licence requires confirmation.</small></div>`;
+  const sourceRecords = [...new Map(nearby.map(({ record }) => [record.dataSource, record])).values()];
+  current.innerHTML = `<div class="enrichment-head"><span>Nearby marine survey evidence</span><b>${nearby.length} station${nearby.length === 1 ? "" : "s"} within 50 km</b></div>` +
+    `<div class="related-list">${nearby.map(({ record, distance }) => {
+      const detail = [distance < 1 ? `${Math.round(distance * 1000)} m` : `${distance.toFixed(1)} km`, record.dataSource,
+        record.area, record.zone, record.surveyDate, record.assessment || record.method, record.surveyActivities,
+        record.occurrenceRecords && `${record.occurrenceRecords.toLocaleString()} occurrence records`, record.taxonCount && `${record.taxonCount.toLocaleString()} taxa`,
+        record.sourceDepth != null && `reported depth ${record.sourceDepth}`, record.habitatSummary,
+        record.majorStructure, record.majorCover, record.ecoregion, record.programs].filter(Boolean).join(" · ");
+      const name = record.sourceUrl ? `<a href="${esc(record.sourceUrl)}" target="_blank" rel="noopener">${esc(record.name)}</a>` : `<b>${esc(record.name)}</b>`;
+      return `<div>${name}<span>${esc(detail)}</span></div>`;
+    }).join("")}</div>` +
+    `<div class="enrichment-sources"><span>Historical survey evidence only, not proof of public dive access, current conditions or diving safety.</span>` +
+    sourceRecords.map(record => record.sourceUrl ? `<a href="${esc(record.sourceUrl)}" target="_blank" rel="noopener">${esc(record.dataSource)} ↗</a>` : `<b>${esc(record.dataSource)}</b>`).join("") +
+    sourceRecords.map(record => `<small>${esc([record.licence, record.attribution, record.dataWarning].filter(Boolean).join(" · "))}${record.licenceUrl ? ` · <a href="${esc(record.licenceUrl)}" target="_blank" rel="noopener">licence ↗</a>` : ""}</small>`).join("") + `</div>`;
   organiseCardSources();
 }
 
 function loadFeatureEvidence() {
-  if (!featureEvidencePromise) featureEvidencePromise = fetch("data/dive-feature-evidence.json")
+  if (!featureEvidencePromise) featureEvidencePromise = fetch(`data/dive-feature-evidence.json?v=${DATA_CACHE_VERSION}`)
     .then(response => response.ok ? response.json() : [])
     .then(payload => {
       if (Array.isArray(payload)) return payload;
@@ -1255,7 +1370,9 @@ async function startFeatureEvidenceEnrichment(site) {
       const detail = [distance < 1 ? `${Math.round(distance * 1000)} m` : `${distance.toFixed(1)} km`, record.featureType, record.sourceOrigin,
         record.whenLost && `lost ${record.whenLost}`, record.deploymentDate && `deployed ${record.deploymentDate}`,
         record.materialCategory || record.materialDescription, record.depthFeet && `${record.depthFeet} ft depth`,
-        record.depthLabel, record.reliefFeet && `${record.reliefFeet} ft relief`, record.chart && `chart ${record.chart}`,
+        record.depthLabel, record.wreckLengthMeters && `${record.wreckLengthMeters} m long`, record.wreckWidthMeters && `${record.wreckWidthMeters} m wide`,
+        record.surveyCruise && `survey ${record.surveyCruise}`, record.gsiReference && `GSI ${record.gsiReference}`,
+        record.reliefFeet && `${record.reliefFeet} ft relief`, record.chart && `chart ${record.chart}`,
         record.positionQuality && `${record.positionQuality} position quality`, record.protection].filter(Boolean).join(" · ");
       const name = record.referenceUrl ? `<a href="${esc(record.referenceUrl)}" target="_blank" rel="noopener">${esc(record.name)}</a>` : `<b>${esc(record.name)}</b>`;
       return `<div>${name}<span>${esc(detail)}</span></div>`;
@@ -1507,6 +1624,26 @@ function renderMapFeatureModal(s) {
     sourceBlock(s.dataSource || "divemap.uk via LiveTide proxy");
 }
 
+function renderTrainingCentreModal(s) {
+  const p = s.mapProperties || {};
+  const mapsUrl = recordMapUrl(s);
+  const programs = String(p.label || "").split(/\s+/).filter(Boolean).map(value => value.replace(/_/g, " "));
+  const website = /^https?:\/\//i.test(String(p.web || "")) ? p.web : "";
+  const contact = [
+    website ? `<a href="${esc(website)}" target="_blank" rel="noopener">Website &nearr;</a>` : "",
+    p.email ? `<a href="mailto:${esc(p.email)}">${esc(p.email)}</a>` : "",
+    p.tel ? `<a href="tel:${esc(p.tel)}">${esc(p.tel)}</a>` : "",
+  ].filter(Boolean).join("<br>");
+  $("modalBody").innerHTML =
+    `<div class="feature-overview"><div class="feature-hero" style="--feature-color:#006d77"><span>T</span><div><b>SSI training centre</b><small>${p.proCenter ? "Professional training centre" : "Scuba training centre"}</small></div></div>` +
+    `<div class="feature-coordinates"><b>${esc(coordinate(s.latitude, "N", "S"))} &nbsp; ${esc(coordinate(s.longitude, "E", "W"))}</b><span>${weatherButton(s)}<a href="${mapsUrl}" target="_blank" rel="noopener">Map &nearr;</a></span></div></div>` + weatherPanel() +
+    (s.thumbnail ? `<img class="dv-thumb" src="${esc(s.thumbnail)}" alt="${esc(s.name)} logo" referrerpolicy="no-referrer" onerror="this.remove()">` : "") +
+    section("Address", p.address) +
+    (contact ? `<div class="dv-sec"><h3>Contact</h3><p>${contact}</p></div>` : "") +
+    (programs.length ? `<div class="dv-sec"><h3>Training</h3><div class="dv-chips">${programs.map(item => `<span class="dv-chip">${esc(item)}</span>`).join("")}</div></div>` : "") +
+    sourceMetadataBlock(s);
+}
+
 let tideStationRequest = 0;
 function tideWeekChart(levels) {
   if (!levels.length) return "";
@@ -1557,17 +1694,31 @@ async function loadSiteWeatherDay(button) {
   const key = `${(+lat).toFixed(3)},${(+lng).toFixed(3)}:${date}`, store = readLS(SITE_WEATHER_DAY_LS) || {};
   let cached = store[key];
   if (!cached || Date.now() - cached.savedAt > 3600e3) {
-    const url = `https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(lat)}&longitude=${encodeURIComponent(lng)}` +
+    const forecastUrl = `https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(lat)}&longitude=${encodeURIComponent(lng)}` +
       `&hourly=temperature_2m,apparent_temperature,precipitation_probability,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m` +
       `&wind_speed_unit=kn&timezone=auto&start_date=${date}&end_date=${date}`;
-    try { const response = await fetch(url); if (response.ok) cached = { data: await response.json(), savedAt: Date.now() }; } catch (e) {}
+    const marineUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=${encodeURIComponent(lat)}&longitude=${encodeURIComponent(lng)}` +
+      `&hourly=wave_height,wave_direction&timezone=auto&start_date=${date}&end_date=${date}`;
+    try {
+      const [forecastResult, marineResult] = await Promise.allSettled([fetch(forecastUrl), fetch(marineUrl)]);
+      if (forecastResult.status === "fulfilled" && forecastResult.value.ok) {
+        const data = await forecastResult.value.json();
+        if (marineResult.status === "fulfilled" && marineResult.value.ok) data.marine = await marineResult.value.json();
+        cached = { data, savedAt:Date.now() };
+      }
+    } catch (e) {}
     if (cached) { store[key] = cached; writeLS(SITE_WEATHER_DAY_LS, store); }
   }
   if (!cached || !cached.data || !cached.data.hourly) { target.innerHTML = `<div class="wx-day-loading">Hourly weather is temporarily unavailable.</div>`; return; }
-  const h = cached.data.hourly, units = cached.data.hourly_units || {};
+  const h = cached.data.hourly, units = cached.data.hourly_units || {}, marine = cached.data.marine?.hourly || {};
   const arrow = direction => `<i class="wx-arrow" style="transform:rotate(${((+direction || 0) + 180) % 360}deg)">↑</i>`;
   target.innerHTML = `<div class="wx-day-head"><b>${new Date(date + "T12:00:00").toLocaleDateString([], { weekday:"long", day:"numeric", month:"short" })}</b><button type="button" aria-label="Close hourly weather">×</button></div>` +
-    `<div class="wx-hour-grid">${(h.time || []).map((time, i) => `<div class="wx-hour"><b>${time.slice(11, 16)}</b><span>${esc(weatherLabel(h.weather_code && h.weather_code[i]))}</span><strong>${Math.round(h.temperature_2m[i])}°</strong><small>feels ${Math.round(h.apparent_temperature[i])}°</small><small>☂ ${h.precipitation_probability[i] || 0}%</small><small>${arrow(h.wind_direction_10m[i])} ${Math.round(h.wind_speed_10m[i])} ${esc(units.wind_speed_10m || "kn")}</small><small>gust ${Math.round(h.wind_gusts_10m[i])}</small></div>`).join("")}</div>`;
+    `<div class="wx-hour-grid">${(h.time || []).map((time, i) => {
+      const marineIndex = marine.time?.indexOf(time) ?? -1;
+      const wave = marineIndex >= 0 ? marine.wave_height?.[marineIndex] : null;
+      const direction = marineIndex >= 0 ? marine.wave_direction?.[marineIndex] : null;
+      return `<div class="wx-hour"><b>${time.slice(11, 16)}</b><span>${esc(weatherLabel(h.weather_code && h.weather_code[i]))}</span><strong>${Math.round(h.temperature_2m[i])}°</strong><small>feels ${Math.round(h.apparent_temperature[i])}°</small><small>☂ ${h.precipitation_probability[i] || 0}%</small><small>${arrow(h.wind_direction_10m[i])} ${Math.round(h.wind_speed_10m[i])} ${esc(units.wind_speed_10m || "kn")}</small><small>gust ${Math.round(h.wind_gusts_10m[i])}</small>${wave == null ? "" : `<small class="wx-hour-wave">wave ${(+wave).toFixed(1)} m from ${windCompass(direction || 0)}</small>`}</div>`;
+    }).join("")}</div>`;
   target.querySelector("button").onclick = () => { target.hidden = true; document.querySelectorAll(".site-weather-day").forEach(el => el.classList.remove("on")); };
 }
 
@@ -1578,11 +1729,11 @@ async function loadSiteWeather(lat, lng) {
   if (cached && Date.now() - cached.savedAt < 3600e3) { target.innerHTML = cached.html; organiseCardSources(); return; }
   target.innerHTML = `<div class="enrichment-loading"><i></i>Loading local conditions…</div>`;
   try {
-    const forecastUrl = `https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(lat)}&longitude=${encodeURIComponent(lng)}&current=temperature_2m,apparent_temperature,weather_code,precipitation,wind_speed_10m,wind_direction_10m,wind_gusts_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum,wind_speed_10m_max,wind_direction_10m_dominant&forecast_days=7&wind_speed_unit=kn&timezone=auto`;
-    const marineUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=${encodeURIComponent(lat)}&longitude=${encodeURIComponent(lng)}&current=wave_height,wave_direction,wave_period,sea_surface_temperature&timezone=auto`;
+    const forecastUrl = `https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(lat)}&longitude=${encodeURIComponent(lng)}&current=temperature_2m,apparent_temperature,weather_code,precipitation,wind_speed_10m,wind_direction_10m,wind_gusts_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum,wind_speed_10m_max,wind_direction_10m_dominant,wind_gusts_10m_max&forecast_days=7&wind_speed_unit=kn&timezone=auto`;
+    const marineUrl = `https://marine-api.open-meteo.com/v1/marine?latitude=${encodeURIComponent(lat)}&longitude=${encodeURIComponent(lng)}&current=wave_height,wave_direction,wave_period,sea_surface_temperature&daily=wave_height_max,wave_direction_dominant&forecast_days=7&timezone=auto`;
     const [forecastResponse, marineResponse] = await Promise.all([fetch(forecastUrl), fetch(marineUrl)]);
     const forecast = forecastResponse.ok ? await forecastResponse.json() : {}, marine = marineResponse.ok ? await marineResponse.json() : {};
-    const c = forecast.current || {}, m = marine.current || {}, daily = forecast.daily || {};
+    const c = forecast.current || {}, m = marine.current || {}, daily = forecast.daily || {}, marineDaily = marine.daily || {};
     if (c.temperature_2m == null && m.wave_height == null) throw new Error("No weather data");
     const fact = (icon, label, value) => value === "" || value == null ? "" : `<div><i>${icon}</i><span>${esc(label)}</span><b>${esc(value)}</b></div>`;
     const html = `<div class="site-weather-head"><b>${esc(weatherLabel(c.weather_code))}</b><span>Updated ${esc(new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"}))}</span></div><div class="site-weather-grid">` +
@@ -1595,7 +1746,8 @@ async function loadSiteWeather(lat, lng) {
         const day = new Intl.DateTimeFormat([], { weekday: "short" }).format(new Date(date + "T12:00:00"));
         const high = daily.temperature_2m_max && daily.temperature_2m_max[i], low = daily.temperature_2m_min && daily.temperature_2m_min[i];
         const rain = daily.precipitation_probability_max && daily.precipitation_probability_max[i], wind = daily.wind_speed_10m_max && daily.wind_speed_10m_max[i], direction = daily.wind_direction_10m_dominant && daily.wind_direction_10m_dominant[i];
-        return `<button type="button" class="site-weather-day" data-date="${esc(date)}" data-lat="${esc(lat)}" data-lng="${esc(lng)}" title="Show hourly weather for ${esc(day)}"><h4>${esc(day)}</h4><span>${esc(weatherLabel(daily.weather_code && daily.weather_code[i]))}</span><b>${high != null ? Math.round(high) + "°" : "—"}<small>${low != null ? "/" + Math.round(low) + "°" : ""}</small></b><em>☂ ${rain != null ? Math.round(rain) : 0}%</em><em>➤ ${wind != null ? Math.round(wind) : "—"} kn ${direction != null ? windCompass(direction) : ""}</em></button>`;
+        const gust = daily.wind_gusts_10m_max?.[i], wave = marineDaily.wave_height_max?.[i], waveDirection = marineDaily.wave_direction_dominant?.[i];
+        return `<button type="button" class="site-weather-day" data-date="${esc(date)}" data-lat="${esc(lat)}" data-lng="${esc(lng)}" title="Show hourly weather for ${esc(day)}"><h4>${esc(day)}</h4><span>${esc(weatherLabel(daily.weather_code && daily.weather_code[i]))}</span><b>${high != null ? Math.round(high) + "°" : "—"}<small>${low != null ? "/" + Math.round(low) + "°" : ""}</small></b><em>☂ ${rain != null ? Math.round(rain) : 0}%</em><em>➤ ${wind != null ? Math.round(wind) : "—"} kn ${direction != null ? windCompass(direction) : ""}${gust != null ? ` · G${Math.round(gust)}` : ""}</em>${wave == null ? "" : `<em>∿ ${(+wave).toFixed(1)} m from ${windCompass(waveDirection || 0)}</em>`}</button>`;
       }).join("")}</div><div class="site-weather-day-detail" id="siteWeatherDay" hidden></div>` : "") + `<div class="site-weather-source"><span>Forecast source</span><a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo Forecast + Marine &nearr;</a><small>Cached for 1 hour</small></div>`;
     store[key] = { html, savedAt: Date.now() }; writeLS(SITE_WEATHER_LS, store); target.innerHTML = html; organiseCardSources();
   } catch (e) { target.innerHTML = `<div class="enrichment-unavailable">Local weather is temporarily unavailable.</div>`; }
@@ -1718,6 +1870,7 @@ function renderModal(s) {
   if (s._wreck) { renderWreckModal(s); $("modalBody").insertAdjacentHTML("beforeend", sourceBlock(s.dataSource || "UK Hydrographic Office (UKHO)")); return; }
   if (s.mapKind === "launch") { renderLaunchModal(s); return; }
   if (s.mapKind === "tide-station") { renderTideStationModal(s); return; }
+  if (s.mapKind === "training-centres") { renderTrainingCentreModal(s); return; }
   if (s.mapKind && s.mapKind !== "sites") { renderMapFeatureModal(s); return; }
   renderDiveSiteModal(s); return;
   const aliases = (s.aliases || []).map(a => typeof a === "string" ? a : a.alias).filter(Boolean);
@@ -1788,7 +1941,7 @@ export async function getDiveCatalogue() {
   const seen = new Set();
   return [...dataset, ...(S.dives || []), ...ukSites, ...osmAmericas].filter(site => {
     if (!isDiveSite(site) || !passesFilters(site)) return false;
-    const source = site.mapKind || (site._osm ? "osm" : "divemap.gr");
+    const source = site.mapKind || (site._osm ? "osm" : site.dataSource || "divemap.gr");
     const id = site.sourceId || site.id;
     const key = id ? `${source}:${id}` : `${source}:${String(site.name || "").toLowerCase()}:${(+site.latitude).toFixed(4)}:${(+site.longitude).toFixed(4)}`;
     if (seen.has(key)) return false;

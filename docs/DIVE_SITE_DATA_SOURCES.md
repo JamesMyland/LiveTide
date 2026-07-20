@@ -1,6 +1,6 @@
 # Dive-site data source registry
 
-Last reviewed: 2026-07-18
+Last reviewed: 2026-07-20
 
 This is a living registry of machine-readable sources that can contribute to
 LiveTide's dive-site catalogue. "Dive site" is deliberately split into:
@@ -25,8 +25,10 @@ legal recreational dive sites unless another source supplies that evidence.
 | Divemap UK | United Kingdom | Existing public GeoJSON/GraphQL integration | Confirm bulk cache/redistribution terms | Already integrated. Preserve upstream IDs and attribution. |
 | New Zealand DOC SeaSketch | Hauraki Gulf | ArcGIS REST layer `Marine_Use_Activities_test/MapServer/1` | Government endpoint; confirm source-specific reuse terms | Named recreational sites assembled from DOC, Waikato Regional Council and Dive New Zealand. |
 | WA DPIRD Abrolhos Dive Trails | Houtman Abrolhos Islands, Western Australia | SLIP ArcGIS layer 12 | CC BY 4.0; © State of Western Australia, Department of Primary Industries and Regional Development | Seven named official trails, grouped from 55 numbered route markers. |
+| Queensland Parks and Wildlife Service public moorings | Queensland marine parks | `Environment/ParksMarineProtectedAreas/MapServer/16` | CC BY 4.0; © State of Queensland (Department of Environment and Science) 2024 | 386 public reef/island moorings grouped into 162 canonical named access locations. Lower-ranked recreational infrastructure only; verify scuba suitability, zoning, permits and current buoy limits. |
 | Taiwan Tourism Administration | Taiwan | Daily Tourism Information Database attractions ZIP | Taiwan Open Government Data License 1.0 | Six manually reviewed public attractions explicitly described as diving locations; stable government attraction IDs and Chinese aliases retained. |
 | Province of British Columbia | Coastal British Columbia, Canada | DataBC ArcGIS `Coastal BC Diving Sites`, layer 23 | Open Government Licence - British Columbia | 184 named provincial scuba points are ingested; four duplicate names/positions collapse during catalogue deduplication. Anonymous planning points remain excluded. |
+| Parks Canada Agency | Lake Minnewanka, Banff National Park, Alberta | Open ArcGIS points-of-interest service filtered to `Principal_type=79` | Open Government Licence - Canada | One official bilingual SCUBA shore-access point is ingested with the current Parks Canada activity page, permit requirements, heritage warning and cold-water/high-altitude safety context. |
 
 ## Tier 2: open global and regional candidates
 
@@ -35,8 +37,10 @@ legal recreational dive sites unless another source supplies that evidence.
 | OpenStreetMap | Global | Geofabrik `.osm.pbf` extracts; OSM replication diffs | ODbL | Extract `sport=scuba_diving`, `scuba_diving:divespot=yes`, `historic=wreck`, `wreck=*`, reefs, dive centres and shops. Do not use public Overpass for bulk ingestion. |
 | Geofabrik | Philippines, Japan, Australia/Oceania, Asia, Europe, Africa and Americas | Daily regional PBF downloads | OSM/ODbL | Stable bulk transport for OSM. Process offline and publish small, versioned LiveTide datasets. |
 | Reef Life Survey / IMOS NRMN | Australia and worldwide survey sites | AODN WFS layer `ep_site_list_public_data` | Catalogue says freely available for non-profit use; formal licence field is unspecified | Strong evidence that divers survey a reef, but not automatically a public recreational site. |
+| SeaSearch / National Biodiversity Data Centre | Irish coastal waters | Versioned dataset export from `maps.biodiversityireland.ie`, catalogued on data.gov.ie | CC BY 4.0 | 1,057 SCUBA survey events at 1,018 locations, aggregated from 40,153 usable species-occurrence rows, are ingested as lazy historical evidence. Revisited locations remain separate by survey ID and date. They do not enter recreational recommendations. |
 | EMODnet | EMEA seas | WFS/WMS/WMTS and bathymetry REST API | EU/open-data terms vary by layer | Wrecks, habitats, submerged landscapes, protected areas and depth enrichment. |
 | EMODnet Human Activities heritage wrecks | Europe and adjacent seas | Public WFS layer `emodnet:heritageshipwrecks` | CC BY 4.0; record-level originator retained | 7,073 heritage wreck points ingested as lazy evidence with country, object type, depth, loss year, statutory status and update metadata. Protected or heritage status never implies recreational access. |
+| INFOMAR surveyed shipwrecks | Irish waters | ArcGIS `Infomar/Shipwrecks/MapServer/0` | CC BY 4.0; Irish Public Sector Data attribution | 542 accurately surveyed wreck locations are ingested as lazy evidence with depth, dimensions, identifiers and media/report links. They are excluded from recommendations and are not for navigation. |
 | Marine Regions (VLIZ) | Global | Gazetteer REST point lookup | CC BY 4.0 | Lazy sea, ecoregion, marine-region and EEZ context; never treated as a dive-site source or navigation data. |
 | Japan Biodiversity Center | Japan | Shapefile/KML downloads | Government dataset; check per-dataset cautions | Coral reef and coastal habitat candidates, especially Okinawa/Ogasawara. |
 | Okinawa Prefecture tourism attractions | Okinawa, Japan | BODIK CKAN package `470007_tourist_attraction` and official CSV | CC BY 4.0 | Coordinate-bearing government POIs. Use only as proximity enrichment for independently verified dive sites: the source does not classify its coastal attractions as dive sites. |
@@ -45,6 +49,7 @@ legal recreational dive sites unless another source supplies that evidence.
 | LINZ Data Service | New Zealand | LDS APIs and downloads | Generally Creative Commons; verify layer | Hydrography, place names, seabed and wreck enrichment. |
 | Western Australian Museum | Western Australia | SLIP ArcGIS MapServer layer 0 | CC BY 4.0; © Western Australian Museum | 305 positioned wreck/aircraft records ingested as lazy evidence, with protection status. Excluded from recreational recommendations. |
 | Vicmap Hydro | Victoria, Australia | Public WFS layer `open-data-platform:hy_navigation_point`, filtered to `feature_type_code='wreck'` | CC BY 4.0; State of Victoria, Department of Transport and Planning | 30 coordinate-bearing charted wreck points ingested as lazy evidence. The layer does not consistently publish names and does not establish recreational access or safety. |
+| NOAA PIFSC RICHARD 2022 reef assessment | Guam and Northern Mariana Islands | ArcGIS FeatureServer item `aded47075b0b447b947b314fa97af5de` | CC0 1.0; NOAA PIFSC/NCCOS | 161 May 2022 scientific-diver reef-monitoring stations ingested as lazy evidence with mission, island, date and survey activities. Excluded from recreational recommendations. |
 | Florida Fish and Wildlife Conservation Commission | Florida, United States | Open Data artificial-reef MapServer layer 12 | Available without restriction; FWC attribution expected | 4,548 deployment records ingested as lazy underwater-feature evidence with material, depth, relief, deployment date and accuracy. Not a recreational-site or navigation source. |
 | NOAA/NCCOS ArcGIS services | US, Caribbean and Pacific territories | ArcGIS REST (`query` supports GeoJSON) | US government/public domain unless metadata says otherwise | Recreational SCUBA layers exist, but many similarly named "Dive Sites" layers are scientific surveys only. Classify each layer. |
 | NOAA AWOIS via NY Department of State | United States coastal waters | Public FeatureServer snapshot plus NOAA InPort item 70439 | Public free informational use; citation required; not for navigation | 12,660 wreck/obstruction features ingested as lazy evidence. This is an older AWOIS snapshot, not NOAA's complete current synthesis; object ID and NOAA record number are stored separately. |
@@ -52,6 +57,8 @@ legal recreational dive sites unless another source supplies that evidence.
 | NAMRIA Geoportal Philippines | Philippines | Public WMS vector KML layer `geoportal:hd_wreck` | Open under NAMRIA Memorandum Order No. 008, series of 2022 | 94 named navigational wrecks ingested as lazy evidence; WFS requires authentication. Not proof of dive access or safety. |
 | Northeast Ocean Data Portal | US Northeast | GIS downloads/services | Check dataset metadata | Recreational SCUBA diving areas, commonly polygons rather than named points. |
 | Wikidata | Global | SPARQL endpoint | CC0 structured data | Sparse named sites and wrecks; useful for aliases, Wikipedia links and identifiers. |
+| Malta Coastal and Marine Infrastructure (SPED) | Malta | Hale Connect WFS `am:ManagementRestrictionOrRegulationZone` | Live WFS declares CC BY-NC-ND 4.0 and `otherRestrictions` | Thirty-one unnamed dive-site points were verified but are not ingested because the live service terms do not permit the reusable normalised catalogue LiveTide is building. |
+| Cyprus Hydrography diving areas | Cyprus | DLS ArcGIS `Hydrography_Data_GR/MapServer/65` | CC BY 4.0 | Four numbered restriction/management polygons were verified. Retain as a future context layer; polygon centroids must not become dive-site recommendations. |
 
 ## Tier 3: commercial or partnership candidates
 
@@ -145,6 +152,9 @@ collective database. Commercial API data must not be persisted beyond its contra
 - OSM scuba tagging: https://wiki.openstreetmap.org/wiki/Tag:sport=scuba_diving
 - Geofabrik: https://download.geofabrik.de/
 - IMOS/RLS: https://www.data.gov.au/data/dataset/imos-national-reef-monitoring-network-sub-facility-site-information
+- Irish SeaSearch: https://data.gov.ie/dataset/seasearch-records-from-irish-coastal-waters
+- Malta SPED marine infrastructure: https://portal.data.gov.mt/dataset/coastal-and-marine-infrastructure-as-per-sped
+- Cyprus hydrography diving areas: https://www.data.gov.cy/el/dataset/periohes-katadysis-ydrografika-dedomena
 - EMODnet services: https://emodnet.ec.europa.eu/en/emodnet-web-service-documentation
 - Japan Biodiversity GIS: https://www.biodic.go.jp/trialSystem/top_en.html
 - Japan MSIL: https://www.msil.go.jp/data/catalogue/index.html
