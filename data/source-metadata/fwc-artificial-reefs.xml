@@ -1,0 +1,750 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><metadata xml:lang="en">
+    <Esri>
+        <CreaDate>20220621</CreaDate>
+        <CreaTime>09542500</CreaTime>
+        <ArcGISFormat>1.0</ArcGISFormat>
+        <ArcGISProfile>FGDC</ArcGISProfile>
+        <DataProperties>
+            <itemProps>
+                <imsContentType export="False"/>
+                <itemName>ArtificialReef_fl_point_Existing_Albers</itemName>
+            </itemProps>
+            <coordRef>
+                <type>Projected</type>
+                <geogcsn>GCS_NAD_1983_2011</geogcsn>
+                <projcsn>NAD_1983_2011_Florida_GDL_Albers</projcsn>
+                <csUnits>Linear Unit: Meter (1.000000)</csUnits>
+                <peXml>&lt;ProjectedCoordinateSystem xsi:type='typens:ProjectedCoordinateSystem' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xs='http://www.w3.org/2001/XMLSchema' xmlns:typens='http://www.esri.com/schemas/ArcGIS/10.6'&gt;&lt;WKT&gt;PROJCS[&amp;quot;NAD_1983_2011_Florida_GDL_Albers&amp;quot;,GEOGCS[&amp;quot;GCS_NAD_1983_2011&amp;quot;,DATUM[&amp;quot;D_NAD_1983_2011&amp;quot;,SPHEROID[&amp;quot;GRS_1980&amp;quot;,6378137.0,298.257222101]],PRIMEM[&amp;quot;Greenwich&amp;quot;,0.0],UNIT[&amp;quot;Degree&amp;quot;,0.0174532925199433]],PROJECTION[&amp;quot;Albers&amp;quot;],PARAMETER[&amp;quot;False_Easting&amp;quot;,400000.0],PARAMETER[&amp;quot;False_Northing&amp;quot;,0.0],PARAMETER[&amp;quot;Central_Meridian&amp;quot;,-84.0],PARAMETER[&amp;quot;Standard_Parallel_1&amp;quot;,24.0],PARAMETER[&amp;quot;Standard_Parallel_2&amp;quot;,31.5],PARAMETER[&amp;quot;Latitude_Of_Origin&amp;quot;,24.0],UNIT[&amp;quot;Meter&amp;quot;,1.0],AUTHORITY[&amp;quot;EPSG&amp;quot;,6439]]&lt;/WKT&gt;&lt;XOrigin&gt;-19550100&lt;/XOrigin&gt;&lt;YOrigin&gt;-7526400&lt;/YOrigin&gt;&lt;XYScale&gt;10000&lt;/XYScale&gt;&lt;ZOrigin&gt;-100000&lt;/ZOrigin&gt;&lt;ZScale&gt;10000&lt;/ZScale&gt;&lt;MOrigin&gt;-100000&lt;/MOrigin&gt;&lt;MScale&gt;10000&lt;/MScale&gt;&lt;XYTolerance&gt;0.001&lt;/XYTolerance&gt;&lt;ZTolerance&gt;0.001&lt;/ZTolerance&gt;&lt;MTolerance&gt;0.001&lt;/MTolerance&gt;&lt;HighPrecision&gt;true&lt;/HighPrecision&gt;&lt;WKID&gt;102967&lt;/WKID&gt;&lt;LatestWKID&gt;6439&lt;/LatestWKID&gt;&lt;/ProjectedCoordinateSystem&gt;</peXml>
+            </coordRef>
+        </DataProperties>
+        <scaleRange>
+            <minScale>150000000</minScale>
+            <maxScale>5000</maxScale>
+        </scaleRange>
+        <ModDate>20230504</ModDate>
+        <ModTime>13284794</ModTime>
+        <PublishStatus>editor:esri.dijit.metadata.editor</PublishStatus>
+        <ArcGISstyle>FGDC CSDGM Metadata</ArcGISstyle>
+        <MapLyrSync>false</MapLyrSync>
+        <SyncOnce>FALSE</SyncOnce>
+        <SyncDate>2023-01-13</SyncDate>
+        <SyncTime>11343100</SyncTime>
+    </Esri>
+    <dataIdInfo>
+        <idAbs>&lt;div style='text-align:Left;'&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p style='margin-left:.5in;'&gt;&lt;span style='color:black;'&gt;Encompassing 34 of 35 different coastal counties spread along 1,357 miles of ocean fronting coastline, Florida manages one of the most diverse, and most active artificial reef programs in the United States. As of May 2026, the FWC Artificial Reef Program reports over 4,548 artificial reef deployment locations state-wide. Artificial Reefs are about evenly divided between state and federal waters and range from 1 feet in depth to 511 feet (average depth 68 feet). Each point in this GIS data set represents a single deployment event (either a uniquely located artificial reef or deployments of the same reef on different days). Division of Marine Fisheries Management maintains and updates the source database. This data set represents deployments through May 7, 2026.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;/div&gt;</idAbs>
+        <idCitation>
+            <resTitle>Artificial Reefs Florida Point</resTitle>
+            <presForm>
+                <PresFormCd value="005"/>
+            </presForm>
+            <presForm>
+                <fgdcGeoform>vector digital data</fgdcGeoform>
+            </presForm>
+            <citRespParty>
+                <rpOrgName>Florida Fish and Wildlife Conservation Commission-Fish and Wildlife Research Institute</rpOrgName>
+                <role>
+                    <RoleCd value="006"/>
+                </role>
+            </citRespParty>
+            <citRespParty>
+                <rpOrgName>FWC, DMF</rpOrgName>
+                <role>
+                    <RoleCd value="010"/>
+                </role>
+                <rpCntInfo>
+                    <cntAddress>
+                        <delPoint>Tallahassee, FL</delPoint>
+                    </cntAddress>
+                </rpCntInfo>
+            </citRespParty>
+        </idCitation>
+        <dataExt>
+            <geoEle>
+                <GeoBndBox>
+                    <westBL>-87.511706</westBL>
+                    <eastBL>-79.806912</eastBL>
+                    <northBL>30.737084</northBL>
+                    <southBL>24.388347</southBL>
+                </GeoBndBox>
+            </geoEle>
+        </dataExt>
+        <dataExt>
+            <exDesc>ground condition</exDesc>
+            <tempEle>
+                <TempExtent>
+                    <exTemp>
+                        <TM_Instant>
+                            <tmPosition>2023-05-04T00:00:00</tmPosition>
+                        </TM_Instant>
+                    </exTemp>
+                </TempExtent>
+            </tempEle>
+        </dataExt>
+        <idPoC>
+            <rpIndName>Kieth Mille</rpIndName>
+            <rpOrgName>Florida Fish and Wildlife Conservation Commission-Division of Marine Fisheries Management</rpOrgName>
+            <role>
+                <RoleCd value="007"/>
+            </role>
+            <rpCntInfo>
+                <cntAddress addressType="postal">
+                    <eMailAdd>kieth.mille@MyFWC.com</eMailAdd>
+                    <delPoint>620 South Meridian Street, Box 4B2</delPoint>
+                    <city>Tallahassee</city>
+                    <adminArea>FL</adminArea>
+                    <postCode>32399</postCode>
+                </cntAddress>
+                <cntPhone>
+                    <voiceNum>(850) 617-9633</voiceNum>
+                </cntPhone>
+            </rpCntInfo>
+        </idPoC>
+        <searchKeys>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+        <keyword>FWC Region-Northeast</keyword><keyword>Estero Bay</keyword><keyword>GIS</keyword><keyword>northwest Florida</keyword><keyword>marine</keyword><keyword>oceans</keyword><keyword>Charlotte Harbor</keyword><keyword>Florida Keys</keyword><keyword>St. Johns River Water Management District</keyword><keyword>Cape Canaveral National Seashore</keyword><keyword>FWC Region-South</keyword><keyword>artificial reefs</keyword><keyword>habitat (rivers</keyword><keyword>estuaries</keyword><keyword>ecology</keyword><keyword>hard bottom)</keyword><keyword>FWC Region-Southwest</keyword><keyword>statewide</keyword><keyword>west coast of Florida</keyword><keyword>northeast Florida</keyword><keyword>Southwest Florida Water Management District</keyword><keyword>benthic</keyword><keyword>Big Bend</keyword><keyword>Florida Straits</keyword><keyword>Biscayne Bay</keyword><keyword>Suwannee River Water Management District</keyword><keyword>Florida Bay</keyword><keyword>southwest Florida</keyword><keyword>Atlantic Ocean</keyword><keyword>FWC Region-North Central</keyword><keyword>south Florida</keyword><keyword>FWC Region-Northwest</keyword><keyword>Florida</keyword><keyword>Tampa Bay</keyword><keyword>Northwest Florida Water Management District</keyword><keyword>Gulf of Mexico</keyword><keyword>southeast Florida</keyword><keyword>South Florida Water Management District</keyword><keyword>mapping</keyword><keyword>north Florida</keyword><keyword>east coast of Florida</keyword><keyword>Cedar Keys National Wildlife Refuge</keyword></searchKeys>
+        <themeKeys>
+            <keyword>oceans</keyword>
+            <thesaName>
+                <resTitle>ISO 19115 Topic Category</resTitle>
+            </thesaName>
+        </themeKeys>
+        <themeKeys>
+            <keyword>GIS</keyword>
+            <keyword>marine</keyword>
+            <keyword>artificial reefs</keyword>
+            <keyword>habitat (rivers</keyword>
+            <keyword>estuaries</keyword>
+            <keyword>ecology</keyword>
+            <keyword>hard bottom)</keyword>
+            <keyword>benthic</keyword>
+            <keyword>mapping</keyword>
+            <thesaName>
+                <resTitle>FWRItheme</resTitle>
+            </thesaName>
+        </themeKeys>
+        <idPurp>This data set is for display purposes only. Do not use it for navigation. Each point location is intended to represent a single deployment event, defined as either different location coordinates or the same coordinates but on different days. It is important to note that DMF has not independently confirmed most of the reef locations and this data had been supplied form various sources without verification.</idPurp>
+        <idCredit>FWC Division of Marine Fisheries Management</idCredit>
+        <resConst>
+            <LegConsts>
+                <useLimit>This data set is in the public domain, and the recipient may not assert any proprietary rights thereto nor represent it to anyone as other than a FWC-FWRI produced data set; it is provided "as-is" without warranty of any kind, including, but not limited to, the implied warranties of merchantability and fitness for a particular purpose. The user assumes all responsibility for the accuracy and suitability of this data set for a specific application. In no event will the staff of the Fish and Wildlife Research Institute be liable for any damages, including lost profits, lost savings, or other incidental or consequential damages arising from the use of or the inability to use this data set.</useLimit>
+                <othConsts>These data are available without restriction. It is strongly recommended that this data is directly acquired from FWC and not indirectly through other sources which may have changed the data in some way. FWC makes no claims as to the data's suitability for other purposes. Acknowledgement of the FWC Division of Marine Fisheries as the data source and originator, would be appreciated in any products developed from these data, and such acknowledgment as is standard for citation and legal practices for data source is expected by users of this data. Please cite the original metadata when using portions of the record to create a similar record of slightly altered data, such as a re-projection. If any data are modified or adjusted, please share the edited information with FWC. Users should be aware that comparison with other data sets for the same area from other time periods may be inaccurate due to inconsistencies resulting from changes in mapping conventions, data collection, and computer processes over time. FWC shall not be liable for improper or incorrect use of this data. These data are not legal documents and are not to be used as such. This is not a survey data set and should not be utilized as such. These data are not to be used for navigation.</othConsts>
+            </LegConsts>
+        </resConst>
+        <resConst>
+            <SecConsts>
+                <classSys>FWRI-DC</classSys>
+                <handDesc>Available without restriction</handDesc>
+            </SecConsts>
+        </resConst>
+        <resConst>
+            <Consts>
+                <useLimit>&lt;div style='text-align:Left;'&gt;&lt;div&gt;&lt;div&gt;&lt;p&gt;&lt;span&gt;Acknowledgement of the FWC-FWRI (Florida Fish and Wildlife Conservation Commission-Fish and Wildlife Research Institute) as the data source, and the originator FWC Division of Marine Fisheries, would be appreciated in any products developed from these data, and such acknowledgment as is standard for citation and legal practices for data source is expected by users of this data. Please cite the original metadata when using portions of the record to create a similar record of slightly altered data, such as reprojection. If any data are modified or adjusted, please share the edited information with FWC. Users should be aware that comparison with other data sets for the same area from other time periods may be inaccurate due to inconsistencies resulting from changes in mapping conventions, data collection, and computer processes over time. FWC shall not be liable for improper or incorrect use of this data. These data are not legal documents and are not to be used as such. This is not a survey data set and should not be utilized as such. These data are not to be used for navigation.&lt;/span&gt;&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</useLimit>
+            </Consts>
+        </resConst>
+        <resConst>
+            <LegConsts>
+                <accessConsts>
+                    <RestrictCd value="008"/>
+                </accessConsts>
+                <othConsts>Other Constraints</othConsts>
+            </LegConsts>
+        </resConst>
+        <resConst>
+            <LegConsts>
+                <useConsts>
+                    <RestrictCd value="008"/>
+                </useConsts>
+                <othConsts>Other Constraints</othConsts>
+            </LegConsts>
+        </resConst>
+        <dataLang>
+            <languageCode value="eng"/>
+            <countryCode value="US"/>
+        </dataLang>
+        <dataChar>
+            <CharSetCd value="004"/>
+        </dataChar>
+        <spatRpType>
+            <SpatRepTypCd value="001"/>
+        </spatRpType>
+        <envirDesc>ArcGIS for Desktop 10.3.1</envirDesc>
+        <idStatus>
+            <ProgCd value="001"/>
+        </idStatus>
+        <suppInfo>Please note that reef materials can move, degrade, or become buried over time. This is especially true for metal materials with thicknesses less than ¼” or lightweight materials. Additionally, many reef locations in the database are based on historical data with inherent potential location inaccuracies that may not have been ground-truth since their deployment. If you have updated information regarding the condition or location of an artificial reef please contact the FWC Artificial Reef Database Administrator via email at keith.mille@myfwc.com Prior to July 1, 2004, the Fish and Wildlife Research Institute (FWRI) was known as the Florida Marine Research Institute (FMRI). The institute name has not been changed in historical data sets or references to work completed by the Florida Marine Research Institute. The institute name has been changed in references to ongoing research, new research, and contact information. These data are also known as "Florida Artificial Reef Deployment Database." Note: if these data are converted to shapefile, null values in number fields will be converted to zero. This will hide any true zero values.</suppInfo>
+        <resMaint>
+            <maintFreq>
+                <MaintFreqCd value="011"/>
+            </maintFreq>
+        </resMaint>
+        <placeKeys>
+            <keyword>St. Johns River Water Management District</keyword>
+            <keyword>Southwest Florida Water Management District</keyword>
+            <keyword>Suwannee River Water Management District</keyword>
+            <keyword>Northwest Florida Water Management District</keyword>
+            <keyword>South Florida Water Management District</keyword>
+            <thesaName>
+                <resTitle>Water Management Districts</resTitle>
+            </thesaName>
+        </placeKeys>
+        <placeKeys>
+            <keyword>FWC Region-Northeast</keyword>
+            <keyword>FWC Region-South</keyword>
+            <keyword>FWC Region-Southwest</keyword>
+            <keyword>FWC Region-North Central</keyword>
+            <keyword>FWC Region-Northwest</keyword>
+            <thesaName>
+                <resTitle>FWC Region</resTitle>
+            </thesaName>
+        </placeKeys>
+        <placeKeys>
+            <keyword>Estero Bay</keyword>
+            <keyword>northwest Florida</keyword>
+            <keyword>Charlotte Harbor</keyword>
+            <keyword>Florida Keys</keyword>
+            <keyword>Cape Canaveral National Seashore</keyword>
+            <keyword>statewide</keyword>
+            <keyword>west coast of Florida</keyword>
+            <keyword>northeast Florida</keyword>
+            <keyword>Big Bend</keyword>
+            <keyword>Florida Straits</keyword>
+            <keyword>Biscayne Bay</keyword>
+            <keyword>southwest Florida</keyword>
+            <keyword>south Florida</keyword>
+            <keyword>Atlantic Ocean</keyword>
+            <keyword>Florida</keyword>
+            <keyword>Tampa Bay</keyword>
+            <keyword>Gulf of Mexico</keyword>
+            <keyword>southeast Florida</keyword>
+            <keyword>north Florida</keyword>
+            <keyword>east coast of Florida</keyword>
+            <keyword>Cedar Keys National Wildlife Refuge</keyword>
+            <thesaName>
+                <resTitle>FWRIplace</resTitle>
+            </thesaName>
+        </placeKeys>
+        <placeKeys>
+            <keyword>Florida Bay</keyword>
+            <keyword>Atlantic Ocean</keyword>
+            <keyword>Gulf of Mexico</keyword>
+            <thesaName>
+                <resTitle>Florida Waterbodies</resTitle>
+            </thesaName>
+        </placeKeys>
+        <tpCat>
+            <TopicCatCd value="012"/>
+        </tpCat>
+        <tpCat>
+            <TopicCatCd value="014"/>
+        </tpCat>
+    </dataIdInfo>
+    <mdLang>
+        <languageCode value="eng"/>
+    </mdLang>
+    <mdHrLv>
+        <ScopeCd value="005"/>
+    </mdHrLv>
+    <mdHrLvName>dataset</mdHrLvName>
+    <Binary>
+        <Enclosure>
+            <Data EsriPropertyType="Base64" OriginalFileName="source_metadata.xml" SourceMetadata="yes" SourceMetadataDigest="589ddda2cca31b197e7286d580d2de6" SourceMetadataSchema="fgdc">PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjxtZXRhZGF0YSB4bWxuczp4cz0iaHR0cDovL3d3dy53My5vcmcvMjAwMS9YTUxTY2hlbWEiIHhtbG5zOmZuPSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L3hwYXRoLWZ1bmN0aW9ucyIgeG1sbnM6eGR0PSJodHRwOi8vd3d3LnczLm9yZy8yMDA1L3hwYXRoLWRhdGF0eXBlcyI+DQogIDxpZGluZm8+DQogICAgPGNpdGF0aW9uPg0KICAgICAgPGNpdGVpbmZvPg0KICAgICAgICA8b3JpZ2luPkZsb3JpZGEgRmlzaCBhbmQgV2lsZGxpZmUgQ29uc2VydmF0aW9uIENvbW1pc3Npb24tRmlzaCBhbmQgV2lsZGxpZmUgUmVzZWFyY2ggSW5zdGl0dXRlPC9vcmlnaW4+DQogICAgICAgIDxwdWJkYXRlPjIwMjEwMjE2PC9wdWJkYXRlPg0KICAgICAgICA8cHVidGltZT5Vbmtub3duPC9wdWJ0aW1lPg0KICAgICAgICA8dGl0bGU+QXJ0aWZpY2lhbCBSZWVmcyBGbG9yaWRhIFBvaW50PC90aXRsZT4NCiAgICAgICAgPGdlb2Zvcm0+dmVjdG9yIGRpZ2l0YWwgZGF0YTwvZ2VvZm9ybT4NCiAgICAgICAgPHB1YmluZm8+DQogICAgICAgICAgPHB1YnBsYWNlPlRhbGxhaGFzc2VlLCBGTDwvcHVicGxhY2U+DQogICAgICAgICAgPHB1Ymxpc2g+RldDLCBETUY8L3B1Ymxpc2g+DQogICAgICAgIDwvcHViaW5mbz4NCiAgICAgICAgPG9ubGluaz5odHRwOi8vbXlmd2MuY29tL3Jlc2VhcmNoPC9vbmxpbms+DQogICAgICAgIDxvbmxpbms+aHR0cDovL215ZndjLmNvbS9jb25zZXJ2YXRpb24vc2FsdHdhdGVyL2FydGlmaWNpYWwtcmVlZnMvbG9jYXRlLXJlZWZzLzwvb25saW5rPg0KICAgICAgICA8b25saW5rPmh0dHA6Ly9nZW9kYXRhLm15ZndjLmNvbTwvb25saW5rPg0KICAgICAgPC9jaXRlaW5mbz4NCiAgICA8L2NpdGF0aW9uPg0KICAgIDxkZXNjcmlwdD4NCiAgICAgIDxhYnN0cmFjdD5FbmNvbXBhc3NpbmcgMzQgb2YgMzUgZGlmZmVyZW50IGNvYXN0YWwgY291bnRpZXMgc3ByZWFkIGFsb25nIDEsMzU3IG1pbGVzIG9mIG9jZWFuIGZyb250aW5nIGNvYXN0bGluZSwgRmxvcmlkYSBtYW5hZ2VzIG9uZSBvZiB0aGUgbW9zdCBkaXZlcnNlLCBhbmQgbW9zdCBhY3RpdmUgYXJ0aWZpY2lhbCByZWVmIHByb2dyYW1zIGluIHRoZSBVbml0ZWQgU3RhdGVzLiBBcyBvZiBGZWJydWFyeSAyMDIxLCB0aGUgRldDIEFydGlmaWNpYWwgUmVlZiBQcm9ncmFtIHJlcG9ydHMgb3ZlciAzLDgwMCBhcnRpZmljaWFsIHJlZWYgZGVwbG95bWVudCBsb2NhdGlvbnMgc3RhdGUtd2lkZS4gQXJ0aWZpY2lhbCBSZWVmcyBhcmUgYWJvdXQgZXZlbmx5IGRpdmlkZWQgYmV0d2VlbiBzdGF0ZSBhbmQgZmVkZXJhbCB3YXRlcnMgYW5kIHJhbmdlIGZyb20gNCBmZWV0IGluIGRlcHRoIHRvIDQxNCBmZWV0IChhdmVyYWdlIGRlcHRoIDY1IGZlZXQpLg0KDQpFYWNoIHBvaW50IGluIHRoaXMgR0lTIGRhdGEgc2V0IHJlcHJlc2VudHMgYSBzaW5nbGUgZGVwbG95bWVudCBldmVudCAoZWl0aGVyIGEgdW5pcXVlbHkgbG9jYXRlZCBhcnRpZmljaWFsIHJlZWYgb3IgZGVwbG95bWVudHMgb2YgdGhlIHNhbWUgcmVlZiBvbiBkaWZmZXJlbnQgZGF5cykuIERpdmlzaW9uIG9mIE1hcmluZSBGaXNoZXJpZXMgTWFuYWdlbWVudCBtYWludGFpbnMgYW5kIHVwZGF0ZXMgdGhlIHNvdXJjZSBkYXRhYmFzZS4gVGhpcyBkYXRhIHNldCByZXByZXNlbnRzIGRlcGxveW1lbnRzIHRocm91Z2ggRmVicnVhcnkgMTIsIDIwMTkuPC9hYnN0cmFjdD4NCiAgICAgIDxwdXJwb3NlPlRoaXMgZGF0YSBzZXQgaXMgZm9yIGRpc3BsYXkgcHVycG9zZXMgb25seS4gIERvIG5vdCB1c2UgaXQgZm9yIG5hdmlnYXRpb24uICBFYWNoIHBvaW50IGxvY2F0aW9uIGlzIGludGVuZGVkIHRvIHJlcHJlc2VudCBhIHNpbmdsZSBkZXBsb3ltZW50IGV2ZW50LCBkZWZpbmVkIGFzIGVpdGhlciBkaWZmZXJlbnQgbG9jYXRpb24gY29vcmRpbmF0ZXMgb3IgdGhlIHNhbWUgY29vcmRpbmF0ZXMgYnV0IG9uIGRpZmZlcmVudCBkYXlzLiAgSXQgaXMgaW1wb3J0YW50IHRvIG5vdGUgdGhhdCBETUYgaGFzIG5vdCBpbmRlcGVuZGVudGx5IGNvbmZpcm1lZCBtb3N0IG9mIHRoZSByZWVmIGxvY2F0aW9ucyBhbmQgdGhpcyBkYXRhIGhhZCBiZWVuIHN1cHBsaWVkIGZvcm0gdmFyaW91cyBzb3VyY2VzIHdpdGhvdXQgdmVyaWZpY2F0aW9uLjwvcHVycG9zZT4NCiAgICAgIDxzdXBwbGluZj5QbGVhc2Ugbm90ZSB0aGF0IHJlZWYgbWF0ZXJpYWxzIGNhbiBtb3ZlLCBkZWdyYWRlLCBvciBiZWNvbWUgYnVyaWVkIG92ZXIgdGltZS4gVGhpcyBpcyBlc3BlY2lhbGx5IHRydWUgZm9yIG1ldGFsIG1hdGVyaWFscyB3aXRoIHRoaWNrbmVzc2VzIGxlc3MgdGhhbiDCvOKAnSBvciBsaWdodHdlaWdodCBtYXRlcmlhbHMuIEFkZGl0aW9uYWxseSwgbWFueSByZWVmIGxvY2F0aW9ucyBpbiB0aGUgZGF0YWJhc2UgYXJlIGJhc2VkIG9uIGhpc3RvcmljYWwgZGF0YSB3aXRoIGluaGVyZW50IHBvdGVudGlhbCBsb2NhdGlvbiBpbmFjY3VyYWNpZXMgdGhhdCBtYXkgbm90IGhhdmUgYmVlbiBncm91bmQtdHJ1dGggc2luY2UgdGhlaXIgZGVwbG95bWVudC4gSWYgeW91IGhhdmUgdXBkYXRlZCBpbmZvcm1hdGlvbiByZWdhcmRpbmcgdGhlIGNvbmRpdGlvbiBvciBsb2NhdGlvbiBvZiBhbiBhcnRpZmljaWFsIHJlZWYgcGxlYXNlIGNvbnRhY3QgdGhlIEZXQyBBcnRpZmljaWFsIFJlZWYgRGF0YWJhc2UgQWRtaW5pc3RyYXRvciB2aWEgZW1haWwgYXQga2VpdGgubWlsbGVAbXlmd2MuY29tDQoNClByaW9yIHRvIEp1bHkgMSwgMjAwNCwgdGhlIEZpc2ggYW5kIFdpbGRsaWZlIFJlc2VhcmNoIEluc3RpdHV0ZSAoRldSSSkgd2FzIGtub3duIGFzIHRoZSBGbG9yaWRhIE1hcmluZSBSZXNlYXJjaCBJbnN0aXR1dGUgKEZNUkkpLiBUaGUgaW5zdGl0dXRlIG5hbWUgaGFzIG5vdCBiZWVuIGNoYW5nZWQgaW4gaGlzdG9yaWNhbCBkYXRhIHNldHMgb3IgcmVmZXJlbmNlcyB0byB3b3JrIGNvbXBsZXRlZCBieSB0aGUgRmxvcmlkYSBNYXJpbmUgUmVzZWFyY2ggSW5zdGl0dXRlLiBUaGUgaW5zdGl0dXRlIG5hbWUgaGFzIGJlZW4gY2hhbmdlZCBpbiByZWZlcmVuY2VzIHRvIG9uZ29pbmcgcmVzZWFyY2gsIG5ldyByZXNlYXJjaCwgYW5kIGNvbnRhY3QgaW5mb3JtYXRpb24uDQpUaGVzZSBkYXRhIGFyZSBhbHNvIGtub3duIGFzICJGbG9yaWRhIEFydGlmaWNpYWwgUmVlZiBEZXBsb3ltZW50IERhdGFiYXNlLiINCg0KTm90ZTogaWYgdGhlc2UgZGF0YSBhcmUgY29udmVydGVkIHRvIHNoYXBlZmlsZSwgbnVsbCB2YWx1ZXMgaW4gbnVtYmVyIGZpZWxkcyB3aWxsIGJlIGNvbnZlcnRlZCB0byB6ZXJvLiBUaGlzIHdpbGwgaGlkZSBhbnkgdHJ1ZSB6ZXJvIHZhbHVlcy48L3N1cHBsaW5mPg0KICAgIDwvZGVzY3JpcHQ+DQogICAgPHRpbWVwZXJkPg0KICAgICAgPHRpbWVpbmZvPg0KICAgICAgICA8c25nZGF0ZT4NCiAgICAgICAgICA8Y2FsZGF0ZT4yMDIxMDIxNjwvY2FsZGF0ZT4NCiAgICAgICAgPC9zbmdkYXRlPg0KICAgICAgPC90aW1laW5mbz4NCiAgICAgIDxjdXJyZW50PnB1YmxpY2F0aW9uIGRhdGU8L2N1cnJlbnQ+DQogICAgPC90aW1lcGVyZD4NCiAgICA8c3RhdHVzPg0KICAgICAgPHByb2dyZXNzPkNvbXBsZXRlPC9wcm9ncmVzcz4NCiAgICAgIDx1cGRhdGU+Tm9uZSBwbGFubmVkPC91cGRhdGU+DQogICAgPC9zdGF0dXM+DQogICAgPHNwZG9tPg0KICAgICAgPGJvdW5kaW5nPg0KICAgICAgICA8d2VzdGJjPi04Ny41MTE3MDY8L3dlc3RiYz4NCiAgICAgICAgPGVhc3RiYz4tNzkuODA2OTEyPC9lYXN0YmM+DQogICAgICAgIDxub3J0aGJjPjMwLjczNzA4NDwvbm9ydGhiYz4NCiAgICAgICAgPHNvdXRoYmM+MjQuMzg4MzQ3PC9zb3V0aGJjPg0KICAgICAgPC9ib3VuZGluZz4NCiAgICA8L3NwZG9tPg0KICAgIDxrZXl3b3Jkcz4NCiAgICAgIDx0aGVtZT4NCiAgICAgICAgPHRoZW1la3Q+RldSSXRoZW1lPC90aGVtZWt0Pg0KICAgICAgICA8dGhlbWVrZXk+YXJ0aWZpY2lhbCByZWVmczwvdGhlbWVrZXk+DQogICAgICAgIDx0aGVtZWtleT5HSVM8L3RoZW1la2V5Pg0KICAgICAgICA8dGhlbWVrZXk+bWFwcGluZzwvdGhlbWVrZXk+DQogICAgICAgIDx0aGVtZWtleT5iZW50aGljPC90aGVtZWtleT4NCiAgICAgICAgPHRoZW1la2V5PmhhYml0YXQgKHJpdmVycywgZXN0dWFyaWVzLCBlY29sb2d5LCBoYXJkIGJvdHRvbSk8L3RoZW1la2V5Pg0KICAgICAgICA8dGhlbWVrZXk+bWFyaW5lPC90aGVtZWtleT4NCiAgICAgIDwvdGhlbWU+DQogICAgICA8dGhlbWU+DQogICAgICAgIDx0aGVtZWt0PklTTyAxOTExNSBUb3BpYyBDYXRlZ29yeTwvdGhlbWVrdD4NCiAgICAgICAgPHRoZW1la2V5Pm9jZWFuczwvdGhlbWVrZXk+DQogICAgICA8L3RoZW1lPg0KICAgICAgPHBsYWNlPg0KICAgICAgICA8cGxhY2VrdD5GV1JJcGxhY2U8L3BsYWNla3Q+DQogICAgICAgIDxwbGFjZWtleT5GbG9yaWRhPC9wbGFjZWtleT4NCiAgICAgICAgPHBsYWNla2V5PkZsb3JpZGEgU3RyYWl0czwvcGxhY2VrZXk+DQogICAgICAgIDxwbGFjZWtleT5BdGxhbnRpYyBPY2VhbjwvcGxhY2VrZXk+DQogICAgICAgIDxwbGFjZWtleT5HdWxmIG9mIE1leGljbzwvcGxhY2VrZXk+DQogICAgICAgIDxwbGFjZWtleT5UYW1wYSBCYXk8L3BsYWNla2V5Pg0KICAgICAgICA8cGxhY2VrZXk+Q2hhcmxvdHRlIEhhcmJvcjwvcGxhY2VrZXk+DQogICAgICAgIDxwbGFjZWtleT5Fc3Rlcm8gQmF5PC9wbGFjZWtleT4NCiAgICAgICAgPHBsYWNla2V5PkZsb3JpZGEgS2V5czwvcGxhY2VrZXk+DQogICAgICAgIDxwbGFjZWtleT5CaXNjYXluZSBCYXk8L3BsYWNla2V5Pg0KICAgICAgICA8cGxhY2VrZXk+Q2FwZSBDYW5hdmVyYWwgTmF0aW9uYWwgU2Vhc2hvcmU8L3BsYWNla2V5Pg0KICAgICAgICA8cGxhY2VrZXk+bm9ydGhlYXN0IEZsb3JpZGE8L3BsYWNla2V5Pg0KICAgICAgICA8cGxhY2VrZXk+bm9ydGh3ZXN0IEZsb3JpZGE8L3BsYWNla2V5Pg0KICAgICAgICA8cGxhY2VrZXk+QmlnIEJlbmQ8L3BsYWNla2V5Pg0KICAgICAgICA8cGxhY2VrZXk+Q2VkYXIgS2V5cyBOYXRpb25hbCBXaWxkbGlmZSBSZWZ1Z2U8L3BsYWNla2V5Pg0KICAgICAgICA8cGxhY2VrZXk+c291dGggRmxvcmlkYTwvcGxhY2VrZXk+DQogICAgICAgIDxwbGFjZWtleT5zb3V0aHdlc3QgRmxvcmlkYTwvcGxhY2VrZXk+DQogICAgICAgIDxwbGFjZWtleT5zdGF0ZXdpZGU8L3BsYWNla2V5Pg0KICAgICAgICA8cGxhY2VrZXk+c291dGhlYXN0IEZsb3JpZGE8L3BsYWNla2V5Pg0KICAgICAgICA8cGxhY2VrZXk+bm9ydGggRmxvcmlkYTwvcGxhY2VrZXk+DQogICAgICAgIDxwbGFjZWtleT5lYXN0IGNvYXN0IG9mIEZsb3JpZGE8L3BsYWNla2V5Pg0KICAgICAgICA8cGxhY2VrZXk+d2VzdCBjb2FzdCBvZiBGbG9yaWRhPC9wbGFjZWtleT4NCiAgICAgIDwvcGxhY2U+DQogICAgICA8cGxhY2U+DQogICAgICAgIDxwbGFjZWt0PkZsb3JpZGEgV2F0ZXJib2RpZXM8L3BsYWNla3Q+DQogICAgICAgIDxwbGFjZWtleT5HdWxmIG9mIE1leGljbzwvcGxhY2VrZXk+DQogICAgICAgIDxwbGFjZWtleT5BdGxhbnRpYyBPY2VhbjwvcGxhY2VrZXk+DQogICAgICAgIDxwbGFjZWtleT5GbG9yaWRhIEJheTwvcGxhY2VrZXk+DQogICAgICA8L3BsYWNlPg0KICAgICAgPHBsYWNlPg0KICAgICAgICA8cGxhY2VrdD5GV0MgUmVnaW9uPC9wbGFjZWt0Pg0KICAgICAgICA8cGxhY2VrZXk+RldDIFJlZ2lvbi1Ob3J0aCBDZW50cmFsPC9wbGFjZWtleT4NCiAgICAgICAgPHBsYWNla2V5PkZXQyBSZWdpb24tTm9ydGhlYXN0PC9wbGFjZWtleT4NCiAgICAgICAgPHBsYWNla2V5PkZXQyBSZWdpb24tTm9ydGh3ZXN0PC9wbGFjZWtleT4NCiAgICAgICAgPHBsYWNla2V5PkZXQyBSZWdpb24tU291dGg8L3BsYWNla2V5Pg0KICAgICAgICA8cGxhY2VrZXk+RldDIFJlZ2lvbi1Tb3V0aHdlc3Q8L3BsYWNla2V5Pg0KICAgICAgPC9wbGFjZT4NCiAgICAgIDxwbGFjZT4NCiAgICAgICAgPHBsYWNla3Q+V2F0ZXIgTWFuYWdlbWVudCBEaXN0cmljdHM8L3BsYWNla3Q+DQogICAgICAgIDxwbGFjZWtleT5Ob3J0aHdlc3QgRmxvcmlkYSBXYXRlciBNYW5hZ2VtZW50IERpc3RyaWN0PC9wbGFjZWtleT4NCiAgICAgICAgPHBsYWNla2V5PlNvdXRoIEZsb3JpZGEgV2F0ZXIgTWFuYWdlbWVudCBEaXN0cmljdDwvcGxhY2VrZXk+DQogICAgICAgIDxwbGFjZWtleT5Tb3V0aHdlc3QgRmxvcmlkYSBXYXRlciBNYW5hZ2VtZW50IERpc3RyaWN0PC9wbGFjZWtleT4NCiAgICAgICAgPHBsYWNla2V5PlN0LiBKb2hucyBSaXZlciBXYXRlciBNYW5hZ2VtZW50IERpc3RyaWN0PC9wbGFjZWtleT4NCiAgICAgICAgPHBsYWNla2V5PlN1d2FubmVlIFJpdmVyIFdhdGVyIE1hbmFnZW1lbnQgRGlzdHJpY3Q8L3BsYWNla2V5Pg0KICAgICAgPC9wbGFjZT4NCiAgICA8L2tleXdvcmRzPg0KICAgIDxhY2Njb25zdD5UaGVzZSBkYXRhIGFyZSBhdmFpbGFibGUgd2l0aG91dCByZXN0cmljdGlvbi4gSXQgaXMgc3Ryb25nbHkgcmVjb21tZW5kZWQgdGhhdCB0aGlzIGRhdGEgaXMgZGlyZWN0bHkgYWNxdWlyZWQgZnJvbSBGV0MgYW5kIG5vdCBpbmRpcmVjdGx5IHRocm91Z2ggb3RoZXIgc291cmNlcyB3aGljaCBtYXkgaGF2ZSBjaGFuZ2VkIHRoZSBkYXRhIGluIHNvbWUgd2F5LiBGV0MgbWFrZXMgbm8gY2xhaW1zIGFzIHRvIHRoZSBkYXRhJ3Mgc3VpdGFiaWxpdHkgZm9yIG90aGVyIHB1cnBvc2VzLiBBY2tub3dsZWRnZW1lbnQgb2YgdGhlIEZXQyBEaXZpc2lvbiBvZiBNYXJpbmUgRmlzaGVyaWVzIGFzIHRoZSBkYXRhIHNvdXJjZSBhbmQgb3JpZ2luYXRvciwgd291bGQgYmUgYXBwcmVjaWF0ZWQgaW4gYW55IHByb2R1Y3RzIGRldmVsb3BlZCBmcm9tIHRoZXNlIGRhdGEsIGFuZCBzdWNoIGFja25vd2xlZGdtZW50IGFzIGlzIHN0YW5kYXJkIGZvciBjaXRhdGlvbiBhbmQgbGVnYWwgcHJhY3RpY2VzIGZvciBkYXRhIHNvdXJjZSBpcyBleHBlY3RlZCBieSB1c2VycyBvZiB0aGlzIGRhdGEuIFBsZWFzZSBjaXRlIHRoZSBvcmlnaW5hbCBtZXRhZGF0YSB3aGVuIHVzaW5nIHBvcnRpb25zIG9mIHRoZSByZWNvcmQgdG8gY3JlYXRlIGEgc2ltaWxhciByZWNvcmQgb2Ygc2xpZ2h0bHkgYWx0ZXJlZCBkYXRhLCBzdWNoIGFzIGEgcmUtcHJvamVjdGlvbi4gSWYgYW55IGRhdGEgYXJlIG1vZGlmaWVkIG9yIGFkanVzdGVkLCBwbGVhc2Ugc2hhcmUgdGhlIGVkaXRlZCBpbmZvcm1hdGlvbiB3aXRoIEZXQy4gVXNlcnMgc2hvdWxkIGJlIGF3YXJlIHRoYXQgY29tcGFyaXNvbiB3aXRoIG90aGVyIGRhdGEgc2V0cyBmb3IgdGhlIHNhbWUgYXJlYSBmcm9tIG90aGVyIHRpbWUgcGVyaW9kcyBtYXkgYmUgaW5hY2N1cmF0ZSBkdWUgdG8gaW5jb25zaXN0ZW5jaWVzIHJlc3VsdGluZyBmcm9tIGNoYW5nZXMgaW4gbWFwcGluZyBjb252ZW50aW9ucywgZGF0YSBjb2xsZWN0aW9uLCBhbmQgY29tcHV0ZXIgcHJvY2Vzc2VzIG92ZXIgdGltZS4gRldDIHNoYWxsIG5vdCBiZSBsaWFibGUgZm9yIGltcHJvcGVyIG9yIGluY29ycmVjdCB1c2Ugb2YgdGhpcyBkYXRhLiBUaGVzZSBkYXRhIGFyZSBub3QgbGVnYWwgZG9jdW1lbnRzIGFuZCBhcmUgbm90IHRvIGJlIHVzZWQgYXMgc3VjaC4gVGhpcyBpcyBub3QgYSBzdXJ2ZXkgZGF0YSBzZXQgYW5kIHNob3VsZCBub3QgYmUgdXRpbGl6ZWQgYXMgc3VjaC4gVGhlc2UgZGF0YSBhcmUgbm90IHRvIGJlIHVzZWQgZm9yIG5hdmlnYXRpb24uPC9hY2Njb25zdD4NCiAgICA8dXNlY29uc3Q+QWNrbm93bGVkZ2VtZW50IG9mIHRoZSBGV0MtRldSSSAoRmxvcmlkYSBGaXNoIGFuZCBXaWxkbGlmZSBDb25zZXJ2YXRpb24gQ29tbWlzc2lvbi1GaXNoIGFuZCBXaWxkbGlmZSBSZXNlYXJjaCBJbnN0aXR1dGUpIGFzIHRoZSBkYXRhIHNvdXJjZSwgYW5kIHRoZSBvcmlnaW5hdG9yIEZXQyBEaXZpc2lvbiBvZiBNYXJpbmUgRmlzaGVyaWVzLCB3b3VsZCBiZSBhcHByZWNpYXRlZCBpbiBhbnkgcHJvZHVjdHMgZGV2ZWxvcGVkIGZyb20gdGhlc2UgZGF0YSwgYW5kIHN1Y2ggYWNrbm93bGVkZ21lbnQgYXMgaXMgc3RhbmRhcmQgZm9yIGNpdGF0aW9uIGFuZCBsZWdhbCBwcmFjdGljZXMgZm9yIGRhdGEgc291cmNlIGlzIGV4cGVjdGVkIGJ5IHVzZXJzIG9mIHRoaXMgZGF0YS4gIFBsZWFzZSBjaXRlIHRoZSBvcmlnaW5hbCBtZXRhZGF0YSB3aGVuIHVzaW5nIHBvcnRpb25zIG9mIHRoZSByZWNvcmQgdG8gY3JlYXRlIGEgc2ltaWxhciByZWNvcmQgb2Ygc2xpZ2h0bHkgYWx0ZXJlZCBkYXRhLCBzdWNoIGFzIHJlcHJvamVjdGlvbi4gSWYgYW55IGRhdGEgYXJlIG1vZGlmaWVkIG9yIGFkanVzdGVkLCBwbGVhc2Ugc2hhcmUgdGhlIGVkaXRlZCBpbmZvcm1hdGlvbiB3aXRoIEZXQy4gVXNlcnMgc2hvdWxkIGJlIGF3YXJlIHRoYXQgY29tcGFyaXNvbiB3aXRoIG90aGVyIGRhdGEgc2V0cyBmb3IgdGhlIHNhbWUgYXJlYSBmcm9tIG90aGVyIHRpbWUgcGVyaW9kcyBtYXkgYmUgaW5hY2N1cmF0ZSBkdWUgdG8gaW5jb25zaXN0ZW5jaWVzIHJlc3VsdGluZyBmcm9tIGNoYW5nZXMgaW4gbWFwcGluZyBjb252ZW50aW9ucywgZGF0YSBjb2xsZWN0aW9uLCBhbmQgY29tcHV0ZXIgcHJvY2Vzc2VzIG92ZXIgdGltZS4gRldDIHNoYWxsIG5vdCBiZSBsaWFibGUgZm9yIGltcHJvcGVyIG9yIGluY29ycmVjdCB1c2Ugb2YgdGhpcyBkYXRhLiBUaGVzZSBkYXRhIGFyZSBub3QgbGVnYWwgZG9jdW1lbnRzIGFuZCBhcmUgbm90IHRvIGJlIHVzZWQgYXMgc3VjaC4gIFRoaXMgaXMgbm90IGEgc3VydmV5IGRhdGEgc2V0IGFuZCBzaG91bGQgbm90IGJlIHV0aWxpemVkIGFzIHN1Y2guIFRoZXNlIGRhdGEgYXJlIG5vdCB0byBiZSB1c2VkIGZvciBuYXZpZ2F0aW9uLjwvdXNlY29uc3Q+DQogICAgPHB0Y29udGFjPg0KICAgICAgPGNudGluZm8+DQogICAgICAgIDxjbnRwZXJwPg0KICAgICAgICAgIDxjbnRwZXI+S2lldGggTWlsbGU8L2NudHBlcj4NCiAgICAgICAgICA8Y250b3JnPkZsb3JpZGEgRmlzaCBhbmQgV2lsZGxpZmUgQ29uc2VydmF0aW9uIENvbW1pc3Npb24tRGl2aXNpb24gb2YgTWFyaW5lIEZpc2hlcmllcyBNYW5hZ2VtZW50PC9jbnRvcmc+DQogICAgICAgIDwvY250cGVycD4NCiAgICAgICAgPGNudGFkZHI+DQogICAgICAgICAgPGFkZHJ0eXBlPm1haWxpbmcgYWRkcmVzczwvYWRkcnR5cGU+DQogICAgICAgICAgPGFkZHJlc3M+NjIwIFNvdXRoIE1lcmlkaWFuIFN0cmVldCwgQm94IDRCMjwvYWRkcmVzcz4NCiAgICAgICAgICA8Y2l0eT5UYWxsYWhhc3NlZTwvY2l0eT4NCiAgICAgICAgICA8c3RhdGU+Rkw8L3N0YXRlPg0KICAgICAgICAgIDxwb3N0YWw+MzIzOTk8L3Bvc3RhbD4NCiAgICAgICAgPC9jbnRhZGRyPg0KICAgICAgICA8Y250dm9pY2U+KDg1MCkgNjE3LTk2MzM8L2NudHZvaWNlPg0KICAgICAgICA8Y250ZW1haWw+a2lldGgubWlsbGVATXlGV0MuY29tPC9jbnRlbWFpbD4NCiAgICAgIDwvY250aW5mbz4NCiAgICA8L3B0Y29udGFjPg0KICAgIDxkYXRhY3JlZD5GV0MgRGl2aXNpb24gb2YgTWFyaW5lIEZpc2hlcmllcyBNYW5hZ2VtZW50PC9kYXRhY3JlZD4NCiAgICA8c2VjaW5mbz4NCiAgICAgIDxzZWNzeXM+RldSSS1EQzwvc2Vjc3lzPg0KICAgICAgPHNlY2NsYXNzPkF2YWlsYWJsZSB3aXRob3V0IHJlc3RyaWN0aW9uPC9zZWNjbGFzcz4NCiAgICAgIDxzZWNoYW5kbD5BdmFpbGFibGUgd2l0aG91dCByZXN0cmljdGlvbjwvc2VjaGFuZGw+DQogICAgPC9zZWNpbmZvPg0KICAgIDxuYXRpdmU+QXJjR0lTIGZvciBEZXNrdG9wIDEwLjMuMTwvbmF0aXZlPg0KICA8L2lkaW5mbz4NCiAgPGRhdGFxdWFsPg0KICAgIDxhdHRyYWNjPg0KICAgICAgPGF0dHJhY2NyPlBsZWFzZSBub3RlIHRoYXQgcmVlZiBtYXRlcmlhbHMgY2FuIG1vdmUsIGRlZ3JhZGUsIG9yIGJlY29tZSBidXJpZWQgb3ZlciB0aW1lLiBUaGlzIGlzIGVzcGVjaWFsbHkgdHJ1ZSBmb3IgbWV0YWwgbWF0ZXJpYWxzIHdpdGggdGhpY2tuZXNzZXMgbGVzcyB0aGFuIMK84oCdIG9yIGxpZ2h0d2VpZ2h0IG1hdGVyaWFscy4gQWRkaXRpb25hbGx5LCBtYW55IHJlZWYgbG9jYXRpb25zIGluIHRoZSBkYXRhYmFzZSBhcmUgYmFzZWQgb24gaGlzdG9yaWNhbCBkYXRhIHdpdGggaW5oZXJlbnQgcG90ZW50aWFsIGxvY2F0aW9uIGluYWNjdXJhY2llcyB0aGF0IG1heSBub3QgaGF2ZSBiZWVuIGdyb3VuZC10cnV0aCBzaW5jZSB0aGVpciBkZXBsb3ltZW50LiBJZiB5b3UgaGF2ZSB1cGRhdGVkIGluZm9ybWF0aW9uIHJlZ2FyZGluZyB0aGUgY29uZGl0aW9uIG9yIGxvY2F0aW9uIG9mIGFuIGFydGlmaWNpYWwgcmVlZiBwbGVhc2UgY29udGFjdCB0aGUgRldDIEFydGlmaWNpYWwgUmVlZiBEYXRhYmFzZSBBZG1pbmlzdHJhdG9yIHZpYSBlbWFpbCBhdCBicmFkbGV5LmVubmlzQG15ZndjLmNvbS48L2F0dHJhY2NyPg0KICAgIDwvYXR0cmFjYz4NCiAgICA8bG9naWM+RldDLURNRiBoYXMgbm90IGluZGVwZW5kZW50bHkgY29uZmlybWVkIG1vc3Qgb2YgdGhlIHJlZWYgbG9jYXRpb25zLCBhbmQgdGhpcyBkYXRhIGhhZCBiZWVuIHN1cHBsaWVkIGZyb20gdmFyaW91cyBzb3VyY2VzIHdpdGhvdXQgdmVyaWZpY2F0aW9uLjwvbG9naWM+DQogICAgPGNvbXBsZXRlPlRoZSBkYXRhIGFwcGVhciB0byBiZSBjb21wbGV0ZSwgYXMgb2YgdGhlIGRlbGl2ZXJ5IGRhdGUgZnJvbSBETUZNIHRvIEZXUkkuPC9jb21wbGV0ZT4NCiAgICA8cG9zYWNjPg0KICAgICAgPGhvcml6cGE+DQogICAgICAgIDxob3JpenBhcj5PcmlnaW5hbCBjb29yZGluYXRlcyB3ZXJlIGluIGRlY2ltYWwgbWludXRlcyB3aXRoIDEvMTAwMCBtaW51dGUgcHJlY2lzaW9uICh4eC54eHggbWludXRlcyksIGJ1dCBkYXRhIGhhdmUgbm90IGJlZW4gdmVyaWZpZWQgb3IgZmllbGQgY2hlY2tlZCBieSBETUYgb3IgRldSSS4gIFBsZWFzZSBub3RlIHRoYXQgcmVlZiBtYXRlcmlhbHMgY2FuIG1vdmUsIGRlZ3JhZGUsIG9yIGJlY29tZSBidXJpZWQgb3ZlciB0aW1lLiBUaGlzIGlzIGVzcGVjaWFsbHkgdHJ1ZSBmb3IgbWV0YWwgbWF0ZXJpYWxzIHdpdGggdGhpY2tuZXNzZXMgbGVzcyB0aGFuIMK84oCdIG9yIGxpZ2h0d2VpZ2h0IG1hdGVyaWFscy4gQWRkaXRpb25hbGx5LCBtYW55IHJlZWYgbG9jYXRpb25zIGluIHRoZSBkYXRhYmFzZSBhcmUgYmFzZWQgb24gaGlzdG9yaWNhbCBkYXRhIHdpdGggaW5oZXJlbnQgcG90ZW50aWFsIGxvY2F0aW9uIGluYWNjdXJhY2llcyB0aGF0IG1heSBub3QgaGF2ZSBiZWVuIGdyb3VuZC10cnV0aCBzaW5jZSB0aGVpciBkZXBsb3ltZW50LiBJZiB5b3UgaGF2ZSB1cGRhdGVkIGluZm9ybWF0aW9uIHJlZ2FyZGluZyB0aGUgY29uZGl0aW9uIG9yIGxvY2F0aW9uIG9mIGFuIGFydGlmaWNpYWwgcmVlZiBwbGVhc2UgY29udGFjdCB0aGUgRldDIEFydGlmaWNpYWwgUmVlZiBEYXRhYmFzZSBBZG1pbmlzdHJhdG9yIHZpYSBlbWFpbCBhdCBicmFkbGV5LmVubmlzQG15ZndjLmNvbTwvaG9yaXpwYXI+DQogICAgICA8L2hvcml6cGE+DQogICAgICA8dmVydGFjYz4NCiAgICAgICAgPHZlcnRhY2NyPlRoZSB2ZXJ0aWNhbCBhY2N1cmFjeSBpcyBhY2N1cmF0ZSBhcyBvZiB0aGUgdGltZSBvZiBkZXBsb3ltZW50LjwvdmVydGFjY3I+DQogICAgICA8L3ZlcnRhY2M+DQogICAgPC9wb3NhY2M+DQogICAgPGxpbmVhZ2U+DQogICAgICA8c3JjaW5mbz4NCiAgICAgICAgPHNyY2NpdGU+DQogICAgICAgICAgPGNpdGVpbmZvPg0KICAgICAgICAgICAgPG9yaWdpbj5GbG9yaWRhIEZpc2ggYW5kIFdpbGRsaWZlIENvbnNlcnZhdGlvbiBDb21taXNzaW9uIChGV0MpLCBEaXZpc2lvbiBvZiBNYXJpbmUgRmlzaGVyaWVzIE1hbmFnZW1lbnQgKERNRik8L29yaWdpbj4NCiAgICAgICAgICAgIDxwdWJkYXRlPjIwMjAwMjA2PC9wdWJkYXRlPg0KICAgICAgICAgICAgPHB1YnRpbWU+VW5rbm93bjwvcHVidGltZT4NCiAgICAgICAgICAgIDx0aXRsZT5GTEFSX21hdGVyaWFsc19GZWIyMDIwPC90aXRsZT4NCiAgICAgICAgICAgIDxnZW9mb3JtPnZlY3RvciBkaWdpdGFsIGRhdGE8L2dlb2Zvcm0+DQogICAgICAgICAgICA8cHViaW5mbz4NCiAgICAgICAgICAgICAgPHB1YnBsYWNlPlRhbGxhaGFzc2VlLCBGTDwvcHVicGxhY2U+DQogICAgICAgICAgICAgIDxwdWJsaXNoPkZXQywgRE1GPC9wdWJsaXNoPg0KICAgICAgICAgICAgPC9wdWJpbmZvPg0KICAgICAgICAgIDwvY2l0ZWluZm8+DQogICAgICAgIDwvc3JjY2l0ZT4NCiAgICAgICAgPHR5cGVzcmM+Y29tcHV0ZXIgcHJvZ3JhbTwvdHlwZXNyYz4NCiAgICAgICAgPHNyY3RpbWU+DQogICAgICAgICAgPHRpbWVpbmZvPg0KICAgICAgICAgICAgPHNuZ2RhdGU+DQogICAgICAgICAgICAgIDxjYWxkYXRlPjIwMjAwNTExPC9jYWxkYXRlPg0KICAgICAgICAgICAgPC9zbmdkYXRlPg0KICAgICAgICAgIDwvdGltZWluZm8+DQogICAgICAgICAgPHNyY2N1cnI+cHVibGljYXRpb24gZGF0ZTwvc3JjY3Vycj4NCiAgICAgICAgPC9zcmN0aW1lPg0KICAgICAgICA8c3JjY2l0ZWE+RE1GIGFydGlmaWNpYWwgcmVlZnMgZGVwbG95bWVudCBkYXRhYmFzZTwvc3JjY2l0ZWE+DQogICAgICAgIDxzcmNjb250cj50aGUgcG9pbnQgYW5kIGF0dHJpYnV0ZSBkYXRhLjwvc3JjY29udHI+DQogICAgICA8L3NyY2luZm8+DQogICAgICA8cHJvY3N0ZXA+DQogICAgICAgIDxwcm9jZGVzYz5ETUYgcHJvdmlkZWQgdGhlIGRhdGEgdG8gRldSSSBhcyBhIGZlYXR1cmUgY2xhc3MgcHJvamVjdGVkIGluIE5BRDgzXygyMDExKV9GR0RMX0FsYmVycyAobWV0ZXJzKS4gRldSSSBzdGFmZiB3cm90ZSBtZXRhZGF0YSBmb3IgdGhlIGRhdGFzZXQgYW5kIGltcG9ydGVkIHRoZSBkYXRhIGludG8gdGhlIFNERSBkYXRhYmFzZXMuPC9wcm9jZGVzYz4NCiAgICAgICAgPHByb2NkYXRlPjIwMjEwMjIyPC9wcm9jZGF0ZT4NCiAgICAgICAgPHByb2Njb250Pg0KICAgICAgICAgIDxjbnRpbmZvPg0KICAgICAgICAgICAgPGNudHBlcnA+DQogICAgICAgICAgICAgIDxjbnRwZXI+R0lTTGlicmFyaWFuPC9jbnRwZXI+DQogICAgICAgICAgICAgIDxjbnRvcmc+RmxvcmlkYSBGaXNoIGFuZCBXaWxkbGlmZSBDb25zZXJ2YXRpb24gQ29tbWlzc2lvbi1GaXNoIGFuZCBXaWxkbGlmZSBSZXNlYXJjaCBJbnN0aXR1dGU8L2NudG9yZz4NCiAgICAgICAgICAgIDwvY250cGVycD4NCiAgICAgICAgICAgIDxjbnRwb3M+R0lTIERhdGEgTGlicmFyaWFuPC9jbnRwb3M+DQogICAgICAgICAgICA8Y250YWRkcj4NCiAgICAgICAgICAgICAgPGFkZHJ0eXBlPm1haWxpbmcgYW5kIHBoeXNpY2FsIGFkZHJlc3M8L2FkZHJ0eXBlPg0KICAgICAgICAgICAgICA8YWRkcmVzcz5GaXNoIGFuZCBXaWxkbGlmZSBSZXNlYXJjaCBJbnN0aXR1dGUNCjEwMCBFaWdodGggQXZlbnVlIFNvdXRoZWFzdDwvYWRkcmVzcz4NCiAgICAgICAgICAgICAgPGNpdHk+U3QuIFBldGVyc2J1cmc8L2NpdHk+DQogICAgICAgICAgICAgIDxzdGF0ZT5GbG9yaWRhPC9zdGF0ZT4NCiAgICAgICAgICAgICAgPHBvc3RhbD4zMzcwMTwvcG9zdGFsPg0KICAgICAgICAgICAgPC9jbnRhZGRyPg0KICAgICAgICAgICAgPGNudHZvaWNlPjcyNy04OTYtODYyNjwvY250dm9pY2U+DQogICAgICAgICAgICA8Y250ZmF4PjcyNy04OTMtMTY3OTwvY250ZmF4Pg0KICAgICAgICAgICAgPGNudGVtYWlsPkdJU0xpYnJhcmlhbkBNeUZXQy5jb208L2NudGVtYWlsPg0KICAgICAgICAgIDwvY250aW5mbz4NCiAgICAgICAgPC9wcm9jY29udD4NCiAgICAgIDwvcHJvY3N0ZXA+DQogICAgPC9saW5lYWdlPg0KICA8L2RhdGFxdWFsPg0KICA8c3Bkb2luZm8+DQogICAgPGRpcmVjdD5WZWN0b3I8L2RpcmVjdD4NCiAgPC9zcGRvaW5mbz4NCiAgPHNwcmVmPg0KICAgIDxob3JpenN5cz4NCiAgICAgIDxwbGFuYXI+DQogICAgICAgIDxwbGFuY2k+DQogICAgICAgICAgPHBsYW5jZT5jb29yZGluYXRlIHBhaXI8L3BsYW5jZT4NCiAgICAgICAgICA8Y29vcmRyZXA+DQogICAgICAgICAgICA8YWJzcmVzPjAuMDAwMTwvYWJzcmVzPg0KICAgICAgICAgICAgPG9yZHJlcz4wLjAwMDE8L29yZHJlcz4NCiAgICAgICAgICA8L2Nvb3JkcmVwPg0KICAgICAgICAgIDxwbGFuZHU+bWV0ZXI8L3BsYW5kdT4NCiAgICAgICAgPC9wbGFuY2k+DQogICAgICA8L3BsYW5hcj4NCiAgICAgIDxnZW9kZXRpYz4NCiAgICAgICAgPGhvcml6ZG4+RCBOQUQgMTk4MyAyMDExPC9ob3JpemRuPg0KICAgICAgICA8ZWxsaXBzPkdSUyAxOTgwPC9lbGxpcHM+DQogICAgICAgIDxzZW1pYXhpcz42Mzc4MTM3LjA8L3NlbWlheGlzPg0KICAgICAgICA8ZGVuZmxhdD4yOTguMjU3MjIyMTAxPC9kZW5mbGF0Pg0KICAgICAgPC9nZW9kZXRpYz4NCiAgICA8L2hvcml6c3lzPg0KICA8L3NwcmVmPg0KICA8ZWFpbmZvPg0KICAgIDxkZXRhaWxlZD4NCiAgICAgIDxlbnR0eXA+DQogICAgICAgIDxlbnR0eXBsPkdJUy5GV0MuQXJ0aWZpY2lhbFJlZWZfZmxfcG9pbnQ8L2VudHR5cGw+DQogICAgICAgIDxlbnR0eXBkPkVhY2ggcG9pbnQgY29udGFpbnMgZXh0ZW5zaXZlIGF0dHJpYnV0ZXMgZGVzY3JpYmluZyB0aGUgYXJ0aWZpY2lhbCByZWVmLiAgTWFueSBvZiB0aGUgZmllbGRzIHdlcmUgZGV2ZWxvcGVkIGJ5IERNRiBmb3IgaW50ZXJuYWwgdHJhY2tpbmcgcHVycG9zZXMuPC9lbnR0eXBkPg0KICAgICAgICA8ZW50dHlwZHM+UHJvZHVjZXIgZGVmaW5lZDwvZW50dHlwZHM+DQogICAgICA8L2VudHR5cD4NCiAgICAgIDxhdHRyPg0KICAgICAgICA8YXR0cmxhYmw+T0JKRUNUSUQ8L2F0dHJsYWJsPg0KICAgICAgICA8YXR0cmRlZj5JbnRlcm5hbCBmZWF0dXJlIG51bWJlci48L2F0dHJkZWY+DQogICAgICAgIDxhdHRyZGVmcz5Fc3JpPC9hdHRyZGVmcz4NCiAgICAgICAgPGF0dHJkb212Pg0KICAgICAgICAgIDx1ZG9tPlNlcXVlbnRpYWwgdW5pcXVlIHdob2xlIG51bWJlcnMgdGhhdCBhcmUgYXV0b21hdGljYWxseSBnZW5lcmF0ZWQuPC91ZG9tPg0KICAgICAgICA8L2F0dHJkb212Pg0KICAgICAgPC9hdHRyPg0KICAgICAgPGF0dHI+DQogICAgICAgIDxhdHRybGFibD5EZXBsb3lJRDwvYXR0cmxhYmw+DQogICAgICAgIDxhdHRyZGVmPkEgdW5pcXVlIHNpeCBkaWdpdCBhbHBoYW51bWVyaWMgaWRlbnRpZmllciBmb3IgZWFjaCBkZXBsb3ltZW50IHJlY29yZCwgYXNzaWduZWQgYnkgRldDLjwvYXR0cmRlZj4NCiAgICAgICAgPGF0dHJkZWZzPkZXQzwvYXR0cmRlZnM+DQogICAgICAgIDxhdHRyZG9tdj4NCiAgICAgICAgICA8dWRvbT50ZXh0PC91ZG9tPg0KICAgICAgICA8L2F0dHJkb212Pg0KICAgICAgPC9hdHRyPg0KICAgICAgPGF0dHI+DQogICAgICAgIDxhdHRybGFibD5Db3VudHk8L2F0dHJsYWJsPg0KICAgICAgICA8YXR0cmRlZj5UaGUgRmxvcmlkYSBDb3VudHkgbmVhcmVzdCB0byB0aGUgYXJ0aWZpY2lhbCByZWVmIHByb2plY3QuPC9hdHRyZGVmPg0KICAgICAgICA8YXR0cmRlZnM+RldDPC9hdHRyZGVmcz4NCiAgICAgICAgPGF0dHJkb212Pg0KICAgICAgICAgIDx1ZG9tPnRleHQ8L3Vkb20+DQogICAgICAgIDwvYXR0cmRvbXY+DQogICAgICA8L2F0dHI+DQogICAgICA8YXR0cj4NCiAgICAgICAgPGF0dHJsYWJsPkREYXRlPC9hdHRybGFibD4NCiAgICAgICAgPGF0dHJkZWY+RGVwbG95bWVudCBEYXRlIGluIE51bWJlciBmb3JtYXQ8L2F0dHJkZWY+DQogICAgICAgIDxhdHRyZGVmcz5GV0M8L2F0dHJkZWZzPg0KICAgICAgICA8YXR0cmRvbXY+DQogICAgICAgICAgPHVkb20+RGF0ZSBpbiBZWVlZTU1ERCBmb3JtYXQ8L3Vkb20+DQogICAgICAgIDwvYXR0cmRvbXY+DQogICAgICA8L2F0dHI+DQogICAgICA8YXR0cj4NCiAgICAgICAgPGF0dHJsYWJsPkRlc2NyaXB0aW9uPC9hdHRybGFibD4NCiAgICAgICAgPGF0dHJkZWY+RGVwbG95bWVudCBEZXNjcmlwdGlvbjwvYXR0cmRlZj4NCiAgICAgICAgPGF0dHJkZWZzPkZXQzwvYXR0cmRlZnM+DQogICAgICAgIDxhdHRyZG9tdj4NCiAgICAgICAgICA8dWRvbT5EZXNjcmlwdGlvbiBvZiB0aGUgRGVwbG95bWVudDwvdWRvbT4NCiAgICAgICAgPC9hdHRyZG9tdj4NCiAgICAgIDwvYXR0cj4NCiAgICAgIDxhdHRyPg0KICAgICAgICA8YXR0cmxhYmw+VG9ubmFnZTwvYXR0cmxhYmw+DQogICAgICAgIDxhdHRyZGVmPlRvbm5hZ2Ugb2YgdGhlIGRlcGxveW1lbnQ8L2F0dHJkZWY+DQogICAgICAgIDxhdHRyZGVmcz5GV0M8L2F0dHJkZWZzPg0KICAgICAgICA8YXR0cmRvbXY+DQogICAgICAgICAgPHVkb20+aW50ZWdlcjwvdWRvbT4NCiAgICAgICAgPC9hdHRyZG9tdj4NCiAgICAgIDwvYXR0cj4NCiAgICAgIDxhdHRyPg0KICAgICAgICA8YXR0cmxhYmw+RGVwbG95RGF0ZTwvYXR0cmxhYmw+DQogICAgICAgIDxhdHRyZGVmPlRoZSBkYXRlIG9mIGRlcGxveW1lbnQgKE1NL0REL1lZWVkpLiBEb3VibGUgemVyb3MgaW5kaWNhdGUgZXN0aW1hdGVzIGJhc2VkIG9uIHRoZSBiZXN0IGF2YWlsYWJsZSBoaXN0b3JpYyBpbmZvcm1hdGlvbi48L2F0dHJkZWY+DQogICAgICAgIDxhdHRyZGVmcz5GV0M8L2F0dHJkZWZzPg0KICAgICAgICA8YXR0cmRvbXY+DQogICAgICAgICAgPHVkb20+RGF0ZSBpbiBNTS9ERC9ZWVlZIGZvcm1hdDwvdWRvbT4NCiAgICAgICAgPC9hdHRyZG9tdj4NCiAgICAgIDwvYXR0cj4NCiAgICAgIDxhdHRyPg0KICAgICAgICA8YXR0cmxhYmw+UmVsaWVmPC9hdHRybGFibD4NCiAgICAgICAgPGF0dHJkZWY+SGVpZ2h0IChpbiBmZWV0KSBvZiB0aGUgcmVlZiBtYXRlcmlhbHMgb2ZmIHRoZSBib3R0b20uPC9hdHRyZGVmPg0KICAgICAgICA8YXR0cmRlZnM+RldDPC9hdHRyZGVmcz4NCiAgICAgICAgPGF0dHJkb212Pg0KICAgICAgICAgIDx1ZG9tPm51bWVyaWMgKGRvdWJsZSk8L3Vkb20+DQogICAgICAgIDwvYXR0cmRvbXY+DQogICAgICA8L2F0dHI+DQogICAgICA8YXR0cj4NCiAgICAgICAgPGF0dHJsYWJsPk5hbWU8L2F0dHJsYWJsPg0KICAgICAgICA8YXR0cmRlZj5EZXBsb3ltZW50IE5hbWU8L2F0dHJkZWY+DQogICAgICAgIDxhdHRyZGVmcz5GV0M8L2F0dHJkZWZzPg0KICAgICAgICA8YXR0cmRvbXY+DQogICAgICAgICAgPHVkb20+dGV4dDwvdWRvbT4NCiAgICAgICAgPC9hdHRyZG9tdj4NCiAgICAgIDwvYXR0cj4NCiAgICAgIDxhdHRyPg0KICAgICAgICA8YXR0cmxhYmw+RGVwdGg8L2F0dHJsYWJsPg0KICAgICAgICA8YXR0cmRlZj5EZXB0aCAoaW4gZmVldCkgdG8gdGhlIGJvdHRvbSBhdCB0aGUgdGltZSBvZiBkZXBsb3ltZW50LjwvYXR0cmRlZj4NCiAgICAgICAgPGF0dHJkZWZzPkZXQzwvYXR0cmRlZnM+DQogICAgICAgIDxhdHRyZG9tdj4NCiAgICAgICAgICA8dWRvbT5udW1lcmljIChpbnRlZ2VyKTwvdWRvbT4NCiAgICAgICAgPC9hdHRyZG9tdj4NCiAgICAgIDwvYXR0cj4NCiAgICAgIDxhdHRyPg0KICAgICAgICA8YXR0cmxhYmw+SnVyaXNkaWN0aW9uPC9hdHRybGFibD4NCiAgICAgICAgPGF0dHJkZWY+RGVwbG95bWVudCBKdXJpc2RpY3Rpb248L2F0dHJkZWY+DQogICAgICAgIDxhdHRyZGVmcz5GV0M8L2F0dHJkZWZzPg0KICAgICAgICA8YXR0cmRvbXY+DQogICAgICAgICAgPGVkb20+DQogICAgICAgICAgICA8ZWRvbXY+RmVkZXJhbDwvZWRvbXY+DQogICAgICAgICAgICA8ZWRvbXZkPmRlcGxveW1lbnQgaW4gZmVkZXJhbCB3YXRlcnM8L2Vkb212ZD4NCiAgICAgICAgICAgIDxlZG9tdmRzPkZXQzwvZWRvbXZkcz4NCiAgICAgICAgICA8L2Vkb20+DQogICAgICAgIDwvYXR0cmRvbXY+DQogICAgICAgIDxhdHRyZG9tdj4NCiAgICAgICAgICA8ZWRvbT4NCiAgICAgICAgICAgIDxlZG9tdj5TdGF0ZTwvZWRvbXY+DQogICAgICAgICAgICA8ZWRvbXZkPmRlcGxveW1lbnQgaW4gc3RhdGUgd2F0ZXJzPC9lZG9tdmQ+DQogICAgICAgICAgICA8ZWRvbXZkcz5GV0M8L2Vkb212ZHM+DQogICAgICAgICAgPC9lZG9tPg0KICAgICAgICA8L2F0dHJkb212Pg0KICAgICAgPC9hdHRyPg0KICAgICAgPGF0dHI+DQogICAgICAgIDxhdHRybGFibD5Db2FzdDwvYXR0cmxhYmw+DQogICAgICAgIDxhdHRyZGVmPkluIHdoaWNoIEZsb3JpZGEgQ29hc3QgdGhlIHJlZWYgaXMgbG9jYXRlZDwvYXR0cmRlZj4NCiAgICAgICAgPGF0dHJkZWZzPkZXQzwvYXR0cmRlZnM+DQogICAgICAgIDxhdHRyZG9tdj4NCiAgICAgICAgICA8ZWRvbT4NCiAgICAgICAgICAgIDxlZG9tdj5BdGxhbnRpYzwvZWRvbXY+DQogICAgICAgICAgICA8ZWRvbXZkPkF0bGFudGljIE9jZWFuIENvYXN0PC9lZG9tdmQ+DQogICAgICAgICAgICA8ZWRvbXZkcz5GV0M8L2Vkb212ZHM+DQogICAgICAgICAgPC9lZG9tPg0KICAgICAgICA8L2F0dHJkb212Pg0KICAgICAgICA8YXR0cmRvbXY+DQogICAgICAgICAgPGVkb20+DQogICAgICAgICAgICA8ZWRvbXY+R3VsZjwvZWRvbXY+DQogICAgICAgICAgICA8ZWRvbXZkPkd1bGYgb2YgTWV4aWNvIENvYXN0PC9lZG9tdmQ+DQogICAgICAgICAgICA8ZWRvbXZkcz5GV0M8L2Vkb212ZHM+DQogICAgICAgICAgPC9lZG9tPg0KICAgICAgICA8L2F0dHJkb212Pg0KICAgICAgPC9hdHRyPg0KICAgICAgPGF0dHI+DQogICAgICAgIDxhdHRybGFibD5Mb2NBY2N1cmFjeTwvYXR0cmxhYmw+DQogICAgICAgIDxhdHRyZGVmPkRlcGxveW1lbnQgTG9jYXRpb24gQWNjdXJhY3k8L2F0dHJkZWY+DQogICAgICAgIDxhdHRyZGVmcz5GV0M8L2F0dHJkZWZzPg0KICAgICAgICA8YXR0cmRvbXY+DQogICAgICAgICAgPGVkb20+DQogICAgICAgICAgICA8ZWRvbXY+MTwvZWRvbXY+DQogICAgICAgICAgICA8ZWRvbXZkPkxvdzwvZWRvbXZkPg0KICAgICAgICAgICAgPGVkb212ZHM+RldDPC9lZG9tdmRzPg0KICAgICAgICAgIDwvZWRvbT4NCiAgICAgICAgPC9hdHRyZG9tdj4NCiAgICAgICAgPGF0dHJkb212Pg0KICAgICAgICAgIDxlZG9tPg0KICAgICAgICAgICAgPGVkb212PjI8L2Vkb212Pg0KICAgICAgICAgICAgPGVkb212ZD5NZWRpdW08L2Vkb212ZD4NCiAgICAgICAgICAgIDxlZG9tdmRzPkZXQzwvZWRvbXZkcz4NCiAgICAgICAgICA8L2Vkb20+DQogICAgICAgIDwvYXR0cmRvbXY+DQogICAgICAgIDxhdHRyZG9tdj4NCiAgICAgICAgICA8ZWRvbT4NCiAgICAgICAgICAgIDxlZG9tdj4zPC9lZG9tdj4NCiAgICAgICAgICAgIDxlZG9tdmQ+SGlnaDwvZWRvbXZkPg0KICAgICAgICAgICAgPGVkb212ZHM+RldDPC9lZG9tdmRzPg0KICAgICAgICAgIDwvZWRvbT4NCiAgICAgICAgPC9hdHRyZG9tdj4NCiAgICAgIDwvYXR0cj4NCiAgICAgIDxhdHRyPg0KICAgICAgICA8YXR0cmxhYmw+TWF0RGVzY3JpcDwvYXR0cmxhYmw+DQogICAgICAgIDxhdHRyZGVmPkRlcGxveW1lbnQgTWF0ZXJpYWwgRGVzY3JpcHRpb248L2F0dHJkZWY+DQogICAgICAgIDxhdHRyZGVmcz5GV0M8L2F0dHJkZWZzPg0KICAgICAgICA8YXR0cmRvbXY+DQogICAgICAgICAgPHVkb20+dGV4dDwvdWRvbT4NCiAgICAgICAgPC9hdHRyZG9tdj4NCiAgICAgIDwvYXR0cj4NCiAgICAgIDxhdHRyPg0KICAgICAgICA8YXR0cmxhYmw+TWF0Q2F0PC9hdHRybGFibD4NCiAgICAgICAgPGF0dHJkZWY+TWF0ZXJpYWwgQ2F0ZWdvcnk8L2F0dHJkZWY+DQogICAgICAgIDxhdHRyZGVmcz5GV0M8L2F0dHJkZWZzPg0KICAgICAgICA8YXR0cmRvbXY+DQogICAgICAgICAgPGVkb20+DQogICAgICAgICAgICA8ZWRvbXY+Q29uY3JldGU8L2Vkb212Pg0KICAgICAgICAgICAgPGVkb212ZD5Db25jcmV0ZTwvZWRvbXZkPg0KICAgICAgICAgICAgPGVkb212ZHM+RldDPC9lZG9tdmRzPg0KICAgICAgICAgIDwvZWRvbT4NCiAgICAgICAgPC9hdHRyZG9tdj4NCiAgICAgICAgPGF0dHJkb212Pg0KICAgICAgICAgIDxlZG9tPg0KICAgICAgICAgICAgPGVkb212Pk1ldGFsPC9lZG9tdj4NCiAgICAgICAgICAgIDxlZG9tdmQ+TWV0YWw8L2Vkb212ZD4NCiAgICAgICAgICAgIDxlZG9tdmRzPkZXQzwvZWRvbXZkcz4NCiAgICAgICAgICA8L2Vkb20+DQogICAgICAgIDwvYXR0cmRvbXY+DQogICAgICAgIDxhdHRyZG9tdj4NCiAgICAgICAgICA8ZWRvbT4NCiAgICAgICAgICAgIDxlZG9tdj5Nb2R1bGU8L2Vkb212Pg0KICAgICAgICAgICAgPGVkb212ZD5Nb2R1bGU8L2Vkb212ZD4NCiAgICAgICAgICAgIDxlZG9tdmRzPkZXQzwvZWRvbXZkcz4NCiAgICAgICAgICA8L2Vkb20+DQogICAgICAgIDwvYXR0cmRvbXY+DQogICAgICAgIDxhdHRyZG9tdj4NCiAgICAgICAgICA8ZWRvbT4NCiAgICAgICAgICAgIDxlZG9tdj5PdGhlcjwvZWRvbXY+DQogICAgICAgICAgICA8ZWRvbXZkPk90aGVyPC9lZG9tdmQ+DQogICAgICAgICAgICA8ZWRvbXZkcz5GV0M8L2Vkb212ZHM+DQogICAgICAgICAgPC9lZG9tPg0KICAgICAgICA8L2F0dHJkb212Pg0KICAgICAgICA8YXR0cmRvbXY+DQogICAgICAgICAgPGVkb20+DQogICAgICAgICAgICA8ZWRvbXY+Um9jazwvZWRvbXY+DQogICAgICAgICAgICA8ZWRvbXZkPlJvY2s8L2Vkb212ZD4NCiAgICAgICAgICAgIDxlZG9tdmRzPkZXQzwvZWRvbXZkcz4NCiAgICAgICAgICA8L2Vkb20+DQogICAgICAgIDwvYXR0cmRvbXY+DQogICAgICAgIDxhdHRyZG9tdj4NCiAgICAgICAgICA8ZWRvbT4NCiAgICAgICAgICAgIDxlZG9tdj5WZXNzZWw8L2Vkb212Pg0KICAgICAgICAgICAgPGVkb212ZD5WZXNzZWw8L2Vkb212ZD4NCiAgICAgICAgICAgIDxlZG9tdmRzPkZXQzwvZWRvbXZkcz4NCiAgICAgICAgICA8L2Vkb20+DQogICAgICAgIDwvYXR0cmRvbXY+DQogICAgICA8L2F0dHI+DQogICAgICA8YXR0cj4NCiAgICAgICAgPGF0dHJsYWJsPlNoYXBlPC9hdHRybGFibD4NCiAgICAgICAgPGF0dHJkZWY+RmVhdHVyZSBnZW9tZXRyeS48L2F0dHJkZWY+DQogICAgICAgIDxhdHRyZGVmcz5Fc3JpPC9hdHRyZGVmcz4NCiAgICAgICAgPGF0dHJkb212Pg0KICAgICAgICAgIDx1ZG9tPkNvb3JkaW5hdGVzIGRlZmluaW5nIHRoZSBmZWF0dXJlcy48L3Vkb20+DQogICAgICAgIDwvYXR0cmRvbXY+DQogICAgICA8L2F0dHI+DQogICAgICA8YXR0cj4NCiAgICAgICAgPGF0dHJsYWJsPkxvbmdfRE08L2F0dHJsYWJsPg0KICAgICAgICA8YXR0cmRlZj5Mb25naXR1ZGUgaW4gRGVncmVlcyBEZWNpbWFsIE1pbnV0ZXMgZm9ybWF0PC9hdHRyZGVmPg0KICAgICAgICA8YXR0cmRlZnM+RldDPC9hdHRyZGVmcz4NCiAgICAgICAgPGF0dHJkb212Pg0KICAgICAgICAgIDx1ZG9tPkRERCBNTS5tbW1tIFtFfFddPC91ZG9tPg0KICAgICAgICA8L2F0dHJkb212Pg0KICAgICAgPC9hdHRyPg0KICAgICAgPGF0dHI+DQogICAgICAgIDxhdHRybGFibD5MYXRfRE08L2F0dHJsYWJsPg0KICAgICAgICA8YXR0cmRlZj5MYXRpdHVkZSBpbiBEZWdyZWUgRGVjaW1hbCBNaW51dGVzPC9hdHRyZGVmPg0KICAgICAgICA8YXR0cmRlZnM+RldDPC9hdHRyZGVmcz4NCiAgICAgICAgPGF0dHJkb212Pg0KICAgICAgICAgIDx1ZG9tPkRERCBNTS5tbW1tbSBbTnxTXTwvdWRvbT4NCiAgICAgICAgPC9hdHRyZG9tdj4NCiAgICAgIDwvYXR0cj4NCiAgICAgIDxhdHRyPg0KICAgICAgICA8YXR0cmxhYmw+TG9uZ19ERDwvYXR0cmxhYmw+DQogICAgICAgIDxhdHRyZGVmPkxvbmdpdHVkZSBpbiBEZWNpbWFsIERlZ3JlZXMgZm9ybWF0PC9hdHRyZGVmPg0KICAgICAgICA8YXR0cmRlZnM+RldDPC9hdHRyZGVmcz4NCiAgICAgICAgPGF0dHJkb212Pg0KICAgICAgICAgIDx1ZG9tPkRERC5kZGRkZGRkIFtFfFddPC91ZG9tPg0KICAgICAgICA8L2F0dHJkb212Pg0KICAgICAgPC9hdHRyPg0KICAgICAgPGF0dHI+DQogICAgICAgIDxhdHRybGFibD5MYXRfREQ8L2F0dHJsYWJsPg0KICAgICAgICA8YXR0cmRlZj5MYXRpdHVkZSBpbiBEZWNpbWFsIERlZ3JlZXMgZm9ybWF0PC9hdHRyZGVmPg0KICAgICAgICA8YXR0cmRlZnM+RldDPC9hdHRyZGVmcz4NCiAgICAgICAgPGF0dHJkb212Pg0KICAgICAgICAgIDx1ZG9tPkRERC5kZGRkZGQgW058U108L3Vkb20+DQogICAgICAgIDwvYXR0cmRvbXY+DQogICAgICA8L2F0dHI+DQogICAgPC9kZXRhaWxlZD4NCiAgPC9lYWluZm8+DQogIDxkaXN0aW5mbz4NCiAgICA8ZGlzdHJpYj4NCiAgICAgIDxjbnRpbmZvPg0KICAgICAgICA8Y250cGVycD4NCiAgICAgICAgICA8Y250cGVyPkdJU0xpYnJhcmlhbjwvY250cGVyPg0KICAgICAgICAgIDxjbnRvcmc+RmxvcmlkYSBGaXNoIGFuZCBXaWxkbGlmZSBDb25zZXJ2YXRpb24gQ29tbWlzc2lvbi1GaXNoIGFuZCBXaWxkbGlmZSBSZXNlYXJjaCBJbnN0aXR1dGU8L2NudG9yZz4NCiAgICAgICAgPC9jbnRwZXJwPg0KICAgICAgICA8Y250cG9zPkdJUyBEYXRhIExpYnJhcmlhbjwvY250cG9zPg0KICAgICAgICA8Y250YWRkcj4NCiAgICAgICAgICA8YWRkcnR5cGU+bWFpbGluZyBhbmQgcGh5c2ljYWwgYWRkcmVzczwvYWRkcnR5cGU+DQogICAgICAgICAgPGFkZHJlc3M+RmlzaCBhbmQgV2lsZGxpZmUgUmVzZWFyY2ggSW5zdGl0dXRlDQoxMDAgRWlnaHRoIEF2ZW51ZSBTb3V0aGVhc3Q8L2FkZHJlc3M+DQogICAgICAgICAgPGNpdHk+U3QuIFBldGVyc2J1cmc8L2NpdHk+DQogICAgICAgICAgPHN0YXRlPkZsb3JpZGE8L3N0YXRlPg0KICAgICAgICAgIDxwb3N0YWw+MzM3MDE8L3Bvc3RhbD4NCiAgICAgICAgPC9jbnRhZGRyPg0KICAgICAgICA8Y250dm9pY2U+NzI3LTg5Ni04NjI2PC9jbnR2b2ljZT4NCiAgICAgICAgPGNudGZheD43MjctODkzLTE2Nzk8L2NudGZheD4NCiAgICAgICAgPGNudGVtYWlsPkdJU0xpYnJhcmlhbkBNeUZXQy5jb208L2NudGVtYWlsPg0KICAgICAgPC9jbnRpbmZvPg0KICAgIDwvZGlzdHJpYj4NCiAgICA8cmVzZGVzYz5Eb3dubG9hZGFibGUgRGF0YS4NCg0KR0lTIGRhdGEgY2FuIGJlIGRvd25sb2FkZWQgZnJvbSBodHRwOi8vZ2VvZGF0YS5teWZ3Yy5jb20NCkV4Y2VsIHRhYnVsYXIgZGF0YSBjYW4gYmUgZG93bmxvYWRlZCBmcm9tIHRoZSBBcnRpZmljaWFsIFJlZWYgU2VjdGlvbidzIHdlYnNpdGU6IA0KaHR0cDovL215ZndjLmNvbS9jb25zZXJ2YXRpb24vc2FsdHdhdGVyL2FydGlmaWNpYWwtcmVlZnMvbG9jYXRlLXJlZWZzLzwvcmVzZGVzYz4NCiAgICA8ZGlzdGxpYWI+VGhpcyBkYXRhIHNldCBpcyBpbiB0aGUgcHVibGljIGRvbWFpbiwgYW5kIHRoZSByZWNpcGllbnQgbWF5IG5vdCBhc3NlcnQgYW55IHByb3ByaWV0YXJ5IHJpZ2h0cyB0aGVyZXRvIG5vciByZXByZXNlbnQgaXQgdG8gYW55b25lIGFzIG90aGVyIHRoYW4gYSBGV0MtRldSSSBwcm9kdWNlZCBkYXRhIHNldDsgaXQgaXMgcHJvdmlkZWQgImFzLWlzIiB3aXRob3V0IHdhcnJhbnR5IG9mIGFueSBraW5kLCBpbmNsdWRpbmcsIGJ1dCBub3QgbGltaXRlZCB0bywgdGhlIGltcGxpZWQgd2FycmFudGllcyBvZiBtZXJjaGFudGFiaWxpdHkgYW5kIGZpdG5lc3MgZm9yIGEgcGFydGljdWxhciBwdXJwb3NlLiBUaGUgdXNlciBhc3N1bWVzIGFsbCByZXNwb25zaWJpbGl0eSBmb3IgdGhlIGFjY3VyYWN5IGFuZCBzdWl0YWJpbGl0eSBvZiB0aGlzIGRhdGEgc2V0IGZvciBhIHNwZWNpZmljIGFwcGxpY2F0aW9uLiBJbiBubyBldmVudCB3aWxsIHRoZSBzdGFmZiBvZiB0aGUgRmlzaCBhbmQgV2lsZGxpZmUgUmVzZWFyY2ggSW5zdGl0dXRlIGJlIGxpYWJsZSBmb3IgYW55IGRhbWFnZXMsIGluY2x1ZGluZyBsb3N0IHByb2ZpdHMsIGxvc3Qgc2F2aW5ncywgb3Igb3RoZXIgaW5jaWRlbnRhbCBvciBjb25zZXF1ZW50aWFsIGRhbWFnZXMgYXJpc2luZyBmcm9tIHRoZSB1c2Ugb2Ygb3IgdGhlIGluYWJpbGl0eSB0byB1c2UgdGhpcyBkYXRhIHNldC48L2Rpc3RsaWFiPg0KICAgIDxzdGRvcmRlcj4NCiAgICAgIDxkaWdmb3JtPg0KICAgICAgICA8ZGlndGluZm8+DQogICAgICAgICAgPGZvcm1uYW1lPlNIUDwvZm9ybW5hbWU+DQogICAgICAgICAgPHRyYW5zaXplPjAuMDAwPC90cmFuc2l6ZT4NCiAgICAgICAgPC9kaWd0aW5mbz4NCiAgICAgIDwvZGlnZm9ybT4NCiAgICAgIDxmZWVzPk5vbmUuIEhvd2V2ZXIsIHBlcnNvbnMgb3Igb3JnYW5pemF0aW9ucyByZXF1ZXN0aW5nIGluZm9ybWF0aW9uIG11c3QgcHJvdmlkZSB0cmFuc2ZlciBtZWRpYSBpZiBGVFAgaXMgbm90IGF2YWlsYWJsZSBhbmQgbXVzdCBwYXkgZXhwcmVzcyBzaGlwcGluZyBjb3N0cyBpZiBleHByZXNzIHNoaXBwaW5nIGlzIHJlcXVpcmVkLjwvZmVlcz4NCiAgICAgIDxvcmRlcmluZz5Db250YWN0IEdJUyBMaWJyYXJpYW4gYnkgZS1tYWlsLCB0ZWxlcGhvbmUsIG9yIGxldHRlciBleHBsYWluaW5nIHdoaWNoIHByb2R1Y3RzIGFyZSBuZWVkZWQgYW5kIHByb3ZpZGluZyBhIGJyaWVmIGRlc2NyaXB0aW9uIG9mIGhvdyB0aGUgcHJvZHVjdHMgd2lsbCBiZSB1c2VkLiBBbHNvLCBwcm92aWRlIG5hbWUgYW5kIGFkZHJlc3Mgb2YgdGhlIHBlcnNvbiBvciBvcmdhbml6YXRpb24gcmVxdWVzdGluZyB0aGUgcHJvZHVjdHMuPC9vcmRlcmluZz4NCiAgICAgIDx0dXJuYXJuZD5Vc3VhbGx5IHdpdGhpbiAxMCBidXNpbmVzcyBkYXlzLCBhbHRob3VnaCwgY29tcGxleCByZXF1ZXN0cyBtYXkgdGFrZSBsb25nZXI8L3R1cm5hcm5kPg0KICAgIDwvc3Rkb3JkZXI+DQogICAgPGN1c3RvbT5Db250YWN0IEdJUyBMaWJyYXJpYW48L2N1c3RvbT4NCiAgPC9kaXN0aW5mbz4NCiAgPG1ldGFpbmZvPg0KICAgIDxtZXRkPjIwMjEwMjIyPC9tZXRkPg0KICAgIDxtZXRjPg0KICAgICAgPGNudGluZm8+DQogICAgICAgIDxjbnRwZXJwPg0KICAgICAgICAgIDxjbnRwZXI+R0lTTGlicmFyaWFuPC9jbnRwZXI+DQogICAgICAgICAgPGNudG9yZz5GbG9yaWRhIEZpc2ggYW5kIFdpbGRsaWZlIENvbnNlcnZhdGlvbiBDb21taXNzaW9uLUZpc2ggYW5kIFdpbGRsaWZlIFJlc2VhcmNoIEluc3RpdHV0ZTwvY250b3JnPg0KICAgICAgICA8L2NudHBlcnA+DQogICAgICAgIDxjbnRwb3M+R0lTIERhdGEgTGlicmFyaWFuPC9jbnRwb3M+DQogICAgICAgIDxjbnRhZGRyPg0KICAgICAgICAgIDxhZGRydHlwZT5tYWlsaW5nIGFuZCBwaHlzaWNhbCBhZGRyZXNzPC9hZGRydHlwZT4NCiAgICAgICAgICA8YWRkcmVzcz5GaXNoIGFuZCBXaWxkbGlmZSBSZXNlYXJjaCBJbnN0aXR1dGUNCjEwMCBFaWdodGggQXZlbnVlIFNvdXRoZWFzdDwvYWRkcmVzcz4NCiAgICAgICAgICA8Y2l0eT5TdC4gUGV0ZXJzYnVyZzwvY2l0eT4NCiAgICAgICAgICA8c3RhdGU+RmxvcmlkYTwvc3RhdGU+DQogICAgICAgICAgPHBvc3RhbD4zMzcwMTwvcG9zdGFsPg0KICAgICAgICA8L2NudGFkZHI+DQogICAgICAgIDxjbnR2b2ljZT43MjctODk2LTg2MjY8L2NudHZvaWNlPg0KICAgICAgICA8Y250ZmF4PjcyNy04OTMtMTY3OTwvY250ZmF4Pg0KICAgICAgICA8Y250ZW1haWw+R0lTTGlicmFyaWFuQE15RldDLmNvbTwvY250ZW1haWw+DQogICAgICA8L2NudGluZm8+DQogICAgPC9tZXRjPg0KICAgIDxtZXRzdGRuPkZHREMgQ29udGVudCBTdGFuZGFyZHMgZm9yIERpZ2l0YWwgR2Vvc3BhdGlhbCBNZXRhZGF0YTwvbWV0c3Rkbj4NCiAgICA8bWV0c3Rkdj5GR0RDLVNURC0wMDEtMTk5ODwvbWV0c3Rkdj4NCiAgICA8bWV0dGM+bG9jYWwgdGltZTwvbWV0dGM+DQogICAgPG1ldGFjPk5vIHJlc3RyaWN0aW9ucyBvbiBtZXRhZGF0YS48L21ldGFjPg0KICAgIDxtZXR1Yz5NZXRhZGF0YSBtdXN0IGJlIGRpc3RyaWJ1dGVkIHdpdGggdGhlIGRhdGEgc2V0LjwvbWV0dWM+DQogICAgPG1ldHNpPg0KICAgICAgPG1ldHNjcz5GV1JJLU1DPC9tZXRzY3M+DQogICAgICA8bWV0c2M+QXZhaWxhYmxlPC9tZXRzYz4NCiAgICAgIDxtZXRzaGQ+TWV0YWRhdGEgbXVzdCBiZSBkaXN0cmlidXRlZCB3aXRoIHRoZSBkYXRhIHNldC48L21ldHNoZD4NCiAgICA8L21ldHNpPg0KICA8L21ldGFpbmZvPg0KPC9tZXRhZGF0YT4=</Data>
+        </Enclosure>
+    </Binary>
+    <mdFileID>1683221324136r030512307391254323</mdFileID>
+    <mdChar>
+        <CharSetCd value="004"/>
+    </mdChar>
+    <mdDateSt>2024-05-01</mdDateSt>
+    <mdTimeSt>13:28:43.74</mdTimeSt>
+    <mdContact>
+        <rpIndName>GISLibrarian</rpIndName>
+        <rpOrgName>Florida Fish and Wildlife Conservation Commission-Fish and Wildlife Research Institute</rpOrgName>
+        <rpPosName>GIS Data Librarian</rpPosName>
+        <role>
+            <RoleCd value="007"/>
+        </role>
+        <rpCntInfo>
+            <cntAddress addressType="both">
+                <eMailAdd>GISLibrarian@MyFWC.com</eMailAdd>
+                <delPoint>Fish and Wildlife Research Institute 100 Eighth Avenue Southeast</delPoint>
+                <city>St. Petersburg</city>
+                <adminArea>Florida</adminArea>
+                <postCode>33701</postCode>
+            </cntAddress>
+            <cntPhone>
+                <voiceNum>727-896-8626</voiceNum>
+                <faxNum>727-893-1679</faxNum>
+            </cntPhone>
+        </rpCntInfo>
+    </mdContact>
+    <dqInfo>
+        <dqScope>
+            <scpLvl>
+                <ScopeCd value="005"/>
+            </scpLvl>
+        </dqScope>
+        <dataLineage>
+            <dataSource>
+                <srcDesc>the point and attribute data.</srcDesc>
+                <srcMedName>
+                    <MedNameCd value="015"/>
+                </srcMedName>
+                <srcCitatn>
+                    <resTitle>FARD_Material_Jan_2023</resTitle>
+                    <date>
+                        <pubDate>2021-11-08T00:00:00</pubDate>
+                    </date>
+                </srcCitatn>
+                <srcExt>
+                    <exDesc>ground condition</exDesc>
+                    <tempEle>
+                        <TempExtent>
+                            <exTemp>
+                                <TM_Instant>
+                                    <tmPosition>2022-11-28T00:00:00</tmPosition>
+                                </TM_Instant>
+                            </exTemp>
+                        </TempExtent>
+                    </tempEle>
+                </srcExt>
+            </dataSource>
+            <prcStep>
+                <stepDesc>DMF provided the data to FWRI as a feature class projected in NAD83_(2011)_FGDL_Albers (meters). FWRI staff wrote metadata for the dataset and imported the data into the SDE databases.</stepDesc>
+                <stepDateTm>2024-05-01T00:00:00</stepDateTm>
+                <stepProc>
+                    <rpIndName>GISLibrarian</rpIndName>
+                    <rpOrgName>Florida Fish and Wildlife Conservation Commission-Fish and Wildlife Research Institute</rpOrgName>
+                    <rpPosName>GIS Data Librarian</rpPosName>
+                    <role>
+                        <RoleCd value="009"/>
+                    </role>
+                    <rpCntInfo>
+                        <cntAddress addressType="both">
+                            <eMailAdd>GISLibrarian@MyFWC.com</eMailAdd>
+                            <delPoint>Fish and Wildlife Research Institute 100 Eighth Avenue Southeast</delPoint>
+                            <city>St. Petersburg</city>
+                            <adminArea>Florida</adminArea>
+                            <postCode>33701</postCode>
+                        </cntAddress>
+                        <cntPhone>
+                            <voiceNum>727-896-8626</voiceNum>
+                            <faxNum>727-893-1679</faxNum>
+                        </cntPhone>
+                    </rpCntInfo>
+                </stepProc>
+            </prcStep>
+        </dataLineage>
+        <report type="DQConcConsis">
+            <measDesc>FWC-DMF has not independently confirmed most of the reef locations, and this data had been supplied from various sources without verification.</measDesc>
+        </report>
+        <report type="DQCompOm">
+            <measDesc>The data appear to be complete, as of the delivery date from DMFM to FWRI.</measDesc>
+        </report>
+        <report type="DQQuanAttAcc">
+            <measDesc>Please note that reef materials can move, degrade, or become buried over time. This is especially true for metal materials with thicknesses less than ¼” or lightweight materials. Additionally, many reef locations in the database are based on historical data with inherent potential location inaccuracies that may not have been ground-truth since their deployment. If you have updated information regarding the condition or location of an artificial reef please contact the FWC Artificial Reef Database Administrator via email at keith.mille@myfwc.com.</measDesc>
+        </report>
+        <report dimension="horizontal" type="DQAbsExtPosAcc">
+            <measDesc>Original coordinates were in decimal minutes with 1/1000 minute precision (xx.xxx minutes), but data have not been verified or field checked by DMF or FWRI. Please note that reef materials can move, degrade, or become buried over time. This is especially true for metal materials with thicknesses less than ¼” or lightweight materials. Additionally, many reef locations in the database are based on historical data with inherent potential location inaccuracies that may not have been ground-truth since their deployment. If you have updated information regarding the condition or location of an artificial reef please contact the FWC Artificial Reef Database Administrator via email at keith.mille@myfwc.com</measDesc>
+        </report>
+        <report dimension="vertical" type="DQAbsExtPosAcc">
+            <measDesc>The vertical accuracy is accurate as of the time of deployment.</measDesc>
+        </report>
+    </dqInfo>
+    <distInfo>
+        <distTranOps>
+            <onLineSrc>
+                <linkage>http://geodata.myfwc.com</linkage>
+                <orName>FWC GIS Downloads</orName>
+            </onLineSrc>
+            <onLineSrc>
+                <linkage>http://myfwc.com/research</linkage>
+                <orName>FWRI Research</orName>
+            </onLineSrc>
+            <onLineSrc>
+                <linkage>https://gis.myfwc.com/data/zips/custom/Big_Bend_FL_Artificial_Reefs.zip</linkage>
+                <orName>Zipped GPX for Big Bend Region</orName>
+            </onLineSrc>
+            <onLineSrc>
+                <linkage>https://gis.myfwc.com/data/zips/custom/Central_Atlantic_FL_Artificial_Reefs.zip</linkage>
+                <orName>Zipped GPX for Central Atlantic Region</orName>
+            </onLineSrc>
+            <onLineSrc>
+                <linkage>https://gis.myfwc.com/data/zips/custom/Northeast_FL_Artificial_Reefs.zip</linkage>
+                <orName>Zipped GPX for Northeast Region</orName>
+            </onLineSrc>
+            <onLineSrc>
+                <linkage>https://gis.myfwc.com/data/zips/custom/Northwest_FL_Artificial_Reefs.zip</linkage>
+                <orName>Zipped GPX For Northwest Region</orName>
+            </onLineSrc>
+            <onLineSrc>
+                <linkage>https://gis.myfwc.com/data/zips/custom/Southeast_FL_Artificial_Reefs.zip</linkage>
+                <orName>Zipped GPX for Southeast Region</orName>
+            </onLineSrc>
+            <onLineSrc>
+                <linkage>https://gis.myfwc.com/data/zips/custom/Southwest_FL_Artificial_Reefs.zip</linkage>
+                <orName>Zipped GPX for Southwest Region</orName>
+            </onLineSrc>
+        </distTranOps>
+        <distFormat>
+            <formatName>File Geodatabase Feature Class</formatName>
+        </distFormat>
+        <distributor>
+            <distorTran>
+                <onLineSrc>
+                    <orDesc>Downloadable Data. GIS data can be downloaded from http://geodata.myfwc.com Excel tabular data can be downloaded from the Artificial Reef Section's website: http://myfwc.com/conservation/saltwater/artificial-reefs/locate-reefs/</orDesc>
+                </onLineSrc>
+            </distorTran>
+            <distorFormat>
+                <formatName>SHP</formatName>
+            </distorFormat>
+            <distorCont>
+                <rpIndName>GISLibrarian</rpIndName>
+                <rpOrgName>Florida Fish and Wildlife Conservation Commission-Fish and Wildlife Research Institute</rpOrgName>
+                <rpPosName>GIS Data Librarian</rpPosName>
+                <role>
+                    <RoleCd value="005"/>
+                </role>
+                <rpCntInfo>
+                    <cntAddress addressType="both">
+                        <eMailAdd>GISLibrarian@MyFWC.com</eMailAdd>
+                        <delPoint>Fish and Wildlife Research Institute 100 Eighth Avenue Southeast</delPoint>
+                        <city>St. Petersburg</city>
+                        <adminArea>Florida</adminArea>
+                        <postCode>33701</postCode>
+                    </cntAddress>
+                    <cntPhone>
+                        <voiceNum>727-896-8626</voiceNum>
+                        <faxNum>727-893-1679</faxNum>
+                    </cntPhone>
+                </rpCntInfo>
+            </distorCont>
+            <distorOrdPrc>
+                <resFees>None. However, persons or organizations requesting information must provide transfer media if FTP is not available and must pay express shipping costs if express shipping is required.</resFees>
+                <ordInstr>Contact GIS Librarian by e-mail, telephone, or letter explaining which products are needed and providing a brief description of how the products will be used. Also, provide name and address of the person or organization requesting the products.</ordInstr>
+                <ordTurn>Usually within 10 business days, although, complex requests may take longer</ordTurn>
+            </distorOrdPrc>
+        </distributor>
+    </distInfo>
+    <refSysInfo>
+        <RefSystem>
+            <refSysID>
+                <identCode code="6439"/>
+                <idCodeSpace>EPSG</idCodeSpace>
+                <idVersion>8.2.10(10.3.1)</idVersion>
+            </refSysID>
+        </RefSystem>
+    </refSysInfo>
+    <eainfo>
+        <detailed Name="ArtificialReef_fl_point_Existing_Albers">
+            <enttyp>
+                <enttypl>ArtificialReef_fl_point</enttypl>
+                <enttypd>Each point contains extensive attributes describing the artificial reef.  Many of the fields were developed by DMF for internal tracking purposes.</enttypd>
+                <enttypds>Producer defined</enttypds>
+                <enttypt>Feature Class</enttypt>
+                <enttypc>0</enttypc>
+            </enttyp>
+            <attr>
+                <attrlabl>OBJECTID</attrlabl>
+                <attalias>OBJECTID</attalias>
+                <attrdef>Internal feature number.</attrdef>
+                <attrdefs>Esri</attrdefs>
+                <attrtype>OID</attrtype>
+                <attwidth>4</attwidth>
+                <atprecis>0</atprecis>
+                <attscale>0</attscale>
+                <attrdomv>
+                    <udom>Sequential unique whole numbers that are automatically generated.</udom>
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>DeployID</attrlabl>
+                <attalias>DeployID</attalias>
+                <attrdef>A unique six digit alphanumeric identifier for each deployment record, assigned by FWC.</attrdef>
+                <attrdefs>FWC</attrdefs>
+                <attrtype>String</attrtype>
+                <attwidth>50</attwidth>
+                <atprecis>0</atprecis>
+                <attscale>0</attscale>
+                <attrdomv>
+                    <udom>text</udom>
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>County</attrlabl>
+                <attalias>County</attalias>
+                <attrdef>The Florida County nearest to the artificial reef project.</attrdef>
+                <attrdefs>FWC</attrdefs>
+                <attrtype>String</attrtype>
+                <attwidth>30</attwidth>
+                <atprecis>0</atprecis>
+                <attscale>0</attscale>
+                <attrdomv>
+                    <udom>text</udom>
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>DDate</attrlabl>
+                <attalias>Deployment Date</attalias>
+                <attrtype>Integer</attrtype>
+                <attwidth>4</attwidth>
+                <atprecis>0</atprecis>
+                <attscale>0</attscale>
+            </attr>
+            <attr>
+                <attrlabl>Description</attrlabl>
+                <attalias>Description</attalias>
+                <attrtype>String</attrtype>
+                <attwidth>1000</attwidth>
+                <atprecis>0</atprecis>
+                <attscale>0</attscale>
+            </attr>
+            <attr>
+                <attrlabl>Tonnage</attrlabl>
+                <attalias>Tons</attalias>
+                <attrtype>Double</attrtype>
+                <attwidth>8</attwidth>
+                <atprecis>0</atprecis>
+                <attscale>0</attscale>
+            </attr>
+            <attr>
+                <attrlabl>Depth</attrlabl>
+                <attalias>Depth (ft)</attalias>
+                <attrtype>Double</attrtype>
+                <attwidth>8</attwidth>
+                <atprecis>0</atprecis>
+                <attscale>0</attscale>
+            </attr>
+            <attr>
+                <attrlabl>Relief</attrlabl>
+                <attalias>Relief (ft)</attalias>
+                <attrtype>Double</attrtype>
+                <attwidth>8</attwidth>
+                <atprecis>0</atprecis>
+                <attscale>0</attscale>
+            </attr>
+            <attr>
+                <attrlabl>Name</attrlabl>
+                <attalias>Deployment Name</attalias>
+                <attrtype>String</attrtype>
+                <attwidth>100</attwidth>
+                <atprecis>0</atprecis>
+                <attscale>0</attscale>
+            </attr>
+            <attr>
+                <attrlabl>DeployDate</attrlabl>
+                <attalias>Deploy Date</attalias>
+                <attrdef>The date of deployment (MM/DD/YYYY). Double zeros indicate estimates based on the best available historic information.</attrdef>
+                <attrdefs>FWC</attrdefs>
+                <attrtype>String</attrtype>
+                <attwidth>255</attwidth>
+                <atprecis>0</atprecis>
+                <attscale>0</attscale>
+                <attrdomv>
+                    <udom>Date in MM/DD/YYYY format</udom>
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>Jurisdiction</attrlabl>
+                <attalias>Jurisdiction</attalias>
+                <attrdef>Deployment Jurisdiction</attrdef>
+                <attrdefs>FWC</attrdefs>
+                <attrtype>String</attrtype>
+                <attwidth>20</attwidth>
+                <atprecis>0</atprecis>
+                <attscale>0</attscale>
+                <attrdomv>
+                    <edom>
+                        <edomv>Federal</edomv>
+                        <edomvd>deployment in federal waters</edomvd>
+                        <edomvds>FWC</edomvds>
+                    </edom>
+                </attrdomv>
+                <attrdomv>
+                    <edom>
+                        <edomv>State</edomv>
+                        <edomvd>deployment in state waters</edomvd>
+                        <edomvds>FWC</edomvds>
+                    </edom>
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>Coast</attrlabl>
+                <attalias>Coast</attalias>
+                <attrdef>In which Florida Coast the reef is located</attrdef>
+                <attrdefs>FWC</attrdefs>
+                <attrtype>String</attrtype>
+                <attwidth>20</attwidth>
+                <atprecis>0</atprecis>
+                <attscale>0</attscale>
+                <attrdomv>
+                    <edom>
+                        <edomv>Atlantic</edomv>
+                        <edomvd>Atlantic Ocean Coast</edomvd>
+                        <edomvds>FWC</edomvds>
+                    </edom>
+                </attrdomv>
+                <attrdomv>
+                    <edom>
+                        <edomv>Gulf</edomv>
+                        <edomvd>Gulf of Mexico Coast</edomvd>
+                        <edomvds>FWC</edomvds>
+                    </edom>
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>MatDescrip</attrlabl>
+                <attalias>Description</attalias>
+                <attrtype>String</attrtype>
+                <attwidth>200</attwidth>
+                <atprecis>0</atprecis>
+                <attscale>0</attscale>
+            </attr>
+            <attr>
+                <attrlabl>MatCat</attrlabl>
+                <attalias>MatCat</attalias>
+                <attrtype>String</attrtype>
+                <attwidth>255</attwidth>
+                <atprecis>0</atprecis>
+                <attscale>0</attscale>
+            </attr>
+            <attr>
+                <attrlabl>Shape</attrlabl>
+                <attalias>Shape</attalias>
+                <attrdef>Feature geometry.</attrdef>
+                <attrdefs>Esri</attrdefs>
+                <attrtype>Geometry</attrtype>
+                <attwidth>0</attwidth>
+                <atprecis>0</atprecis>
+                <attscale>0</attscale>
+                <attrdomv>
+                    <udom>Coordinates defining the features.</udom>
+                </attrdomv>
+            </attr>
+            <attr>
+                <attrlabl>Long_DM</attrlabl>
+                <attalias>Longitude (DM)</attalias>
+                <attrtype>String</attrtype>
+                <attwidth>255</attwidth>
+                <atprecis>0</atprecis>
+                <attscale>0</attscale>
+            </attr>
+            <attr>
+                <attrlabl>Lat_DM</attrlabl>
+                <attalias>Latitude (DM)</attalias>
+                <attrtype>String</attrtype>
+                <attwidth>255</attwidth>
+                <atprecis>0</atprecis>
+                <attscale>0</attscale>
+            </attr>
+            <attr>
+                <attrlabl>Long_DD</attrlabl>
+                <attalias>Longitude (DD)</attalias>
+                <attrtype>Double</attrtype>
+                <attwidth>8</attwidth>
+                <atprecis>0</atprecis>
+                <attscale>0</attscale>
+            </attr>
+            <attr>
+                <attrlabl>Lat_DD</attrlabl>
+                <attalias>Latitude (DD)</attalias>
+                <attrtype>Double</attrtype>
+                <attwidth>8</attwidth>
+                <atprecis>0</atprecis>
+                <attscale>0</attscale>
+            </attr>
+            <attr>
+                <attrlabl>LocAccuracy</attrlabl>
+                <attalias>Location Accuracy</attalias>
+                <attrtype>Integer</attrtype>
+                <attwidth>4</attwidth>
+                <atprecis>0</atprecis>
+                <attscale>0</attscale>
+            </attr>
+        </detailed>
+    </eainfo>
+    <mdConst>
+        <LegConsts>
+            <accessConsts>
+                <RestrictCd value="008"/>
+            </accessConsts>
+            <othConsts>No restrictions on metadata.</othConsts>
+        </LegConsts>
+    </mdConst>
+    <mdConst>
+        <SecConsts>
+            <classSys>FWRI-MC</classSys>
+            <handDesc>Metadata must be distributed with the data set.</handDesc>
+        </SecConsts>
+    </mdConst>
+    <mdConst>
+        <Consts>
+            <useLimit>Metadata must be distributed with the data set.</useLimit>
+        </Consts>
+    </mdConst>
+    <spatRepInfo>
+        <VectSpatRep>
+            <topLvl>
+                <TopoLevCd value="001"/>
+            </topLvl>
+            <geometObjs Name="ArtificialReef_fl_point_Existing_Albers">
+                <geoObjTyp>
+                    <GeoObjTypCd value="004"/>
+                </geoObjTyp>
+                <geoObjCnt/>
+            </geometObjs>
+        </VectSpatRep>
+    </spatRepInfo>
+    <spdoinfo>
+        <ptvctinf>
+            <esriterm Name="ArtificialReef_fl_point_Existing_Albers">
+                <efeatyp>Simple</efeatyp>
+                <efeageom code="1"/>
+                <esritopo>FALSE</esritopo>
+                <efeacnt>0</efeacnt>
+                <spindex>TRUE</spindex>
+                <linrefer>FALSE</linrefer>
+            </esriterm>
+        </ptvctinf>
+    </spdoinfo>
+</metadata>

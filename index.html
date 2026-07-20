@@ -13,7 +13,7 @@
 <link rel="stylesheet" href="css/scene.css">
 <link rel="stylesheet" href="css/picker.css?v=20260715-favourites4">
 <link rel="stylesheet" href="css/status.css?v=20260715-location1">
-<link rel="stylesheet" href="css/chart.css?v=20260718-americas-modal1">
+<link rel="stylesheet" href="css/chart.css?v=20260720-ontario1">
 </head>
 <body>
 <div id="app">
@@ -120,6 +120,7 @@
               <label class="wreck-toggle" title="Tide stations"><input type="checkbox" data-map-layer="tide-station" aria-label="Show tide stations"><span class="layer-symbol tide">∿</span></label>
               <label class="wreck-toggle" title="Lighthouses"><input type="checkbox" data-map-layer="lighthouse" aria-label="Show lighthouses"><span class="layer-symbol light">✦</span></label>
               <label class="wreck-toggle" title="UK dive sites"><input type="checkbox" data-map-layer="sites" aria-label="Show UK dive sites"><span class="layer-symbol site">▽</span></label>
+              <label class="wreck-toggle" title="SSI training centres"><input type="checkbox" data-map-layer="training-centres" aria-label="Show SSI training centres"><span class="layer-symbol training">T</span></label>
               <button type="button" class="americas-layer-toggle" id="americasLayerToggle" title="Choose Americas dive-site layers" aria-label="Choose Americas dive-site layers" aria-haspopup="dialog" aria-expanded="false"><span class="layer-symbol osm-americas">◈</span></button>
               <label class="wreck-toggle" title="Marine life"><input type="checkbox" id="speciesLayerToggle" aria-label="Show marine life controls" aria-expanded="false" aria-controls="speciesPicker"><span class="layer-symbol species" aria-hidden="true">◉</span></label>
             </div>
@@ -236,8 +237,15 @@
       <a class="media-modal-original" id="mediaModalOriginal" target="_blank" rel="noopener">Open original ↗</a>
     </div>
   </div>
+  <div id="speciesInfoModal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="speciesInfoTitle">
+    <div class="modal-box species-info-modal-box">
+      <button type="button" class="modal-close" id="speciesInfoClose" aria-label="Close species information">&#10005;</button>
+      <h2 class="modal-title" id="speciesInfoTitle">Species information</h2>
+      <div class="modal-body" id="speciesInfoBody"></div>
+    </div>
+  </div>
 </div>
 
-<script type="module" src="js/main.js?v=20260718-americas-recommendations1"></script>
+<script type="module" src="js/main.js?v=20260720-marine-centres2"></script>
 </body>
 </html>

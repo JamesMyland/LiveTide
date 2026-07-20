@@ -6,9 +6,9 @@ import { $ } from "./dom.js";
 import { PROVIDERS } from "./config.js";
 import { levelAt } from "./tide.js";
 import { fmtTime, fmtCountdown } from "./format.js";
-import { drawChart } from "./chart.js";
-import { loadWeather } from "./weather.js";
-import { loadDives } from "./dive.js?v=20260718-americas-recommendations1";
+import { drawChart } from "./chart.js?v=20260720-marine-centres2";
+import { loadWeather } from "./weather.js?v=20260720-marine-centres2";
+import { loadDives } from "./dive.js?v=20260720-marine-centres2";
 import { selectLocation } from "./locations.js";
 
 export function startLive() {

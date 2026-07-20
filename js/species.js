@@ -2,6 +2,9 @@
 
 import { $ } from "./dom.js";
 import { GENERATED_SPECIES } from "./species-catalogue.js?v=20260717-common-names1";
+import { initSpeciesInfo, openSpeciesInfo } from "./species-info.js?v=20260720-marine-centres2";
+
+export { openSpeciesInfo } from "./species-info.js?v=20260720-marine-centres2";
 
 const OBIS = "https://api.obis.org/v3";
 const CACHE_LS = "tide_obis_species_v1";
@@ -184,7 +187,7 @@ function saveUi(enabled = isEnabled()) {
 
 function renderSelected() {
   const el = $("speciesSelected"); if (!el) return;
-  el.innerHTML = selected.map(item => `<button type="button" data-remove-species="${item.scientific}" title="${item.common} · click to remove" aria-label="Remove ${item.common}"><span>${item.icon}</span></button>`).join("");
+  el.innerHTML = selected.map(item => `<span class="species-selected-item" title="${item.common}"><span class="species-chip-label"><span>${item.icon}</span><b>${item.common}</b></span><button type="button" class="species-chip-action species-info-button" data-species-info="${item.scientific}" title="About ${item.common}" aria-label="About ${item.common}">?</button><button type="button" class="species-chip-action species-remove-button" data-remove-species="${item.scientific}" title="Remove ${item.common}" aria-label="Remove ${item.common}">&times;</button></span>`).join("");
   const search = $("speciesSearch");
   search.placeholder = selected.length ? (selected.length >= MAX_SELECTED ? "Maximum selected" : "Search or browse") : "Search or browse species";
   search.disabled = selected.length >= MAX_SELECTED;
@@ -412,6 +415,7 @@ export function syncSpeciesLayer(map) {
 export function initSpeciesLayer(getMap) {
   const toggle = $("speciesLayerToggle"), picker = $("speciesPicker"), search = $("speciesSearch"), month = $("speciesMonth");
   if (!toggle || !picker || !search || !month) return;
+  initSpeciesInfo();
   document.addEventListener("livetide:basemap-changed", render);
   month.innerHTML = `<option value="">Select month</option>` + MONTHS.map((name,index) => `<option value="${index}">${name}</option>`).join("");
   const saved = read(UI_LS) || read("tide_obis_species_ui_v1") || {};
@@ -423,7 +427,10 @@ export function initSpeciesLayer(getMap) {
     activeMap = getMap(); saveUi(enabled); if (enabled && !datasets.size && month.value !== "") loadSelection(); else render();
   };
   month.onchange = () => { activeMap = getMap(); saveUi(); if (month.value !== "") loadSelection(); else render(); };
-  $("speciesSelected").onclick = event => { const button = event.target.closest("[data-remove-species]"); if (button) removeSpecies(button.dataset.removeSpecies); };
+  $("speciesSelected").onclick = event => {
+    const info = event.target.closest("[data-species-info]"); if (info) { openSpeciesInfo(speciesByName(info.dataset.speciesInfo)); return; }
+    const button = event.target.closest("[data-remove-species]"); if (button) removeSpecies(button.dataset.removeSpecies);
+  };
   search.onfocus = renderSuggestions; search.oninput = () => { activeCategory = ""; renderSuggestions(); };
   search.onkeydown = event => {
     if (event.key === "ArrowDown" || event.key === "ArrowUp") { event.preventDefault(); if ($("speciesSuggestions").hidden) renderSuggestions(); moveSuggestion(event.key === "ArrowDown" ? 1 : -1); return; }
